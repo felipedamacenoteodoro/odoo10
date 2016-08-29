@@ -6,7 +6,7 @@ O que tornou o Odoo grande?
 OCA? WTF?
 ---------
 
-.. image:: images/oca.jpg
+.. image:: image/oca.jpg
     :align: center
 
 
@@ -43,7 +43,7 @@ OCA: Objetivos
 OCA: Organizaçao
 ----------------
 
-.. image:: images/oca-structure.jpg
+.. image:: image/oca-structure.jpg
     :align: center
 
 OCA: Links importantes
@@ -88,5 +88,6 @@ Como contribuir?
     - OCA: https://odoo-community.org/page/review
 2. Siga as regras
 3. Faça pelos outros para que eles façam por voce;
+
 "Gaste o seu tempo de espera revendo as contribuições dos outros "[...] As coisas mais interessantes que aprendi sobre programação em geral e especificamente em Odoo era por ter o meu código revisto ou revendo o código de outras pessoas."
 -- Holger Brunn, membro da comunidade.
