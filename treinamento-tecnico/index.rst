@@ -25,3 +25,24 @@ Introdução ao Odoo
    introduction/about-odoo
    introduction/community
    introduction/developing-odoo
+
+1.2 Instalação / Gerenciamento
+==============================
+
+Instalação / Gerenciamento
+--------------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   install-manage/install
+   install-manage/manage-databases
+   install-manage/developer-mode
+   install-manage/module-upgrade
+   install-manage/buildout
+
+
+
+
+
+
