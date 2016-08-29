@@ -21,14 +21,12 @@ Quem?
 Odoo buildout recipe
 --------------------
 
-- O Buildout odoo foi criado pela Anybox;
-- https://github.com/anybox/anybox.recipe.odoo
 - Permite definir e rapidamente realizar o deploy de qualquer versão do Odoo.
 - De ambientes de desenvolvimento a até automatização completa de ambientes de produção com integração continua.
 - Uniformidade entre versões;
 - Obtenção de modulos odoo de diferentes fontes: git, brz, svn etc;
 - Capacidade de versionar tudo para repetibilidade;
-- Gerenciamento da configuração do ODoo
+- Gerenciamento da configuração do Odoo
 - Empacotamento: Criação de pacotes para facil deploy em ambientes controlados.
 
 Como funciona?
@@ -58,10 +56,19 @@ Instalando o Odoo c/ Buildout
 6. bin/buildout -N
 
 
-Adicioanndo novos repositósios
+Adicioando novos repositósios
 ------------------------------
-
 Exercicio.
+
+Adicione o trecho no arquivo buildout.cfg
+
+.. code-block:: python
+
+    [odoo]
+
+    addons +=
+        git git@github.com:OCA/project.git parts/oca/project 8.0
+
 
 
 Merges temporários
@@ -112,4 +119,6 @@ Você pode então executar buildout com o arquivo de frozen-prod.cfg para obter 
 Mais informações
 ----------------
 
+- O Buildout odoo foi criado pela Anybox;
+- https://github.com/anybox/anybox.recipe.odoo
 - http://pythonhosted.org/anybox.recipe.odoo/

@@ -41,6 +41,16 @@ Instalação / Gerenciamento
    install-manage/module-upgrade
    install-manage/buildout
 
+1.3 Criando modulos
+===================
+
+Criando modulos
+----------------
+
+.. toctree::
+   :maxdepth: 1
+
+   module-creation/module-creation
 
 
 
