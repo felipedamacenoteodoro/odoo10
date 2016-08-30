@@ -502,19 +502,61 @@ Reinicie o Odoo e atualize o modulo.
 .. nextslide::
 
 - A definição de um campo calculado é como qualquer outro exceto pelo parametro
-compute que é usado para relizar o calculdo do mesmo.
+compute que é usado para realizar o calculado do mesmo.
 
-- Campos calulados são computados em tempo de execução e a não ser que você
+- Campos calculados são computados em tempo de execução e a não ser que você
 explicitamente suporte a escrita (inverse) ou a pesquisa (search) isto não será
 possível.
 
+- Podemos tornar campos calculados pesquisaveis ao implementarmos o metodo search.
+Opcionalmente podemos utilizar o parametro **store=True** para tornar o campo
+pesquisável. Graças ao decorator @api.depends o ORM saberá quando este campo deve
+ser recalculado.
+
+- computed_sudo=True pode ser utilizado quando o calculo deve ser feito com privilégios
+administrativos. Quando é preciso utilizar dados que podem não ser acessiveis aos
+usuários comuns.
 
 Exibindo campos relacionais salvos em outros modelos
 ----------------------------------------------------
 
+Quando o cliente Odoo acessa as informações ele só tem acesso aos dados dos
+campos disponiveis nos modelos da consulta. O lado do cliente não pode usar notação
+ponto para acessar dados relacionais.
+
+Estes dados podem ser disponibilizados atraves de campos **related**
+
+.. code-block:: python
+
+        publisher_city = fields.Char(
+            'Publisher City',
+            related='publisher_id.city')
+
+- São campos calculados e podem ter o parametro store=True para serem pesquisaveis.
 
 Adicionando campos dinâmicos através de referencias
 ---------------------------------------------------
+
+Permitem ao usuário definir o relacionamento com qual modelo ele quer e então selecionar o objeto.
+
+.. code-block:: python
+
+    @api.model
+    def _referencable_models(self):
+        models = self.env['res.request.link'].search([])
+        return [(x.object, x.name) for x in models]
+
+    ref_doc_id = fields.Reference(
+        selection='_referencable_models',
+        string='Reference Document')
+
+- Devemos sempre usar a api.model.
+- Podemos consultar a tabela de res.resquest.link ou definir uma lista de campos conforme a notação:
+
+.. code-block:: python
+
+    [('res.users', 'User'), ('res.partner', 'Partner')]
+
 
 
 Adicionando funcionalides atraves de herança
