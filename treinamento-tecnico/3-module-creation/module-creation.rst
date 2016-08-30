@@ -1,5 +1,5 @@
-Criação de modulos
-==================
+Introdução a Criação de modulos
+===============================
 
 Introdução
 ----------
@@ -314,4 +314,10 @@ Defina uma busca personalizada
 Criando modulos a partir de um template
 ---------------------------------------
 
-.. TODO:
+.. code-block:: python
+
+    No buildout
+    cd parts/server
+    ./odoo.py scaffold teste /tmp/
+
+    ls /tmp/teste

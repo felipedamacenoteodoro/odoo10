@@ -173,7 +173,7 @@ Metodos especiais de data
 **Date**
 
 Store date.
-The field provides some helpers:
+Alguns metodos definidos no date que podemos utilizar:
 
 * ``context_today`` returns current day date string based on tz
 * ``today`` returns current system date string
@@ -203,7 +203,8 @@ The field provides some helpers:
 **DateTime**
 
 Store datetime.
-The field provide some helper:
+
+Alguns metodos definidos no datetime que podemos utilizar:
 
 * ``context_timestamp`` returns current day date string based on tz
 * ``now`` returns current system date string
@@ -226,31 +227,29 @@ The field provide some helper:
 Campos padrão
 -------------
 
-A few fields are added by default in Odoo models, so we should not use these names for our
-fields. These are the id field, for the record's automatically generated identifier, and a few
-audit log fields, which are as follows:
+Todo modelo tem alguns campos padrão. Que são gerados automaticamenete:
+
 - create_date is the record creation timestamp
 - create_uid is the user that created the record
 - write_date is the last recorded edit timestamp
 - write_uid is the user that last edited the record
 
-The automatic creation of these log fields can be disabled by setting the _log_access=False
-model attribute.
+- Eles podem ser desativados com o atributo _log_access=False
+- Para exibi-los na visao é preciso sobrecreve-los no modelo.
 
 Active
 ------
 
-Another special column that can be added to a model is active . It should be a Boolean flag
-allowing for mark records as inactive. Its definition looks like this:
+Um outro campo especial é o o campo 'active'. Ele deve ser um campo booleano para determinar se o registro sera ou não ativo.
 
 .. code-block:: python
 
     active = fields.Boolean('Active', default=True)
 
-By default, only records with active set to True are visible. To have them retrieved,
-we need to use a domain filter with [('active', '=', False)] . Alternatively, if the
-'active_test': False value is added to the environment Context, the ORM will not
-filter out inactive records.
+Por definição todas as visões tem os dominio [('active', '=', False)]
+
+Como alternativa podemos adicionar no contexto 'active_test': False para que o
+ORM não filtre somente pelos campos ativos.
 
 Float c/ precisão decimal configurável
 --------------------------------------
