@@ -1,0 +1,1 @@
+	return partner.search(domain)
