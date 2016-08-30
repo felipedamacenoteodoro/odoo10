@@ -561,6 +561,26 @@ Permitem ao usuário definir o relacionamento com qual modelo ele quer e então 
 
 Adicionando funcionalides atraves de herança
 --------------------------------------------
+Uma das funcionalidades mais importantes do Odoo, é a habilidade de extender recursos de um módulo
+em outro módulo sem a necessidade de editar o código do recursos original.
+
+Esse recurso pode ser utilizado para adicionar campos em métodos, modificar campos existentes, extender
+métodos existentes para adicionar uma lógica adicional.
+
+.. nextslide::
+
+1. First, we make sure the authored_book_ids inverse relation is in the Partner model and add the computed field:
+
+.. literalinclude:: code/34.py
+   :language: python
+   :linenos:
+
+2 .Next, add the method needed to compute the book count: 
+
+.. literalinclude:: code/35.py
+   :language: python
+   :linenos:
+
 
 
 Modelos abstratos
