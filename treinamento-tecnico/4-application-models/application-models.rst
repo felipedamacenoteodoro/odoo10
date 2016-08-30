@@ -566,11 +566,48 @@ Adicionando funcionalides atraves de herança
 Modelos abstratos
 -----------------
 
+Modelos abstratos permitem criar um modelo gnérico que implementa alguma característica que
+pode ser herdada por outros modelos.
 
+1. Criar um modelo abstrato para o recurso de arquivamento. Ele deve ser definido no modelo 
+LibraryBook.
+
+.. literalinclude:: code/32.py
+   :language: python
+   :linenos:
+
+.. nextslide::
+
+2. Edite o modelo LibraryBook para extender o modeo Archive
+
+.. literalinclude:: code/33.py
+   :language: python
+   :linenos:
 
 Delegação para copiar funcionalidades
 -------------------------------------
+Usando a hernaça tradicional _inherit executa a modificação no local para estender a
+características do modelo.
 
+Mas há casos em que em vez de modificar um modelo existente, é necessário criar um novo
+modelo baseado em um já existente para alavancar os recursos existentes.
+
+Isso pode ser realizado com o atributo de modelo, __inherits (note o "s" adicional).
+
+.. nextslide::
+
+1. Adicionando um novo modelo, sobrescrevendo a partir do res.partner
+
+.. literalinclude:: code/30.py
+   :language: python
+   :linenos:
+
+
+2. Adicione os campos específicos para o modelo LibraryMembers
+
+.. literalinclude:: code/31.py
+   :language: python
+   :linenos:
 
 
 
