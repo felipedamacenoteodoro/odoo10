@@ -3,18 +3,8 @@ Odoo Developer Training
 
 Luis Felipe Miléo <mileo@kmee.com.br>
 
-Agenda
-------
-
-1. Introdução:
-    1.1. Introdução ao Odoo
-
-    1.2. Instalação / Gerenciamento
-
-
-
-1.1 Introdução ao Odoo
-======================
+Introdução ao Odoo
+==================
 
 Introdução ao Odoo
 ------------------
@@ -22,12 +12,12 @@ Introdução ao Odoo
 .. toctree::
    :maxdepth: 1
 
-   introduction/about-odoo
-   introduction/community
-   introduction/developing-odoo
+   1-introduction/about-odoo
+   1-introduction/community
+   1-introduction/developing-odoo
 
-1.2 Instalação / Gerenciamento
-==============================
+Instalação / Gerenciamento
+==========================
 
 Instalação / Gerenciamento
 --------------------------
@@ -35,14 +25,14 @@ Instalação / Gerenciamento
 .. toctree::
    :maxdepth: 1
 
-   install-manage/install
-   install-manage/manage-databases
-   install-manage/developer-mode
-   install-manage/module-upgrade
-   install-manage/buildout
+   2-install-manage/install
+   2-install-manage/manage-databases
+   2-install-manage/developer-mode
+   2-install-manage/module-upgrade
+   2-install-manage/buildout
 
-1.3 Criando modulos
-===================
+Criando modulos
+===============
 
 Criando modulos
 ----------------
@@ -50,7 +40,32 @@ Criando modulos
 .. toctree::
    :maxdepth: 1
 
-   module-creation/module-creation
+   3-module-creation/module-creation
+
+Modelos de aplicação
+====================
+
+Modelos de aplicação
+--------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   4-application-models/application-models
+
+Desenvolvimento server-side
+===========================
+
+Desenvolvimento server-side
+---------------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   5-basic-server-side/basic
+   6-advance-server-side/advance
+
+
 
 
 
