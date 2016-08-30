@@ -1,0 +1,6 @@
+    def name_get(self):
+        result = []
+        for record in self:
+            result.append((
+                record.id, u"%s (%s)" % (record.name, record.date_released)))
+            return result

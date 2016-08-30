@@ -31,37 +31,17 @@ Instalação / Gerenciamento
    2-install-manage/module-upgrade
    2-install-manage/buildout
 
-Criando modulos
-===============
-
-Criando modulos
-----------------
-
-.. toctree::
-   :maxdepth: 1
-
-   3-module-creation/module-creation
-
-Modelos de aplicação
+Desenvolvimento Odoo
 ====================
 
-Modelos de aplicação
+Desenvolvimento Odoo
 --------------------
 
 .. toctree::
    :maxdepth: 1
 
+   3-module-creation/module-creation
    4-application-models/application-models
-
-Desenvolvimento server-side
-===========================
-
-Desenvolvimento server-side
----------------------------
-
-.. toctree::
-   :maxdepth: 1
-
    5-basic-server-side/basic
    6-advance-server-side/advance
 

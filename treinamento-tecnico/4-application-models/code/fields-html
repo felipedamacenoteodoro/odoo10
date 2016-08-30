@@ -1,0 +1,7 @@
+description = fields.Html(
+    string='Description',
+    # optional:
+    sanitize=True,
+    strip_style=False,
+    translate=False,
+)

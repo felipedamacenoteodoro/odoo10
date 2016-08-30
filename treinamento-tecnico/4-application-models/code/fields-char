@@ -1,0 +1,5 @@
+short_name = fields.Char(
+    string='Short Title',
+    size=100, # For Char only
+    translate=False, # also for Text fields
+)

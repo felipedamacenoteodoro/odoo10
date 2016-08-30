@@ -1,0 +1,12 @@
+pages = fields.Integer(
+    string='Number of Pages',
+    default=0,
+    help='Total book page count',
+    groups='base.group_user',
+    states={'cancel': [('readonly', True)]},
+    copy=True,
+    index=False,
+    readonly=False,
+    required=False,
+    company_dependent=False,
+)
