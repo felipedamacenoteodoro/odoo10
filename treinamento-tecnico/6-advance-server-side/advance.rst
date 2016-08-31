@@ -327,8 +327,111 @@ caso, o cliente web irá processar a ação se algum item de menu for clicado pe
 Definir métodos de onchange
 ---------------------------
 
+Quando escrevemos modelos Odoo, há frequentemente a necessidade de que campos estejam interligados. 
+
+Veremos o conceito de onchange que chama diferentes métodos que serão chamados quando um campo é modificado e assim,
+atualizar o conteúdo desses campos.
+
+.. nextslide::
+
+Crie o modelo abaixo no wizard criado anteriormente:
+
+.. code-block:: python
+
+    class LibraryReturnsWizard(models.TransientModel):
+        _name = 'library.returns.wizard'
+        member_id = fields.Many2one('library.member', 'Member')
+        book_ids = fields.Many2many('library.book', 'Books')
+        @api.multi
+        def record_returns(self):
+            loan = self.env['library.book.loan']
+            for rec in self:
+                loans = loan.search(
+                    [('state', '=', 'ongoing'),
+                        ('book_id', 'in', rec.book_ids.ids),
+                        ('member_id', '=', rec.member_id.id)]
+                        )
+                loans.write({'state': 'done'})
+
+.. nextslide::
+
+Para popular automáticamente a lista de livro quando o usuário mudar, é necessário adicionar
+o método onchange em LibraryReturnsWizard:
+
+.. code-block:: python
+
+	add an onchange method in the LibraryReturnsWizard step with the following definition:
+	@api.onchange('member_id')
+	def onchange_member(self):
+		loan = self.env['library.book.loan']
+		loans = loan.search(
+			[('state', '=', 'ongoing'),
+			('member_id', '=', self.member_id.id)]
+		)
+		self.book_ids = loans.mapped('book_id')
+
+
 Chamar o método onchange no lado do servidor
 --------------------------------------------
+
+TODO::: Explain
+
+.. nextslide::
+
+1. Crie o método terun_all_books na classe LibraryMember:
+
+.. code-block:: python
+
+    @api.multi
+    def return_all_books(self):
+        self.ensure_one
+
+2. Retorno um valor vazio para library.returns.wizard:
+
+.. code-block:: python
+
+        wizard = self.env['library.returns.wizard']
+
+3. Prepare os valores para criar um novo registro no wizard:
+
+.. code-block:: python
+
+        values = {'member_id': self.id, book_ids=False}
+
+.. nextslide::
+
+4. Recuperar as especificações onchange para o wizard:
+
+.. code-block:: python
+
+        specs = wizard._onchange_spec()
+
+
+5. Recupere o resultado do método onchange:
+
+.. code-block:: python
+
+        updates = wizard.onchange(values, ['member_id'], specs)
+
+
+6. Mescle o resultado com os valores do novo wizard:
+
+.. code-block:: python
+
+        value = updates.get('value', {})
+        for name, val in value.iteritems():
+        if isinstance(val, tuple):
+            value[name] = val[0]
+        values.update(value)
+
+.. nextslide::
+
+7. Crie o wizard:
+
+
+.. code-block:: python
+
+        record = wizard.create(values)
 
 Portar o código da API antiga para a Nova
 -----------------------------------------
