@@ -432,6 +432,3 @@ TODO::: Explain
 .. code-block:: python
 
         record = wizard.create(values)
-
-Portar o código da API antiga para a Nova
------------------------------------------
