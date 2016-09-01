@@ -43,7 +43,7 @@ Desenvolvimento Odoo
    3-module-creation/module-creation
    4-application-models/application-models
    5-basic-server-side/basic
-   6-advance-server-side/advance
+..   6-advance-server-side/advance
 
 
 

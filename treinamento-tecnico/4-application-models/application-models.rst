@@ -557,6 +557,8 @@ Permitem ao usuário definir o relacionamento com qual modelo ele quer e então 
     [('res.users', 'User'), ('res.partner', 'Partner')]
 
 
+Relação entre modelos
+=====================
 
 Adicionando funcionalides atraves de herança
 --------------------------------------------
@@ -568,13 +570,16 @@ métodos existentes para adicionar uma lógica adicional.
 
 .. nextslide::
 
-1. First, we make sure the authored_book_ids inverse relation is in the Partner model and add the computed field:
+1. Primeiro, precisamos verificar que o campo authored_book_ids esta disponivel
+no cadastro de parceiros:
 
 .. literalinclude:: code/34.py
    :language: python
    :linenos:
 
-2 .Next, add the method needed to compute the book count: 
+.. nextslide::
+
+2 .Segundo, adicione o metodo que utilizamos para calcular o count:
 
 .. literalinclude:: code/35.py
    :language: python
@@ -585,11 +590,11 @@ métodos existentes para adicionar uma lógica adicional.
 Modelos abstratos
 -----------------
 
-Modelos abstratos permitem criar um modelo gnérico que implementa alguma característica que
-pode ser herdada por outros modelos.
+Modelos abstratos permitem criar um modelo genérico que implementa alguma
+característica que pode ser herdada por outros modelos.
 
-1. Criar um modelo abstrato para o recurso de arquivamento. Ele deve ser definido no modelo 
-LibraryBook.
+1. Crie um modelo abstrato para o recurso de arquivamento. Ele deve ser definido
+no modelo  LibraryBook.
 
 .. literalinclude:: code/32.py
    :language: python
@@ -597,7 +602,7 @@ LibraryBook.
 
 .. nextslide::
 
-2. Edite o modelo LibraryBook para extender o modeo Archive
+2. Edite o modelo LibraryBook para extender o modelo Archive
 
 .. literalinclude:: code/33.py
    :language: python

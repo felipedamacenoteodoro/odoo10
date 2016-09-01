@@ -1,9 +1,77 @@
-Basic Server Side Development
-=============================
+Desenvolvimento Server Side
+===========================
 
-Apresentação
-------------
-Neste capítulo, veremos os seguintes tópicos:
+Revisão:
+--------
+
+Model
+#####
+
+- Model é uma representação de um objeto de negócio, sendo que até o momento eles podem ser persistentes e abstratos:
+
+.. code-block:: python
+
+    class A(models.Model):
+        ...
+    class B(models.AbstractMethod):
+        ...
+
+.. nextslide::
+
+- Um model é basicamente uma classe Python! Que define vários atributos:
+    - Atributos especiais iniciados com UNDERLINE _name, _rec_name etc;
+    - Campos salvos no banco de dados: "variaveis" definidas com fields;
+    - O nome do campo no bando de dados é o mesmo nome dado a variavel!
+
+.. code-block:: python
+
+    class A(models.Model):
+        _name ='a'
+        valor = fields.Float(...)
+
+Recordset
+#########
+- Um objeto Recordset representa os registros em uma tabela base ou os registros resultantes da execução de uma consulta.
+
+- Quando metodos definidos em um modelo são executados o atributo self é um recorset.
+
+.. code-block:: python
+
+    def do_operation(self):
+        print self # => a.model(1, 2, 3, 4, 5)
+        for record in self:
+            print record # => a.model(1), then a.model(2), then a.model(3), ...
+
+Acesso aos campos
+#################
+
+**Recordsets proveem um padrão denominado "Active-Record"**:
+
+Em Engenharia de software, active record é um padrão de projeto encontrado em softwares que armazenam seus dados em Banco de dados relacionais. Assim foi nomeado por Martin Fowler em seu livro Patterns of Enterprise Application Architecture[1].
+
+A interface de um certo objeto deve incluir funções como por exemplo:
+
+- Inserir(Insert) / Atualizar(Update) / Apagar(Delete);
+- Propriedades que correspondam de certa forma diretamente às colunas do banco de dados associado.
+
+.. nextslide::
+
+Portanto modelos podem ser escritos e lidos de forma direta através de um record.
+
+Mas somente nos singletons(apenas uma instancia de model). Setar um field dispara um update no banco de dados. Exemplo
+
+.. code-block:: python
+
+    >>> record.name
+    Example Name
+    >>> record.company_id.name
+    Company Name
+    >>> record.name = "Bob"
+    >>> record.do_operation()
+
+
+Desenvolvimento Server Side
+---------------------------
 
 * Definindo metódos de modelos e usando API decorators
 * Saída de erros para os usuários
@@ -23,22 +91,26 @@ Neste capítulo, veremos os seguintes tópicos:
 
 Introdução
 ----------
-No caítulo anterior, Modelo de Aplicações, nós vimos como declarar ou externder modelos em
-módulos customizados. As receitas deste capítulo abgrangem campos calculados bem como 
-métodos para restringir os valores dos campos.
+Quando falamos de Modelo de Aplicações, nós vimos como declarar ou externder
+modelos em módulos customizados. As receitas deste capítulo abgrangem campos
+calculados bem como métodos para restringir os valores dos campos.
 
-Este capítulo foca nos conceitos básicos de desenvolvimento do lado servidor seguindo as
-definições 'Odoo-method', manipulação de registros e estender metódos herdados.
+Vamos focar nos conceitos básicos de desenvolvimento do lado servidor seguindo as
+definições Odoo de metodos, manipulação de registros e estender metódos herdados.
 
 
 Model methods & API Decorators
 ------------------------------
-As classes de modelo que definem modelos de dados personalizados declaram campos para os dados processados pelo
-modelo. Eles também podem definir o comportamento personalizado através da definição de métodos na classe do modelo.
+As classes de modelo podem conter:
 
-Nesta receita, vamos ver como escrever um método que pode ser chamado por um botão na interface do usuário, ou por 
-algum outro pedaço de código em nossa aplicação. Este método irá atuar sobre LibraryBooks e executar as ações 
-necessárias para alterar o estado de uma seleção de livros.
+- Campos para os dados personalizados, através da definição de fields;
+- Comportamento personalizado através da definição de métodos da classe;
+
+Vamos ver como escrever um método que pode ser chamado por um botão na interface
+do usuário, ou por algum outro pedaço de código em nossa aplicação.
+
+Este método irá atuar sobre LibraryBooks e executar as ações necessárias para
+alterar o estado de uma seleção de livros.
 
 .. nextslide::
 
@@ -50,8 +122,9 @@ Adicione o campo state no modelo LibraryBook como exibido abaixo:
 
 .. nextslide::
 
-Para definir um metódo na LibraryMook para permitir a mudança do estado de uma seleção de livros,
-precisaremos adicionar o seguinte código na definição do modelo:
+Para definir um metódo na LibraryBook para permitir a mudança do estado de
+uma seleção de livros, precisaremos adicionar o seguinte código na definição
+do modelo:
 
 1. Adicione um método auxiliar para verificar se a mudança de estado é permitido:
 
@@ -61,7 +134,8 @@ precisaremos adicionar o seguinte código na definição do modelo:
 
 .. nextslide::
 
-2. Adicione um método para alterar o estado de alguns livros para um novo passado como um argumento:
+2. Adicione um método para alterar o estado de alguns livros para um
+novo passado como um argumento:
 
 .. literalinclude:: code/3.py
    :language: python
@@ -69,7 +143,21 @@ precisaremos adicionar o seguinte código na definição do modelo:
 
 .. nextslide::
 
-Adicionar informacoes da pagina 97 How It Works
+Definimos dois metodos:
+
+- Eles são metodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
+- Os metodos são decorados com **decorators** definidos em openerp.api
+- Eles realizam a conversão entre a antiga API(v5-v9) e a nova api (v8+). Portando v10 teremos somente a nova api.
+
+Enviroment
+----------
+
+- self.env.cr : Database cursor
+- self.env.user : Usuário que fez a chamada
+- self.env.context : É o contexto, um dicionário python, contendo diversas informações como:
+    - Linguagem do usuário;
+    - Timezone
+    - E outras chaves especificas definidas em tempo de execução através da interface de usuaŕio
 
 
 Saída de erros para os usuários
