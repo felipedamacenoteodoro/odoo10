@@ -27,7 +27,7 @@ Introdução
 .. nextslide::
 
 
-Adicionando um item ao menu e janelas de ações
+Adicionando um item de menu e janelas de ações
 ----------------------------------------------
 
 No XML do nosso módulo, siga os seguintes passos:
@@ -36,23 +36,24 @@ No XML do nosso módulo, siga os seguintes passos:
 
 .. code-block:: python
 
-	<act_window id="action_all_customers"
-		name="All customers"
+	<act_window id="action_all_editors"
+		name="Editoras
 		res_model="res.partner"
 		view_mode="tree,form"
-		domain="[('customer', '=', True)]"
-		context="{'default_customer': True}"
+		domain="[('is_editor', '=', True)]"
+		context="{'default_is_editor': True}"
 		limit="80" />
 
 2. Crie a estrutura do menu:
 
 .. code-block:: python
 
-	<menuitem id="menu_custom_toplevel"
-		name="My custom menu" />
-	<menuitem id="menu_custom_left"
-		parent="menu_custom_toplevel"
-		name="This will appear in the left bar" />
+        <menuitem id="meu_modulo_main_menu_books"
+            name="Biblioteca"/>
+        <menuitem id="meu_modulo_sub_menu_books"
+            name="Livros"
+            parent="meu_modulo_main_menu_books"
+            sequence="5"/>
 
 .. nextslide::
 
@@ -60,10 +61,10 @@ No XML do nosso módulo, siga os seguintes passos:
 
 .. code-block:: python
 
-	<menuitem id="menu_all_customers"
-		parent="menu_custom_left"
-		action="action_all_customers"
-		sequence="10"
+	<menuitem id="menu_all_editors"
+		parent="meu_modulo_sub_menu_books"
+		action="action_all_editors"
+		sequence="90"
 		groups="" />
 
 
@@ -73,9 +74,11 @@ No XML do nosso módulo, siga os seguintes passos:
 Ação para abrir uma visão específica
 ------------------------------------
 
-Window actions automáticamente determinam a view que será usada, mas as vezes, precisamos que a ação abra uma view específica.
+Window actions automáticamente determinam a view que será usada, mas as vezes,
+precisamos que a ação abra uma view específica.
 
-Vamos criar um formulário básico para o modelo de parceiros e criar uma window action específica para ela.
+Vamos criar um formulário básico para o modelo de parceiros e criar uma window
+action específica para ela.
 
 .. nextslide::
 
@@ -83,13 +86,14 @@ Vamos criar um formulário básico para o modelo de parceiros e criar uma window
 
 .. code-block:: xml
 
-	<record id="form_all_customers" model="ir.ui.view">
-	<field name="name">All customers</field>
+	<record id="form_all_editors" model="ir.ui.view">
+	<field name="name">All Editors</field>
 	<field name="model">res.partner</field>
 	<field name="arch" type="xml">
 		<form>
 			<group>
 				<field name="name" />
+				<field name="is_editor" />
 			</group>
 		</form>
 	</field>
@@ -102,10 +106,10 @@ Vamos criar um formulário básico para o modelo de parceiros e criar uma window
 
 .. code-block:: xml
 
-	<record id="action_all_customers_form"
+	<record id="action_all_editors_form"
 			model="ir.actions.act_window.view">
-		<field name="act_window_id" ref="action_all_customers" />
-		<field name="view_id" ref="form_all_customers" />
+		<field name="act_window_id" ref="action_all_editors" />
+		<field name="view_id" ref="form_all_editors" />
 		<field name="view_mode">form</field>
 		<fieldn ame="sequence">10</field>
 	</record>
@@ -115,16 +119,16 @@ Vamos criar um formulário básico para o modelo de parceiros e criar uma window
 Adicionando conteúdo e ações em uma view formulário
 ---------------------------------------------------
 
-O tópico anterior mostrou como escolher uma visão específica para uma ação. Agora, vamos demonstrar
-como tornar este formulário mais útil.
+O tópico anterior mostrou como escolher uma visão específica para uma ação.
+Agora, vamos demonstrar como tornar este formulário mais útil.
 
 
 1. Defina a estrutura básica da view do formulário:
 
 .. code-block:: xml
 
-	<record id="form_all_customers" model="ir.ui.view">
-		<field name="name">All customers</field>
+	<record id="form_all_editors" model="ir.ui.view">
+		<field name="name">All editors</field>
 		<field name="model">res.partner</field>
 		<field name="arch" type="xml">
 			<form>
@@ -161,11 +165,11 @@ como tornar este formulário mais útil.
 Adicionando botões em formulários
 ---------------------------------
 
-Já adicionamos botões no tópico anterior, mas existem diversos tipos de botões que podemos utilizar
-no Odoo. 
+Já adicionamos botões no tópico anterior, mas existem diversos tipos de botões
+que podemos utilizar no Odoo.
 
-Os os atributos type do botão determina a semântica utilizada por outros campos, veja os tipos possíveis
-de valores para o botão:
+Os os atributos type do botão determina a semântica utilizada por outros campos,
+veja os tipos possíveis de valores para o botão:
 
 * *action*
 
@@ -206,11 +210,10 @@ Passando parâmetros para formulários e ações: Contexto
 
 
 
-Definição de filtros em listas de gravação: Domínio
----------------------------------------------------
+Definição de filtros em visões: Domínio
+---------------------------------------
 
 Vamos exibir um conjunto de parceiros na sua ação.
-
 
 1. Adicionar uma ação para os parceiros que não são franceses:
 
@@ -249,6 +252,22 @@ Vamos exibir um conjunto de parceiros na sua ação.
 
 
 
+Operadores
+----------
+
+- **=, != (<>)**: Exact match, not equal (deprecated notation of not equal)
+- **in, not in** Checks if the value is one of the values named in a list in the right operand, given as a Python list: [('uid', 'in', [1, 2, 3])]
+- **<, <=** Greater than, greater or equal
+- **>, >=** Less than, less or equal
+- **like, not like** Checks if the right operand is contained (substring) in the value
+
+.. nextslide::
+
+- **ilike, not ilike** The same as the preceding one but case insensitive
+- **=like, =ilike** You can search for patterns here: % matches any string and _ matches one character. This is the equivalent of PostgreSQL's like.
+- **child_of** For models with a parent_id field, this searches for children of the right operand, with the right operand included in the results.
+- **=?** Evaluates to true if the right operand is false, otherwise it behaves like
+- **"= -"** this is useful when you generate domains programmatically and want to filter for some value if it is set, but ignore it otherwise.
 
 Views Lista
 -----------
@@ -366,8 +385,6 @@ Alterar views existentes: View herança
     </record>
 
 
-
-
 Document-style em formulários
 -----------------------------
 
@@ -407,7 +424,7 @@ Vamos melhorar a apresentação do formulário para o usuário.
 .. nextslide::
 
 
-4. Adicione botões que apontam para recursos relevantes para o objeto em sua própria caixa (se aplicável):
+4. Adicione botões que apontam para recursos relevantes para o objeto em suaprópria caixa (se aplicável):
 
 .. code-block:: xml
 
@@ -545,14 +562,84 @@ Views Kanban
 *Este passo será utilizado como um exercício que vocês deverão realizar sozinhos*
 
 
-Mostrar cartões Kanban em colunas de acordo com seu estado
-----------------------------------------------------------
+As visualizações do calendário
+------------------------------
 
-As visualizações do calendário e gantt
---------------------------------------
+.. code-block:: xml
 
-As visualizações Gráfico e de articulação
------------------------------------------
+    <record id="calendar_library_loan_task" model="ir.ui.view">
+        <field name="model">library.book.loan</field>
+        <field name="arch" type="xml">
+            <calendar date_start="date_start" date_stop="date_end">
+                <field name="member_id" />
+                <field name="book_id" />
+        </calendar>
+        </field>
+    </record>
+
+
+As visualizações Gráfico
+------------------------
+
+.. code-block:: xml
+
+    <record id="graph_library_book_member_bar" model="ir.ui.view">
+    <field name="model">library.member</field>
+    <field name="arch" type="xml">
+        <graph type="bar">
+            <field name="member_id" type="row" />
+            <field name="loan_quantity" type="measure" />
+            <field name="due_loan_quantity" type="measure" />
+        </graph>
+    </field>
+    </record>
+
+.. code-block:: xml
+
+    <record id="graph_library_book_member_pivot" model="ir.ui.view">
+    <field name="model">library.member</field>
+    <field name="arch" type="xml">
+        <graph type="pivot">
+            <field name="member_id" type="row" />
+            <field name="loan_quantity" type="measure" />
+            <field name="due_loan_quantity" type="measure" />
+        </graph>
+    </field>
+    </record>
+
 
 Relatórios Qweb
 ---------------
+
+1.	 Defina a visão do seu relatório:
+
+.. code-block:: xml
+
+    <template id="qweb_res_partner_birthdays">
+        <t t-call="report.html_container">
+            <t t-call="report.internal_layout">
+                <div class="page">
+                    <h2>Partner's birthdays</h2>
+                    <div t-foreach="docs" t-as="o" class="row mt4 mb4">
+                        <div class="col-md-6"><t t-esc="o.name" /></div>
+                        <div class="col-md-6">
+                            <t t-if="o.birthdate" t-esc="o.birthdate" />
+                            <t t-if="not o.birthdate">-</t>
+                    </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+.. nextslide::
+
+2. Use o templatem em um relatório:
+
+.. code-block:: xml
+
+    <report id="report_res_partner_birthdays"
+        name="meu_modulo.qweb_res_partner_birthdays"
+        model="res.partner"
+        string="Birthdays"
+        report_type="qweb-pdf" />

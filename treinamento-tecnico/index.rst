@@ -45,3 +45,12 @@ Desenvolvimento Odoo
    5-basic-server-side/basic
    6-advance-server-side/advance
    7-backend-views/backend-views
+
+.. nextslide::
+
+.. toctree::
+   :maxdepth: 1
+
+   8-automacao-workflows/automation-workflow
+   9-web/web
+   extras/community-patterns
