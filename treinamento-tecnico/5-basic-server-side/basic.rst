@@ -357,15 +357,22 @@ Atravessando as relações de registros
    :language: python
    :linenos:
 
-Estendendo a lógica definido em um modelo
------------------------------------------------------
-Quando a definimos um modelo que estende outro modelo, muitas vezes é necessário personalizar 
-o comportamento de alguns métodos definidos no modelo original.
-Esta é uma tarefa muito fácil no Odoo, e um dos recursos mais poderosos do quadro framework.
+Alterando comportamentos já definidos através de outros modulos
+---------------------------------------------------------------
+
+Quando a definimos um modelo que estende outro modelo,
+muitas vezes é necessário personalizar o comportamento de alguns
+métodos definidos no modelo original.
+
+Esta é uma tarefa muito fácil no Odoo.
+
+**É um dos recursos mais poderosos do quadro framework.**
 
 .. nextslide::
 
-Crie um novo módulo adicional chamado library_loan_return_date que depende do meu_modulo.
+Crie um novo módulo adicional: **library_loan_return_date** que
+depende do **meu_modulo.**
+
 Neste módulo, extenda o modelo library.book.loan como a seguir:
 
 .. literalinclude:: code/23.py
@@ -415,7 +422,7 @@ Modifique o arquivo security/ir.model.access.csv para dar permitir o acesso dos 
 
 .. nextslide::
 
-Adicione o campo manager_remarks no modelo library.book. Nos precisamos somente queo os grupo
+Adicione o campo manager_remarks no modelo library.book. Nos precisamos somente que os grupo
 Library Managers tenham privilégios para escrever nos campos.
 
 .. literalinclude:: code/28.py
@@ -446,5 +453,5 @@ de *manager_remarks*, vamos modificar o seguinte:
    :linenos:
 
 
-Customizando como os registros são procurados
----------------------------------------------
+.. Customizando como os registros são procurados
+.. ---------------------------------------------

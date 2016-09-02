@@ -547,7 +547,7 @@ Views Kanban
 *Este passo será utilizado como um exercício que vocês deverão realizar sozinhos*
 
 
-Mostrar cartões Kanbab em colunas de acordo com seu estado
+Mostrar cartões Kanban em colunas de acordo com seu estado
 ----------------------------------------------------------
 
 As visualizações do calendário e gantt

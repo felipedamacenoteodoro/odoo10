@@ -8,47 +8,27 @@ Como por exemplo, executar uma ação como administrador.
 
 Vamos utilizar um usuário comum e modificar o número do telefone de uma empresa usando sudo().
 
-1. Definir um modelo qu extenda o modelo res_company:
+1. Definir um modelo qu extenda o modelo res_company
+2. Criar um método chamado update_phone_number()
+3. Dentro do método, tenha certeza que a ação está sendo executada em um simples registro
+4. Modifique o usuário do ambiente:
+
 
 .. code-block:: python
 
 	class ResCompany(models.Model):
 		_inherit = 'res.company'
 
-2. Criar um método chamado update_phone_number():
-
-.. code-block:: python
-
 	@api.multi
 	def update_phone_number(self, new_number):
+          self.ensure_one()
+          company_as_superuser = self.sudo()
+          company_as_superuser.phone = new_number
 
 .. nextslide::
 
-
-3. Dentro do método, tenha certeza que a ação está sendo executada em um simples registro
-
-.. code-block:: python
-
-		self.ensure_one()
-
-
-4. Modifique o usuário do ambiente:
-
-.. code-block:: python
-
-	company_as_superuser = self.sudo()
-
-5. Escreva o novo número de telefone:
-
-.. code-block:: python
-
-	company_as_superuser.phone = new_number
-
-.. nextslide::
-
-Se você precisar de um usuário específico, 
-pode utilizar um recordset contendo o usuário ou o id do usuário no banco de dados. Ex. utilizando o usuário "public_user"
-
+Se você precisar de um usuário específico, pode utilizar um recordset contendo o
+ usuário ou o id do usuário no banco de dados. Ex. utilizando o usuário "public_user"
 
 .. code-block:: python
 
@@ -88,50 +68,31 @@ Para calcular os níveis de estoque de todos os produtos de um determinado local
 siga os passos abaixo.
 
 1. Crie um modelo que estenda product.product
-
-.. code-block:: python
-
-	class ProductProduct(models.Model):
-		_inherit = 'product.product'
-
 2. Crie um método chamado stock_in_location():
-
-.. code-block:: python
-
-	@api.model
-	def stock_in_location(self, location):
-
-.. nextslide ::
-
 3. Dentro do método, recupere um registro product.product:
-
-.. code-block:: python
-
-	product_in_loc = self.with_context(
-		location=location.id,
-		active_test=False
-	)
-
-
 4. Busque todos os produtos:
+5. Crie um array com o nome do produto e o nível de estoque de todos os produtos presente no local especificado
+6. Verifique o resultado da chamada do metodo através do ipython
 
 .. code-block:: python
 
-	all_products = product_in_loc.search([])
+     class ProductProduct(models.Model):
+          _inherit = 'product.product'
 
-.. nextslide :: 
-5. Crie um array com o nome do produto e o nível de estoque de todos os produtos presente no local especificado:
+          @api.model
+          def stock_in_location(self, location):
+               product_in_loc = self.with_context(
+                    location=location.id,
+                    active_test=False
+               )
+               all_products = product_in_loc.search([])
 
-.. code-block:: python
-
-	stock_levels = []
-	for product in all_products:
-		if product.qty_available:
-			stock_levels.append((product.name,
-					product.qty_available))
-	return stock_levels
-
-
+               stock_levels = []
+               for product in all_products:
+                    if product.qty_available:
+                         stock_levels.append((product.name,
+                         product.qty_available))
+               return stock_levels
 
 Executar um query SQL
 ---------------------
@@ -143,7 +104,9 @@ por país. Vamos utilizar uma versão simplificada do modelo res.partner:
 .. code-block:: python
 
 	class ResPartner(models.Model):
+
 		_name = 'res.partner'
+
 		name = fields.Char('Name', required=True)
 		email = fields.Char('Email')
 		is_company = fields.Boolean('Is a company')
@@ -154,52 +117,31 @@ por país. Vamos utilizar uma versão simplificada do modelo res.partner:
 
 .. nextslide::
 
-1. Escreva uma classe que estenda res.partner:
+1. Escreva uma classe que estenda res.partner
+2. Crie um método chamado partners_by_country()
+3. Verifique o resultado da chamada do metodo através do ipython
 
 .. code-block:: python
 
 	class ResPartner(models.Model):
 		_inherit = 'res.partner'
 
-2. Crie um método chamado partners_by_country():
-
-.. code-block:: python
-
-	@api.model:
-	def partners_by_country(self):
-
-
-3. Dentro do método, escreva a sua query:
-
-.. code-block:: python
-
-	sql = ('SELECT country_id, array_agg(id) '
-		'FROM res_partner '
-		'WHERE active=true AND country_id IS NOT NULL '
-		'GROUP BY country_id')
-
-.. nextslide::
-
-4. Execute a query:
-
-.. code-block:: python
-
-	self.env.cr.execute(sql)
-
-5. Interagir com o resultado da query para popular o dict:
-
-.. code-block:: python
-
-	country_model = self.env['res.country']
-	result = {}
-	for country_id, partner_ids in self.env.cr.fetchall():
-		country = country_model.browse(country_id)
-		partners = self.search(
-			[('id', 'in', tuple(partner_ids))]
-		)
-		result[country] = partners
-	return result
-
+     @api.model:
+     def partners_by_country(self):
+          sql = ('SELECT country_id, array_agg(id) '
+             'FROM res_partner '
+             'WHERE active=true AND country_id IS NOT NULL '
+             'GROUP BY country_id')
+          self.env.cr.execute(sql)
+         country_model = self.env['res.country']
+         result = {}
+         for country_id, partner_ids in self.env.cr.fetchall():
+             country = country_model.browse(country_id)
+             partners = self.search(
+                 [('id', 'in', tuple(partner_ids))]
+             )
+             result[country] = partners
+         return result
 
 Wizard
 ------
@@ -214,9 +156,9 @@ Iremos utilizar um modelo simples para 'record book loans':
 		_name = 'library.book.loan'
 		book_id = fields.Many2one('library.book', 'Book',
 				required=True)
-	member_id = fields.Many2one('library.member', 'Borrower',
+        member_id = fields.Many2one('library.member', 'Borrower',
 				required=True)
-	state = fields.Selection([('ongoing', 'Ongoing'),
+        state = fields.Selection([('ongoing', 'Ongoing'),
 				('done', Done')],
 				'State',
 				default='ongoing', required=True)
@@ -228,9 +170,10 @@ Iremos utilizar um modelo simples para 'record book loans':
 .. code-block:: python
 
 	class LibraryLoanWizard(models.TransientModel):
-	_name = 'library.loan.wizard'
-	member_id = fields.Many2one('library.member', 'Member')
-	book_ids = fields.Many2many('library.book', 'Books')
+
+	    _name = 'library.loan.wizard'
+	    member_id = fields.Many2one('library.member', 'Member')
+	    book_ids = fields.Many2many('library.book', 'Books')
 
 
 2. Crie um método callback executando uma ação no modelo transitório. 
@@ -299,11 +242,13 @@ Adicione o código abaixo na classe LibraryLoanWizard :
         sequence="20"
         />
 
-.. nextslide::
+Redirecionando o usuário
+------------------------
 
-O método utilizado não retorna nada. Isso faz com que a caixa do wizard seja fechada após a execução
-da ação. Uma possíbildiade é ter um método que retorno um dict com os campos de um ir.action. Neste
-caso, o cliente web irá processar a ação se algum item de menu for clicado pelo usuário.
+O método definido no wizard não retorna nada. Isso faz com que a caixa do wizard
+seja fechada após a execução da ação. Uma possíbildiade é retorar um dict com os
+campos de um ir.action. Neste caso, o cliente web irá processar a ação se como se
+algum item de menu fosse clicado pelo usuário.
 
 .. code-block:: python
 
@@ -323,18 +268,22 @@ caso, o cliente web irá processar a ação se algum item de menu for clicado pe
         }
         return action
 
+.. nextslide::
+
+Dica: Este macete pode ser adaptado para criarmos uma sequencia de wizards sendo executados.
+
 
 Definir métodos de onchange
 ---------------------------
 
-Quando escrevemos modelos Odoo, há frequentemente a necessidade de que campos estejam interligados. 
+Quando escrevemos modelos Odoo, há frequentemente a necessidade de que campos
+estejam interligados.
 
-Veremos o conceito de onchange que chama diferentes métodos que serão chamados quando um campo é modificado e assim,
-atualizar o conteúdo desses campos.
+Vamos ver agora o conceito de onchange que é um metodo que é chamado quando um campo é modificado na visão.
 
 .. nextslide::
 
-Crie o modelo abaixo no wizard criado anteriormente:
+Verificar exemplo feito c/  Luciano de retorno dos livros
 
 .. code-block:: python
 
@@ -360,7 +309,6 @@ o método onchange em LibraryReturnsWizard:
 
 .. code-block:: python
 
-	add an onchange method in the LibraryReturnsWizard step with the following definition:
 	@api.onchange('member_id')
 	def onchange_member(self):
 		loan = self.env['library.book.loan']
@@ -371,64 +319,9 @@ o método onchange em LibraryReturnsWizard:
 		self.book_ids = loans.mapped('book_id')
 
 
-Chamar o método onchange no lado do servidor
---------------------------------------------
-
-TODO::: Explain
-
 .. nextslide::
 
-1. Crie o método terun_all_books na classe LibraryMember:
-
-.. code-block:: python
-
-    @api.multi
-    def return_all_books(self):
-        self.ensure_one
-
-2. Retorno um valor vazio para library.returns.wizard:
-
-.. code-block:: python
-
-        wizard = self.env['library.returns.wizard']
-
-3. Prepare os valores para criar um novo registro no wizard:
-
-.. code-block:: python
-
-        values = {'member_id': self.id, book_ids=False}
-
-.. nextslide::
-
-4. Recuperar as especificações onchange para o wizard:
-
-.. code-block:: python
-
-        specs = wizard._onchange_spec()
-
-
-5. Recupere o resultado do método onchange:
-
-.. code-block:: python
-
-        updates = wizard.onchange(values, ['member_id'], specs)
-
-
-6. Mescle o resultado com os valores do novo wizard:
-
-.. code-block:: python
-
-        value = updates.get('value', {})
-        for name, val in value.iteritems():
-        if isinstance(val, tuple):
-            value[name] = val[0]
-        values.update(value)
-
-.. nextslide::
-
-7. Crie o wizard:
-
-
-.. code-block:: python
-
-        record = wizard.create(values)
+- Quando o seu metodo de onchange estiver sendo executado, você tem acesso aos campos exibidos na visão atual, mas não necessáriamente todos os campos do modelo.
+- Isto acontece por que os on changes podem ser chamados quando um registro esta sendo criado pelo usuário antes mesmo de ser salvo no banco de dados.
+- Você não deve realizar transações dentro de metodos onchange, nunca deve persistir dados,visto que se o usuário cancelar a ação os dados serão perdidos.
+- Adicionalmente os onchanges podem retornar dominios e avisos para o usuário
