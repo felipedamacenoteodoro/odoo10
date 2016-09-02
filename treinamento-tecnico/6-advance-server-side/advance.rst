@@ -325,3 +325,130 @@ o método onchange em LibraryReturnsWizard:
 - Isto acontece por que os on changes podem ser chamados quando um registro esta sendo criado pelo usuário antes mesmo de ser salvo no banco de dados.
 - Você não deve realizar transações dentro de metodos onchange, nunca deve persistir dados,visto que se o usuário cancelar a ação os dados serão perdidos.
 - Adicionalmente os onchanges podem retornar dominios e avisos para o usuário
+
+Method and decorator
+====================
+
+
+Method and decorator
+--------------------
+
+Os decoratos são apenas um mapeamento para a nova api.
+
+``api`` namespace decoratos detectarão automaticamente a assinatura dos metodos. verificando se as assinaturas batem com a antiga ou a nova api.
+
+Isto trouxe um pouco de lentidão, a versão 10 será vem mais rapida.
+
+Os nomes reconhecidos são:
+
+``cr, cursor, uid, user, user_id, id, ids, context``
+
+
+@api.returns
+------------
+
+Garante o retorno de um unico recordset.
+
+Ele ira retornar um Recordset de um modelo especifico: ::
+
+    @api.returns('res.partner')
+    def afun(self):
+        ...
+        return x  # a RecordSet
+
+Se uma chamada da antiga api buscar o metodo o retorno sera automaticamente convertido em uma lista de ids.
+
+Todos os decoradores herdam deste decorador para atualizar ou realizar o downgrade do valor retornado.
+
+@api.one ( descontiunado!!!!!!!)
+---------------------------
+
+Este decorador automaticamente faz o lool nos recordsets recebidos: ::
+
+  @api.one
+  def afun(self):
+      self.name = 'toto'
+
+Utilizem o self.ensure_one()
+
+Exemplo de substituição do wizard do emprestimo de livro.
+
+.. note::
+   Caution: the returned value is put in a list. This is not always supported by
+   the web client, e.g. on button action methods. In that case, you should use
+   ``@api.multi`` to decorate your method, and probably call `self.ensure_one()`
+   in the method definition.
+
+
+@api.multi
+----------
+O Self será o recordset corrente sem interação: ::
+
+   @api.multi
+   def afun(self):
+       len(self)
+
+@api.model
+----------
+
+Este  decorador ira converter uma chamada da antiga API para a nova API.
+It allows to be polite when migrating code. ::
+
+    @api.model
+    def afun(self):
+        pass
+
+@api.constrains
+---------------
+Este decorador assegura que a função decorada sera chamada no create, write e unlink.
+
+Opcionalmente pode ser realizado um raise para exibir uma mensage. Muita gente esta usando isto
+para não precisar sobrescrever o write! Então foi criado um decorator @api.write
+
+@api.depends
+------------
+
+Este decorador ira chamar a funçao decorada sempre que um campo especificado na lista
+for alterado pelo ORM ou pelo formulário: ::
+
+    @api.depends('name', 'an_other_field')
+    def afun(self):
+        pass
+
+
+.. note::
+   when you redefine depends you have to redefine all @api.depends,
+   so it loses some of his interest.
+
+.. nextslide::
+
+View management
+---------------
+Um dos grandes avanços da nova API é que os campos com depends e onchange são inseridos automaticamente nas visões.
+.. _@api.onchange:
+
+@api.onchange
+--------------
+
+Este decorator ira dispar uma chamada a função decora se qualquer campo especificado no decorator
+for alterado na visão: ::
+
+  @api.onchange('fieldx')
+  def do_stuff(self):
+     if self.fieldx == x:
+        self.fieldy = 'toto'
+
+No exemplo anterior o campo `self` corresponde ao record atualmente editado.
+Durante o on_change toda a execução do contexto é feito no cache. Então você não
+precisa de preocupar em alterar o RecordSet dentro da função e alterar o banco de dados.
+
+
+**Esta é grande diferença se comparado com o ``@api.depends``**
+
+Quando a função retorna, as diferenças entre o cache e o RecordSet são retornados para o form.
+
+
+@api.noguess
+------------
+
+Este decorator ira prevenir a nova API alterar o output do metodo.

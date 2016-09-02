@@ -3,8 +3,6 @@ Backend Views
 
 Introdução
 ----------
-Neste módulo serão apresentados os seguintes tópicos:
-
 * Adicionando um item ao menu e janelas de ações
 * Ação para abrir uma visão específica
 * Adicionando conteúdo e ações em uma view formulário
