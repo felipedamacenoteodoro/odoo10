@@ -19,13 +19,15 @@ Dependencias:
 - Python e Bibliotecas que estendem a stadard library;
 - Outras dependências ( reports e outros );
 
-.. nextslide::
+Dependencias de instalação:
+---------------------------
 
-   https://github.com/kmee/dependencias.odoo
+https://github.com/kmee/dependencias.odoo
 
 .. code-block:: shell
 
-	curl -s https://raw.githubusercontent.com/kmee/dependencias.odoo/master/dependencias.sh | sudo bash
+	curl -s https://raw.githubusercontent.com/kmee/dependencias.odoo/master/dependencias.sh \
+            | sudo bash
 
 Ambientes virtuais Python
 -------------------------
