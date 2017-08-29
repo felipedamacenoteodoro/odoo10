@@ -19,14 +19,27 @@ Dependencias:
 - Python e Bibliotecas que estendem a stadard library;
 - Outras dependências ( reports e outros );
 
-Dependencias de instalação:
----------------------------
+Instalação:
+-----------
 
-https://github.com/kmee/dependencias.odoo
+1. Instalação das dependencias
 
 .. code-block:: shell
 
-	curl -s https://raw.githubusercontent.com/kmee/dependencias.odoo/master/dependencias.sh \
+	curl -s https://raw.githubusercontent.com/kmee/dependencias.odoo/master/install-dependencies.sh \
+            | sudo bash
+
+2. Instalação do postgres
+
+.. code-block:: shell
+	curl -s https://raw.githubusercontent.com/kmee/dependencias.odoo/master/install-postgres.sh \
+            | sudo bash
+
+3. Permissão do postgres para o seu usuário
+
+.. code-block:: shell
+
+        curl -s https://raw.githubusercontent.com/kmee/dependencias.odoo/master/https://github.com/kmee/dependencias.odoo/blob/master/create-postgres-user.sh \
             | sudo bash
 
 Ambientes virtuais Python
