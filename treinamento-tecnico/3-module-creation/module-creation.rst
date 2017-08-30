@@ -11,9 +11,11 @@ como realizar o desenvolvimento incremental do mesmo.
 Criando e instalando um novo modulo
 -----------------------------------
 
+A partir do diretório onde o Odoo está instalado:
+
 .. code-block:: shell
 
-    cd specific-parts
+    cd addons
     mkdir meu_modulo
     cd meu_modulo
     touch __init__.py
@@ -29,11 +31,10 @@ Criando e instalando um novo modulo
 
 1. Inicie o odoo
 2. Ative o modo desenvolvedor
-3. Acesse configurações > Atualizar lista de modulos ( Devemos fazer isso sempre que um novo modulo é disponibilizado em um banco de dados )
-4. Procure seu modulo na lista de modulos e o instale-o.
+3. Acesse o menu Aplicativos > Atualizar lista de Aplicativos ( Devemos fazer isso sempre que um novo modulo é disponibilizado em um banco de dados )
+4. Procure seu modulo na lista de aplicativos e o instale.
 
 .. nextslide::
-
 - Um modulo odoo é um diretório contendo arquivos;
 - O nome da pasta é o nome tecnico;
 - O 'name' definido no dicionário do manifesto é o Titulo do modulo.
@@ -164,7 +165,7 @@ Crie um arquivo na pasta models, chamado de meu_modulo.py Com o conteudo:
 
     from openerp import models, fields
 
-    class MeuModulo(models.Model):
+    class Meumodulo(models.Model):
 
         _name = 'meu.modulo'
 
@@ -192,10 +193,10 @@ Edite o arquivo __init__.py da raiz para importar a pasta models:
 
 - Modelos Odoo são objetos derivados da classe Odoo Model.
 - Quando um novo modulo é definido ele é adicionado a tabela de modelos (ir_model)
-- Modelos tem alguns atributos definidos com underline. O mais importante é o _name que define um identificador unico do modelo na intancia
-- As mudanças nos Modelos são carregadas quando atualizamos os modulos;
+- Modelos tem alguns atributos definidos com underline. O mais importante é o _name que define um identificador unico do modelo na instância
+- As mudanças nos Modelos são carregadas quando atualizamos os modulos
 
-Atualize seu modulo e verifique o banco de dados foi alterado e as tabelas de dados.
+Atualize seu modulo e verifique se o banco de dados foi alterado e as tabelas de dados.
 
 
 Adicionando Menus e visões
@@ -210,7 +211,7 @@ Crie um arquivo de visão na pasta views/meu_modulo.xml com o conteudo:
         <data>
             <act_window
                 id="meu_modulo_action"
-                name="Minha Ação"
+                name="Minha Acao"
                 res_model="meu.modulo" />
 
             <menuitem
@@ -236,7 +237,7 @@ Complete o arquivo de dados:
 
     <act_window
         id="meu_modulo_action"
-        name="Minha Ação"
+        name="Minha Açao"
         res_model="meu.modulo" />
 
     <menuitem
@@ -281,7 +282,7 @@ Defina uma visão lista
 .. code-block:: xml
 
     <record id="meu_modulo_view_tree" model="ir.ui.view">
-    <field name="name">Meu Modulo List</field>
+    <field name="name">Meu modulo List</field>
     <field name="model">meu.modulo</field>
         <field name="arch" type="xml">
             <tree>
