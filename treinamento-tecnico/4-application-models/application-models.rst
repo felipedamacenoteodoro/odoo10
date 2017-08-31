@@ -4,9 +4,9 @@ Modelos de dados
 Definindo um modelo de dados
 ----------------------------
 
-Modelos de dados tem atributos definindo seu comportamento.
+Modelos de dados têm atributos definindo seu comportamento.
 
-Estes atributos são pre fixados com underline, o mais importante é o **_name** que definem o identificador global do modelo.
+Estes atributos são pré-fixados com underline, o mais importante é o **_name** que definem o identificador global do modelo.
 
 
 Definindo uma descrição amigável
@@ -40,13 +40,13 @@ Representando o modelo de outra forma: _rec_name
 
 - Quando referenciamos um modelo relacional este campo é utilizado para representar o modelo, ao invés do id.
 - Por padrão o campo **_rec_name** sempre exibe o campo **name** por isso é importante defini-lo.
-- Se o campo name não for definido e nem _rec_name o nome do modelo será uma tupla: (_name, id)
+- Se o campo name não for definido e nem _rec_name então o nome do modelo será uma tupla: (_name, id)
 
 Display name / name_get()
 -------------------------
 
 - A representação de um modelo é definida por um campo **display_name**
-- Seu valor é gerado pela função name_get() onde a implementação padrão utilza o campo **_rec_name**
+- Seu valor é gerado pela função name_get() onde a implementação padrão utiliza o campo **_rec_name**
 
 Sobrescrevendo esta lógica:
 
@@ -60,7 +60,7 @@ Campos
 Nao relacionais
 ---------------
 
-Campos são adicionados aos modelos quando definimos um atributo em nas classes Python. Por exemplo:
+Campos são adicionados aos modelos quando definimos um atributo nas classes Python. Por exemplo:
 
 .. code-block:: python
 
