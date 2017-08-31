@@ -1,14 +1,14 @@
-Introdução a Criação de modulos
+Introdução a Criação de Módulos
 ===============================
 
 Introdução
 ----------
 
-**Objetivo:** Entender como um modulo Odoo é estruturado, seus componentes e
+**Objetivo:** Entender como um módulo Odoo é estruturado, seus componentes e
 como realizar o desenvolvimento incremental do mesmo.
 
 
-Criando e instalando um novo modulo
+Criando e instalando um novo módulo
 -----------------------------------
 
 A partir do diretório onde o Odoo está instalado:
@@ -19,9 +19,9 @@ A partir do diretório onde o Odoo está instalado:
     mkdir meu_modulo
     cd meu_modulo
     touch __init__.py
-    nano __openerp__.py
+    nano __odoo__.py
 
-- Adicione no aquivo __openerp__.py um dicionário
+- Adicione no aquivo __odoo__.py um dicionário
 
 .. code-block:: python
 
@@ -29,17 +29,17 @@ A partir do diretório onde o Odoo está instalado:
 
 .. nextslide::
 
-1. Inicie o odoo
+1. Inicie o Odoo
 2. Ative o modo desenvolvedor
-3. Acesse o menu Aplicativos > Atualizar lista de Aplicativos ( Devemos fazer isso sempre que um novo modulo é disponibilizado em um banco de dados )
-4. Procure seu modulo na lista de aplicativos e o instale.
+3. Acesse o menu Aplicativos > Atualizar lista de Aplicativos ( Devemos fazer isso sempre que um novo módulo é disponibilizado em um banco de dados )
+4. Procure seu módulo na lista de aplicativos e o instale.
 
 .. nextslide::
-- Um modulo odoo é um diretório contendo arquivos;
-- O nome da pasta é o nome tecnico;
-- O 'name' definido no dicionário do manifesto é o Titulo do modulo.
-- O arquivo __openerp__.py é o manifesto do modulo. Ele contem um dicionário com os detalhes do modulo: descrição, dependencias, data que deve ser carregada e etc;
-- O diretorio deve ser importável pelo python, ou seja ter um arquivo __init__.py mesmo que vazio. Ele tambem pode conter os modulos python e submodulos que devem ser importados.
+- Um módulo Odoo é um diretório contendo arquivos;
+- O nome da pasta é o nome técnico;
+- O 'name' definido no dicionário do manifesto é o Título do módulo.
+- O arquivo __odoo__.py é o manifesto do módulo. Ele contém um dicionário com os detalhes do módulo: descrição, depêndencias, data que deve ser carregada e etc;
+- O diretório deve ser importável pelo python, ou seja, ter um arquivo __init__.py mesmo que vazio. Ele também pode conter os módulos python e submódulos que devem ser importados.
 
 Arquivo de Manifesto
 --------------------
@@ -64,26 +64,26 @@ Arquivo de Manifesto
 
 .. nextslide::
 
-2. Defina um icone para o seu modulo, copiando uma imagem PNG para a pasta
+2. Defina um ícone para o seu módulo, copiando uma imagem PNG para a pasta
 static/description/icon.png
 
 - O trecho -*- coding: utf-8 -*- permite que utilizemos caracteres não ASCII no arquivo.
-- **name:** O titulo do modulo
-- **summary:** Um subtitulo com uma linha
+- **name:** O título do módulo
+- **summary:** Um subtítulo com uma linha
 - **description:** Deve ser escrito no padrão `ReStructuredText <http://docutils.sourceforge.net/docs/user/rst/quickstart.html>`_
-- **author:** O nome dos autores separados por virgula.
+- **author:** O nome dos autores separados por vírgula.
 - **license:** AGPL-3 , LGPL-3 , Other OSI approved license etc.
 - **website:** Url para dar mais informações sobre os autores
 - **category:** `Lista de categorias possiveis <https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml>`_
 
 .. nextslide::
 
-- **versao:** Versão do modulo
-- **depends:** É uma lista de com os nomes tecnicos que este modulo depende.
+- **versao:** Versão do módulo
+- **depends:** É uma lista de com os nomes técnicos que este módulo depende.
 
-**Importante:** Se não depender de nenhum modulo, ao menos deve depender do modulo **base**
+**Importante:** Se não depender de nenhum módulo, ao menos deve depender do módulo **base**
 
-Qualquer referencia que seu modulo realize com xmls ids, visões ou modelos refenciados por este modulo.
+Qualquer referência que seu módulo realize com xmls ids, visões ou modelos refenciados por este módulo.
 
 Esta lista garante que tudo será carregado na ordem correta.
 
@@ -93,7 +93,7 @@ Esta lista garante que tudo será carregado na ordem correta.
 - **demo:** Lista dos caminhos dos arquivos de demo
 
 
-Estrutura de arquivos do modulo
+Estrutura de arquivos do módulo
 -------------------------------
 
 Crie os arquivos:
@@ -129,7 +129,7 @@ Edite o arquivo __init__.py com os dados:
 
     .
     ├── __init__.py
-    ├── __openerp__.py
+    ├── __odoo__.py
     │
     ├── controllers
     │
@@ -147,7 +147,7 @@ Edite o arquivo __init__.py com os dados:
 
 .. nextslide::
 
-Um modudo Odoo pode conter três tipos de aquivos:
+Um módulo Odoo pode conter três tipos de aquivos:
 
 - Arquivos python
 - Arquivos de dados: XML / CSV / YML
@@ -163,7 +163,7 @@ Crie um arquivo na pasta models, chamado de meu_modulo.py Com o conteudo:
 
     # -*- coding: utf-8 -*-
 
-    from openerp import models, fields
+    from odoo import models, fields
 
     class Meumodulo(models.Model):
 
@@ -174,7 +174,7 @@ Crie um arquivo na pasta models, chamado de meu_modulo.py Com o conteudo:
         partner_ids = fields.Many2many('res.partner',
         string='Parceiro')
 
-Crie um arquivo __init__.py na pasta models importando o seu modulo:
+Crie um arquivo __init__.py na pasta models importando o seu módulo:
 
 .. code-block:: python
 
@@ -192,11 +192,16 @@ Edite o arquivo __init__.py da raiz para importar a pasta models:
 .. nextslide::
 
 - Modelos Odoo são objetos derivados da classe Odoo Model.
-- Quando um novo modulo é definido ele é adicionado a tabela de modelos (ir_model)
-- Modelos tem alguns atributos definidos com underline. O mais importante é o _name que define um identificador unico do modelo na instância
-- As mudanças nos Modelos são carregadas quando atualizamos os modulos
+- Quando um novo módulo é definido ele é adicionado à tabela de modelos (ir_model)
+- Modelos têm alguns atributos definidos com underline. O mais importante é o **_name**, que define um identificador único do modelo na instância
+- As mudanças nos modelos são carregadas quando atualizamos os módulos
 
-Atualize seu modulo e verifique se o banco de dados foi alterado e as tabelas de dados.
+Atualize seu módulo e verifique se o banco de dados e as tabelas de dados foram alteradas.
+
+
+.. code-block:: shell
+
+    bin/start_odoo -d dbname -u addon1,addon2 --stop-after-init
 
 
 Adicionando Menus e visões
@@ -207,7 +212,7 @@ Crie um arquivo de visão na pasta views/meu_modulo.xml com o conteudo:
 .. code-block:: xml
 
     <?xml version="1.0" encoding="utf-8"?>
-    <openerp>
+    <odoo>
         <data>
             <act_window
                 id="meu_modulo_action"
@@ -221,9 +226,9 @@ Crie um arquivo de visão na pasta views/meu_modulo.xml com o conteudo:
                 parent=""
                 sequence="5" />
         </data>
-    </openerp>
+    </odoo>
 
-Adicione o na sessão data no arquivo __openerp__.py
+Adicione-o na sessão data no arquivo __odoo__.py:
 
 .. code-block:: xml
 
@@ -250,12 +255,15 @@ Complete o arquivo de dados:
 
 .. nextslide::
 
-Atualize seu modulo e verifique as alterações
+Atualize seu módulo e verifique as alterações
 
+.. code-block:: shell
+
+    bin/start_odoo -d dbname -u addon1,addon2 --stop-after-init
 
 .. nextslide::
 
-Defina um formulário personalizado.
+Defina um formulário personalizado:
 
 .. code-block:: xml
 
@@ -277,7 +285,7 @@ Defina um formulário personalizado.
 
 .. nextslide::
 
-Defina uma visão lista
+Defina uma visão lista:
 
 .. code-block:: xml
 
@@ -295,7 +303,7 @@ Defina uma visão lista
 
 .. nextslide::
 
-Defina uma busca personalizada
+Defina uma busca personalizada:
 
 .. code-block:: xml
 
@@ -312,7 +320,7 @@ Defina uma busca personalizada
         </field>
     </record>
 
-Criando modulos a partir de um template
+Criando módulos a partir de um template
 ---------------------------------------
 
 .. code-block:: python
