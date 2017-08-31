@@ -11,17 +11,17 @@ como realizar o desenvolvimento incremental do mesmo.
 Criando e instalando um novo módulo
 -----------------------------------
 
-A partir do diretório onde o Odoo está instalado:
+A partir do diretório do treinamento:
 
 .. code-block:: shell
 
-    cd addons
+    cd parts/odoo/addons/
     mkdir meu_modulo
     cd meu_modulo
     touch __init__.py
-    nano __odoo__.py
+    nano __manifest__.py
 
-- Adicione no aquivo __odoo__.py um dicionário
+- Adicione no aquivo __manifest__.py um dicionário
 
 .. code-block:: python
 
@@ -38,7 +38,7 @@ A partir do diretório onde o Odoo está instalado:
 - Um módulo Odoo é um diretório contendo arquivos;
 - O nome da pasta é o nome técnico;
 - O 'name' definido no dicionário do manifesto é o Título do módulo.
-- O arquivo __odoo__.py é o manifesto do módulo. Ele contém um dicionário com os detalhes do módulo: descrição, depêndencias, data que deve ser carregada e etc;
+- O arquivo __manifest__.py é o manifesto do módulo. Ele contém um dicionário com os detalhes do módulo: descrição, depêndencias, data que deve ser carregada e etc;
 - O diretório deve ser importável pelo python, ou seja, ter um arquivo __init__.py mesmo que vazio. Ele também pode conter os módulos python e submódulos que devem ser importados.
 
 Arquivo de Manifesto
@@ -129,7 +129,7 @@ Edite o arquivo __init__.py com os dados:
 
     .
     ├── __init__.py
-    ├── __odoo__.py
+    ├── __manifest__.py
     │
     ├── controllers
     │
@@ -228,7 +228,7 @@ Crie um arquivo de visão na pasta views/meu_modulo.xml com o conteudo:
         </data>
     </odoo>
 
-Adicione-o na sessão data no arquivo __odoo__.py:
+Adicione-o na sessão data no arquivo __manifest__.py:
 
 .. code-block:: xml
 
