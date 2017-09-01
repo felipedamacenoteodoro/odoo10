@@ -268,7 +268,7 @@ Float com precisão decimal configurável
     class LibraryBook(models.Model):
     # ...
         cost_price = fields.Float(
-            'Book Cost', dp.get_precision('Book Price))
+            'Book Cost', dp.get_precision('Book Price'))
 
 .. nextslide::
 
@@ -338,8 +338,8 @@ Podemos definir três tipos de campos relacionais no Odoo:
 
 3. Analisando do ponto de vista dos **Livros** temos:
 
-- Cada livro pode ter multiplos autores;
-- Cada autor pode ter mutiplos livros; Então temos uma relação many-to-many.
+- Cada livro pode ter múltiplos autores;
+- Cada autor pode ter mútiplos livros; Então temos uma relação many-to-many.
 
 .. code-block:: python
 
@@ -356,7 +356,7 @@ Podemos definir três tipos de campos relacionais no Odoo:
             # relation='library_book_res_partner_rel' Opcional
         )
 
-Atualize o seu módulo e veja o resultado em configurações técnicas.
+Atualize o seu módulo e veja o resultado na aba Dados Técnicos.
 
 
 .. nextslide::
@@ -364,15 +364,15 @@ Atualize o seu módulo e veja o resultado em configurações técnicas.
 Atributos:
 
 - ondelete: setnull ( default ) / restrict / cascade.
-- context: adiciona variáveis no contexto do cliente ao clicar no campo atraves dos registos relacionado. Podemos por exemplo definir um valor padrão para o modelo relacionado.
+- context: adiciona variáveis no contexto do cliente ao clicar no campo através dos registros relacionados. Podemos por exemplo definir um valor padrão para o modelo relacionado.
 - domain: Permite limitar os registros relacionados.
 
 .. nextslide::
 
 Observações:
 
-- One2many: São relações reversas de Many2One, apesar deles serem adionados nos modelos como qualquer outro campo eles não tem representação no banco de dados.
-- Many2many: Não são adicionadas colunas nas duas tabelas. É utilizado uma tabela intermediária. O Odoo gera estas tabelas automticamente.
+- One2many: São relações reversas de Many2One, apesar deles serem adionados nos modelos como qualquer outro campo eles não têm representação no banco de dados.
+- Many2many: Não são adicionadas colunas nas duas tabelas. É utilizado uma tabela intermediária. O Odoo gera estas tabelas automaticamente.
 - auto_join: Podem ser usados nos campos Many2one, permitem o ORM utilizar joins, podendo resolver problemas de performance. Apesar de pular regras de controle de acesso.
 
 Hierarquia
@@ -417,7 +417,7 @@ Adicione um novo arquivo na pasta models/library_book_categ.py , para as categor
                 raise models.ValidationError(
                     'Error! You cannot create recursive categories.')
 
-Contraints
+Constraints
 ----------
 
 1. Python

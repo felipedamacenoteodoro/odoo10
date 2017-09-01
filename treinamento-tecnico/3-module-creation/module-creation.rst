@@ -58,7 +58,7 @@ Arquivo de Manifesto
         'category': 'Uncategorized',
         'version': '8.0.1.0.0',
         'depends': ['base'],
-        'data': ['views/meu_modulo.xml'],
+        #'data': ['views/meu_modulo.xml'],
         #'demo': ['demo.xml'],
     }
 
