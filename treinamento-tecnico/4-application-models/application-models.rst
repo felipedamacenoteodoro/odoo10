@@ -311,7 +311,7 @@ Podemos definir três tipos de campos relacionais no Odoo:
     class LibraryBook(models.Model):
         # ...
         publisher_id = fields.Many2one(
-            'res.partner', string='Publisher',
+            comodel_name='res.partner', string='Publisher',
             # optional:
             ondelete='set null',
             context={},
@@ -330,8 +330,9 @@ Podemos definir três tipos de campos relacionais no Odoo:
     class ResPartner(models.Model):
         _inherit = 'res.partner'
         book_ids = fields.One2many(
-            'library.book', 'publisher_id',
-            string='Published Books'
+            comodel_name='library.book', 
+            inverse_name='publisher_id',
+            string='Published Books',
             )
 
 .. nextslide::

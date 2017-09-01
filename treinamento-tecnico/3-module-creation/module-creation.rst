@@ -171,8 +171,10 @@ Crie um arquivo na pasta models, chamado de meu_modulo.py Com o conteudo:
 
         name = fields.Char(u'Nome', required=True)
         date = fields.Date('Date')
-        partner_ids = fields.Many2many('res.partner',
-        string='Parceiro')
+        partner_ids = fields.Many2many(
+            comodel_name = 'res.partner',
+            string = 'Parceiro',
+        )
 
 Crie um arquivo __init__.py na pasta models importando o seu módulo:
 
@@ -213,19 +215,17 @@ Crie um arquivo de visão na pasta views/meu_modulo.xml com o conteudo:
 
     <?xml version="1.0" encoding="utf-8"?>
     <odoo>
-        <data>
-            <act_window
-                id="meu_modulo_action"
-                name="Minha Acao"
-                res_model="meu.modulo" />
+        <act_window
+            id="meu_modulo_action"
+            name="Minha Acao"
+            res_model="meu.modulo" />
 
-            <menuitem
-                id="meu_modulo_menu"
-                name="Meu Menu"
-                action="meu_modulo_action"
-                parent=""
-                sequence="5" />
-        </data>
+        <menuitem
+            id="meu_modulo_menu"
+            name="Meu Menu"
+            action="meu_modulo_action"
+            parent=""
+            sequence="5" />
     </odoo>
 
 Adicione-o na sessão data no arquivo __manifest__.py:
@@ -263,25 +263,29 @@ Atualize seu módulo e verifique as alterações
 
 .. nextslide::
 
-Defina um formulário personalizado:
+Defina um formulário personalizado(meu_modulo.xml):
 
 .. code-block:: xml
-
-     <record id="meu_modulo_view_form" model="ir.ui.view">
-        <field name="name">Meu modulo Form</field>
-        <field name="model">meu.modulo</field>
-        <field name="arch" type="xml">
-            <form>
-                <group>
-                    <field name="name"/>
-                    <field name="partner_ids" widget="many2many_tags"/>
-                </group>
-                <group>
-                    <field name="date"/>
-                </group>
-            </form>
-        </field>
-     </record>
+    
+    <odoo>
+    ...
+        <record id="meu_modulo_view_form" model="ir.ui.view">
+            <field name="name">Meu modulo Form</field>
+            <field name="model">meu.modulo</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                        <field name="partner_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="date"/>
+                    </group>
+                </form>
+            </field>
+         </record>
+    ...
+    </odoo>
 
 .. nextslide::
 
@@ -289,17 +293,20 @@ Defina uma visão lista:
 
 .. code-block:: xml
 
-    <record id="meu_modulo_view_tree" model="ir.ui.view">
-    <field name="name">Meu modulo List</field>
-    <field name="model">meu.modulo</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
-                <field name="date"/>
-            </tree>
-        </field>
-    </record>
-
+    <odoo>
+    ...
+        <record id="meu_modulo_view_tree" model="ir.ui.view">
+            <field name="name">Meu modulo List</field>
+            <field name="model">meu.modulo</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date"/>
+                </tree>
+            </field>
+        </record>
+    ...
+    </odoo>
 
 .. nextslide::
 
@@ -307,18 +314,22 @@ Defina uma busca personalizada:
 
 .. code-block:: xml
 
-    <record id="meu_modulo_view_search" model="ir.ui.view">
-        <field name="name">Meu modulo Search</field>
-        <field name="model">meu.modulo</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="name"/>
-                <field name="partner_ids"/>
-                <filter string="S/ Parceiros"
-                    domain="[('partner_ids','=',False)]"/>
-            </search>
-        </field>
-    </record>
+    <odoo>
+    ...
+        <record id="meu_modulo_view_search" model="ir.ui.view">
+            <field name="name">Meu modulo Search</field>
+            <field name="model">meu.modulo</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="partner_ids"/>
+                    <filter string="S/ Parceiros"
+                        domain="[('partner_ids','=',False)]"/>
+                </search>
+            </field>
+        </record>
+    ...
+    </odoo>
 
 Criando módulos a partir de um template
 ---------------------------------------
