@@ -1,1 +1,2 @@
-from openerp.exceptions import UserError
+from odoo.exceptions import UserError
+import os

@@ -2,12 +2,12 @@ Desenvolvimento Server Side
 ===========================
 
 Revisão:
---------
+=======
 
 Model
-#####
+-----
 
-- Model é uma representação de um objeto de negócio, sendo que até o momento eles podem ser persistentes e abstratos:
+- Model é uma representação de um objeto de negócio, sendo que até o momento eles podem ser persistentes ou abstratos:
 
 .. code-block:: python
 
@@ -18,10 +18,10 @@ Model
 
 .. nextslide::
 
-- Um model é basicamente uma classe Python! Que define vários atributos:
-    - Atributos especiais iniciados com UNDERLINE _name, _rec_name etc;
-    - Campos salvos no banco de dados: "variaveis" definidas com fields;
-    - O nome do campo no bando de dados é o mesmo nome dado a variavel!
+- Um model é basicamente uma classe Python que define vários atributos:
+    - Atributos especiais iniciados com UNDERLINE: **_name**, **_rec_name** etc;
+    - Campos salvos no banco de dados: "variáveis" definidas com fields;
+    - O nome do campo no banco de dados é o mesmo nome dado à variável!
 
 .. code-block:: python
 
@@ -30,10 +30,10 @@ Model
         valor = fields.Float(...)
 
 Recordset
-#########
+---------
 - Um objeto Recordset representa os registros em uma tabela base ou os registros resultantes da execução de uma consulta.
 
-- Quando metodos definidos em um modelo são executados o atributo self é um recorset.
+- Quando métodos definidos em um modelo são executados o atributo **self** é um **recordset**.
 
 .. code-block:: python
 
@@ -43,22 +43,24 @@ Recordset
             print record # => a.model(1), then a.model(2), then a.model(3), ...
 
 Acesso aos campos
-#################
+-----------------
 
 **Recordsets proveem um padrão denominado "Active-Record"**:
 
 Em Engenharia de software, active record é um padrão de projeto encontrado em softwares que armazenam seus dados em Banco de dados relacionais. Assim foi nomeado por Martin Fowler em seu livro Patterns of Enterprise Application Architecture[1].
 
-A interface de um certo objeto deve incluir funções como por exemplo:
+A interface de um certo objeto deve incluir funções como, por exemplo:
 
 - Inserir(Insert) / Atualizar(Update) / Apagar(Delete);
 - Propriedades que correspondam de certa forma diretamente às colunas do banco de dados associado.
 
 .. nextslide::
 
-Portanto modelos podem ser escritos e lidos de forma direta através de um record.
+Portanto, modelos podem ser escritos e lidos de forma direta através de um record.
 
-Mas somente nos singletons(apenas uma instancia de model). Setar um field dispara um update no banco de dados. Exemplo
+Mas somente nos singletons(apenas uma instância de model) que setar um field dispara um update no banco de dados. 
+
+Exemplo:
 
 .. code-block:: python
 
@@ -71,32 +73,37 @@ Mas somente nos singletons(apenas uma instancia de model). Setar um field dispar
 
 
 Desenvolvimento Server Side
----------------------------
+===========================
 
-* Definindo metódos de modelos e usando API decorators
-* Saída de erros para os usuários
-* Obtendo um recordset para um modelo diferente
-* Criando novas records
-* Update de valores de uma recordset
-* Procurando por registros
-* Combinando recordsets
+Desenvolvimento  Server Side
+----------------------------
+
+``Tópicos:``
+
+* Definindo metódos de modelos e usando API decorators;
+* Saída de erros para os usuários;
+* Obtendo um recordset para um modelo diferente;
+* Criando novas records;
+* Update de valores de uma recordset;
+* Procurando por registros;
+* Combinando recordsets;
 
 .. nextslide::
 
-* Filtrando recordsets
-* Atravessando as relações de registros
-* Estendendo a lógica de negócios definido em um modelo
-* Estendendo write() e create()
-* Customizando como os registros são procurados
+* Filtrando recordsets;
+* Atravessando as relações de registros;
+* Estendendo a lógica de negócios definida em um modelo;
+* Estendendo write() e create();
+* Customizando como os registros são procurados;
 
 Introdução
 ----------
-Quando falamos de Modelo de Aplicações, nós vimos como declarar ou externder
+Quando falamos de Modelo de Aplicações, nós vimos como declarar ou estender
 modelos em módulos customizados. As receitas deste capítulo abgrangem campos
 calculados bem como métodos para restringir os valores dos campos.
 
 Vamos focar nos conceitos básicos de desenvolvimento do lado servidor seguindo as
-definições Odoo de metodos, manipulação de registros e estender metódos herdados.
+definições Odoo de métodos, manipulação de registros e estender metódos herdados.
 
 
 Model methods & API Decorators
@@ -114,7 +121,7 @@ alterar o estado de uma seleção de livros.
 
 .. nextslide::
 
-Adicione o campo state no modelo LibraryBook como exibido abaixo:
+Adicione o campo ``state`` no modelo LibraryBook como exibido abaixo:
 
 .. literalinclude:: code/1.py
    :language: python
@@ -143,13 +150,13 @@ novo passado como um argumento:
 
 .. nextslide::
 
-Definimos dois metodos:
+Definimos dois métodos:
 
-- Eles são metodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
-- Os metodos são decorados com **decorators** definidos em openerp.api
+- Eles são métodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
+- Os métodos são decorados com **decorators** definidos em odoo.api
 - Eles realizam a conversão entre a antiga API(v5-v9) e a nova api (v8+). Portando v10 teremos somente a nova api.
 
-Enviroment
+Environment
 ----------
 
 - self.env.cr : Database cursor
@@ -157,7 +164,7 @@ Enviroment
 - self.env.context : É o contexto, um dicionário python, contendo diversas informações como:
     - Linguagem do usuário;
     - Timezone
-    - E outras chaves especificas definidas em tempo de execução através da interface de usuaŕio
+    - E outras chaves específicas definidas em tempo de execução através da interface de usuário
 
 
 Saída de erros para os usuários
@@ -165,7 +172,7 @@ Saída de erros para os usuários
 
 Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
-* *Simulando o erro*: causado por uma problema de permissão, disco cheio, etc. IOError ou OSError.
+* *Simulando o erro*: causado por uma problema de permissão, disco cheio, etc. **IOError** ou **OSError**.
 
 .. literalinclude:: code/4.py
    :language: python
@@ -173,7 +180,7 @@ Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
 .. nextslide::
 
-1. Adicione o seguinte import no início do arquivo pyton
+1. Adicione os seguintes imports no início do arquivo python
 
 .. literalinclude:: code/5.py
    :language: python
@@ -222,9 +229,13 @@ Vamos criar o representante de uma empresa com alguns contatos.
 
 .. nextslide::
 
-Executando...
+Primeiramente, crie um método create_contacts():
 
-1. Dentro do método que irá criar o novo parceiro, recupere a data formatada com string
+.. literalinclude:: code/50.py
+   :language: python
+   :linenos:
+
+1. Dentro do método, recupere a data formatada com string
 como esperado pelo método create():
 
 .. literalinclude:: code/10.py
@@ -269,7 +280,7 @@ Quando o método create() é chamado no passo 5, 3 registros são criados:
 Update de valores de uma recordset
 ----------------------------------
 
-A lógica de negócios, muitas vezes significa actualização de registos, 
+A lógica de negócios muitas vezes implica na atualização de registros, 
 alterando os valores de alguns dos seus campos.
 
 Veremos como adicionar um contato de um parceiro e modificar o campo 
@@ -297,7 +308,7 @@ Procurando por registros
 Procurar por registros é uma opção comum nas operações do negócio.
 Vamos ver como procurar um parceiro (empresa) e seus contatos pelo *nome da empresa*
 
-1. Obtenha um conjunto de registros vázios do res.partner
+1. Obtenha um conjunto de registros vazios do res.partner
 
 .. literalinclude:: code/17.py
    :language: python
@@ -321,7 +332,7 @@ Vamos ver como procurar um parceiro (empresa) e seus contatos pelo *nome da empr
 Combinando recordsets
 ---------------------
 
-Às vezes, você vai achar obteve registros que não são exatamente o que você precisa.
+Às vezes, você vai achar registros que não são exatamente o que você precisa.
 
 Supported Operations RecordSet also support set operations you can add, union and intersect, ... recordset:
 
@@ -357,7 +368,7 @@ Atravessando as relações de registros
    :language: python
    :linenos:
 
-Alterando comportamentos já definidos através de outros modulos
+Alterando comportamentos já definidos através de outros módulos
 ---------------------------------------------------------------
 
 Quando a definimos um modelo que estende outro modelo,
@@ -370,10 +381,10 @@ Esta é uma tarefa muito fácil no Odoo.
 
 .. nextslide::
 
-Crie um novo módulo adicional: **library_loan_return_date** que
+Crie um novo módulo adicional: **library_load_return_date** que
 depende do **meu_modulo.**
 
-Neste módulo, extenda o modelo library.book.loan como a seguir:
+Neste módulo, extenda o modelo library.book.load como a seguir:
 
 .. literalinclude:: code/23.py
    :language: python
@@ -390,9 +401,9 @@ Extenda o modelo library.member como a seguir:
 
 .. nextslide::
 
-Para extender a lógica do modelo library.loan.wizard, você precisa dos seguintes passos:
+Para estender a lógica do modelo library.load.wizard:
 
-1. No módulo meu_modulo, modifique o método record_loans() na classe LibraryLoanWizard.
+1. No módulo meu_modulo, modifique o método record_loads() na classe LibraryLoadWizard.
 
 .. literalinclude:: code/25.py
    :language: python
@@ -400,8 +411,8 @@ Para extender a lógica do modelo library.loan.wizard, você precisa dos seguint
 
 .. nextslide:: 
 
-2. Em library_loan_return_date, crie uma classe que extenda library.loan.wizard e defina
-o método _prepare_loan como a seguir:
+2. Em library_load_return_date, crie uma classe que extenda library.load.wizard e defina
+o método _prepare_load como a seguir:
 
 .. literalinclude:: code/26.py
    :language: python
@@ -414,7 +425,7 @@ Estendendo write() e create()
 
 Iremos estender os métodos write() e create() para controlar o acesso de alguns campos de registros.
 
-Modifique o arquivo security/ir.model.access.csv para dar permitir o acesso dos usuários aos livros.
+Modifique o arquivo security/ir.model.access.csv para permitir o acesso dos usuários aos livros.
 
 .. literalinclude:: code/27.csv
    :language: csv
@@ -422,7 +433,7 @@ Modifique o arquivo security/ir.model.access.csv para dar permitir o acesso dos 
 
 .. nextslide::
 
-Adicione o campo manager_remarks no modelo library.book. Nos precisamos somente que os grupo
+Adicione o campo manager_remarks no modelo library.book. Nós precisamos somente que os grupo
 Library Managers tenham privilégios para escrever nos campos.
 
 .. literalinclude:: code/28.py
@@ -431,12 +442,12 @@ Library Managers tenham privilégios para escrever nos campos.
 
 .. nextslide::
 
-Para previnir que usuários que não fazem parte do grupo "Library Managers" modifiquem o valor 
+Para prevenir que usuários que não fazem parte do grupo "Library Managers" modifiquem o valor 
 de *manager_remarks*, vamos modificar o seguinte:
 
-1. Extender o método create()
-2. Extender o método write()
-3. externder o método fields_get()
+1. estender o método create()
+2. estender o método write()
+3. estender o método fields_get()
 
 .. nextslide::
 
