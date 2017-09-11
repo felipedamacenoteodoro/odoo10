@@ -20,7 +20,7 @@ Desenvolvendo com Odoo
 Backend Views
 -------------
 
-.. image:: image/backend2.png
+.. image:: image/backend2_10.png
     :align: center
 
 
