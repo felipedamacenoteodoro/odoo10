@@ -331,13 +331,4 @@ Defina uma busca personalizada:
     ...
     </odoo>
 
-Criando módulos a partir de um template
----------------------------------------
 
-.. code-block:: python
-
-    No buildout
-    cd parts/server
-    ./odoo.py scaffold teste /tmp/
-
-    ls /tmp/teste
