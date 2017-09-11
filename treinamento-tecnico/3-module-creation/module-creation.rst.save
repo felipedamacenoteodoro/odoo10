@@ -1,0 +1,333 @@
+
+Introdução a Criação de Módulos
+===============================
+
+Introdução
+----------
+
+**Objetivo:** Entender como um módulo Odoo é estruturado, seus componentes e
+como realizar o desenvolvimento incremental do mesmo.
+
+
+Criando e instalando um novo módulo
+-----------------------------------
+
+A partir do diretório onde o Odoo está instalado:
+
+.. code-block:: shell
+
+    cd addons
+    mkdir meu_modulo
+    cd meu_modulo
+    touch __init__.py
+    nano __odoo__.py
+
+- Adicione no aquivo __odoo__.py um dicionário
+
+.. code-block:: python
+
+    {'name': 'Meu modulo'}
+
+.. nextslide::
+
+1. Inicie o Odoo
+2. Ative o modo desenvolvedor
+3. Acesse o menu Aplicativos > Atualizar lista de Aplicativos ( Devemos fazer isso sempre que um novo módulo é disponibilizado em um banco de dados )
+4. Procure seu módulo na lista de aplicativos e o instale.
+
+.. nextslide::
+- Um módulo Odoo é um diretório contendo arquivos;
+- O nome da pasta é o nome técnico;
+- O 'name' definido no dicionário do manifesto é o Título do módulo.
+- O arquivo __odoo__.py é o manifesto do módulo. Ele contém um dicionário com os detalhes do módulo: descrição, depêndencias, data que deve ser carregada e etc;
+- O diretório deve ser importável pelo python, ou seja, ter um arquivo __init__.py mesmo que vazio. Ele também pode conter os módulos python e submódulos que devem ser importados.
+
+Arquivo de Manifesto
+--------------------
+1. Preencha seu arquivo de manifesto com as chaves mais significativas conforme o exemplo:
+
+.. code-block:: python
+
+    # -*- coding: utf-8 -*-
+    {
+        'name': "Title",
+        'summary': "Short subtitle phrase",
+        'description': """Long description""",
+        'author': "Your name",
+        'license': "AGPL-3",
+        'website': "http://www.example.com",
+        'category': 'Uncategorized',
+        'version': '8.0.1.0.0',
+        'depends': ['base'],
+        'data': ['views/meu_modulo.xml'],
+        #'demo': ['demo.xml'],
+    }
+
+.. nextslide::
+
+2. Defina um ícone para o seu módulo, copiando uma imagem PNG para a pasta
+static/description/icon.png
+
+- O trecho -*- coding: utf-8 -*- permite que utilizemos caracteres não ASCII no arquivo.
+- **name:** O título do módulo
+- **summary:** Um subtítulo com uma linha
+- **description:** Deve ser escrito no padrão `ReStructuredText <http://docutils.sourceforge.net/docs/user/rst/quickstart.html>`_
+- **author:** O nome dos autores separados por vírgula.
+- **license:** AGPL-3 , LGPL-3 , Other OSI approved license etc.
+- **website:** Url para dar mais informações sobre os autores
+- **category:** `Lista de categorias possiveis <https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml>`_
+
+.. nextslide::
+
+- **versao:** Versão do módulo
+- **depends:** É uma lista de com os nomes técnicos que este módulo depende.
+
+**Importante:** Se não depender de nenhum módulo, ao menos deve depender do módulo **base**
+
+Qualquer referência que seu módulo realize com xmls ids, visões ou modelos refenciados por este módulo.
+
+Esta lista garante que tudo será carregado na ordem correta.
+
+.. nextslide::
+
+- **data:** Lista dos caminhos dos arquivos de dados
+- **demo:** Lista dos caminhos dos arquivos de demo
+
+
+Estrutura de arquivos do módulo
+-------------------------------
+
+Crie os arquivos:
+
+.. code-block:: shell
+
+    cd path/to/my-module
+    mkdir models
+    touch models/__init__.py
+    mkdir controllers
+    touch controllers/__init__.py
+    mkdir views
+    mkdir security
+    mkdir data
+    mkdir demo
+    mkdir i18n
+    mkdir -p static/description
+
+.. nextslide::
+
+Edite o arquivo __init__.py com os dados:
+
+.. code-block:: python
+
+    # -*- coding: utf-8 -*-
+    from . import models
+    from . import controllers
+
+
+.. nextslide::
+
+.. code-block:: shell
+
+    .
+    ├── __init__.py
+    ├── __odoo__.py
+    │
+    ├── controllers
+    │
+    └── __init__.py
+    ├── data
+    ├── i18n
+    ├── models
+    │
+    └── __init__.py
+    ├── security
+    ├── static
+    │
+    └── description
+    └── views
+
+.. nextslide::
+
+Um módulo Odoo pode conter três tipos de aquivos:
+
+- Arquivos python
+- Arquivos de dados: XML / CSV / YML
+- Arquivos Web: Css / Qweb / HTML
+
+
+Adicionando modelos
+-------------------
+
+Crie um arquivo na pasta models, chamado de meu_modulo.py Com o conteudo:
+
+.. code-block:: python
+
+    # -*- coding: utf-8 -*-
+
+    from odoo import models, fields
+
+    class Meumodulo(models.Model):
+
+        _name = 'meu.modulo'
+
+        name = fields.Char(u'Nome', required=True)
+        date = fields.Date('Date')
+        partner_ids = fields.Many2many('res.partner',
+        string='Parceiro')
+
+Crie um arquivo __init__.py na pasta models importando o seu módulo:
+
+.. code-block:: python
+
+    from . import meu_modulo
+
+.. nextslide::
+
+Edite o arquivo __init__.py da raiz para importar a pasta models:
+
+.. code-block:: python
+
+    from . import models
+
+
+.. nextslide::
+
+- Modelos Odoo são objetos derivados da classe Odoo Model.
+- Quando um novo módulo é definido ele é adicionado à tabela de modelos (ir_model)
+- Modelos têm alguns atributos definidos com underline. O mais importante é o **_name** que define um identificador unico do modelo na instância
+- As mudanças nos Modelos são carregadas quando atualizamos os módulos
+
+Atualize seu módulo e verifique se o banco de dados foi alterado e as tabelas de dados.
+
+
+.. code-block:: shell
+
+    bin/start_odoo -d dbname -u addon1,addon2 --stop-after-init
+
+
+Adicionando Menus e visões
+--------------------------
+
+Crie um arquivo de visão na pasta views/meu_modulo.xml com o conteudo:
+
+.. code-block:: xml
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <data>
+            <act_window
+                id="meu_modulo_action"
+                name="Minha Acao"
+                res_model="meu.modulo" />
+
+            <menuitem
+                id="meu_modulo_menu"
+                name="Meu Menu"
+                action="meu_modulo_action"
+                parent=""
+                sequence="5" />
+        </data>
+    </odoo>
+
+Adicione o na sessão data no arquivo __odoo__.py
+
+.. code-block:: xml
+
+    'data': ['views/meu_modulo.xml'],
+
+.. nextslide::
+
+Complete o arquivo de dados:
+
+.. code-block:: xml
+
+    <act_window
+        id="meu_modulo_action"
+        name="Minha Açao"
+        res_model="meu.modulo" />
+
+    <menuitem
+        id="meu_modulo_menu"
+        name="Meu Menu"
+        action="meu_modulo_action"
+        parent=""
+        sequence="5" />
+
+
+.. nextslide::
+
+Atualize seu módulo e verifique as alterações
+
+.. code-block:: shell
+
+    bin/start_odoo -d dbname -u addon1,addon2 --stop-after-init
+
+.. nextslide::
+
+Defina um formulário personalizado.
+
+.. code-block:: xml
+
+     <record id="meu_modulo_view_form" model="ir.ui.view">
+        <field name="name">Meu modulo Form</field>
+        <field name="model">meu.modulo</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
+                    <field name="partner_ids" widget="many2many_tags"/>
+                </group>
+                <group>
+                    <field name="date"/>
+                </group>
+            </form>
+        </field>
+     </record>
+
+.. nextslide::
+
+Defina uma visão lista
+
+.. code-block:: xml
+
+    <record id="meu_modulo_view_tree" model="ir.ui.view">
+    <field name="name">Meu modulo List</field>
+    <field name="model">meu.modulo</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+
+.. nextslide::
+
+Defina uma busca personalizada
+
+.. code-block:: xml
+
+    <record id="meu_modulo_view_search" model="ir.ui.view">
+        <field name="name">Meu modulo Search</field>
+        <field name="model">meu.modulo</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_ids"/>
+                <filter string="S/ Parceiros"
+                    domain="[('partner_ids','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+Criando módulos a partir de um template
+---------------------------------------
+
+.. code-block:: python
+
+    No buildout
+    cd parts/server
+    ./odoo.py scaffold teste /tmp/
+
+    ls /tmp/teste

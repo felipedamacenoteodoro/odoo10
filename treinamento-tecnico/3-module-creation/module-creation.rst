@@ -29,10 +29,44 @@ A partir do diretório do treinamento:
 
 .. nextslide::
 
-1. Inicie o Odoo
-2. Ative o modo desenvolvedor
+1. Inicie o Odoo. 
+
+Pelo Shell:
+
+.. code-block:: shell
+
+    bin/start_odoo
+
+.. image:: image/start_odoo_shell.png
+    :align: center
+
+No navegador:
+
+.. image:: image/start_odoo_browser.png
+    :align: center
+
+.. nextslide::
+
+2. Ative o modo desenvolvedor pelo menu Aplicativos. Em 'Habilitar Modo Desenvolvedor'.
+
+.. image:: image/modo_desenvolvedor.png
+    :align: center
+
+.. nextslide::
+
 3. Acesse o menu Aplicativos > Atualizar lista de Aplicativos ( Devemos fazer isso sempre que um novo módulo é disponibilizado em um banco de dados )
+
+.. image:: image/atualizar_aplicativos.png
+    :align: center
+
+
+.. nextslide::
+
 4. Procure seu módulo na lista de aplicativos e o instale.
+
+.. image:: image/instalar_aplicativo.png
+    :align: center
+
 
 .. nextslide::
 - Um módulo Odoo é um diretório contendo arquivos;
@@ -43,18 +77,19 @@ A partir do diretório do treinamento:
 
 Arquivo de Manifesto
 --------------------
-1. Preencha seu arquivo de manifesto com as chaves mais significativas conforme o exemplo:
+Preencha seu arquivo __manifest__.py com as chaves mais significativas conforme o exemplo:
 
 .. code-block:: python
 
     # -*- coding: utf-8 -*-
     {
-        'name': "Title",
-        'summary': "Short subtitle phrase",
-        'description': """Long description""",
-        'author': "Your name",
+        'name': "Meu Módulo",
+        'summary': "Esta é uma descrição simples do novo módulo que estou desenvolvendo",
+        'description': """Este campo deve ser usado para fornecer uma descrição mais completa 
+                          sobre o módulo o qual estou desenvolvendo""",
+        'author': "MeuNomeCompleto",
         'license': "AGPL-3",
-        'website': "http://www.example.com",
+        'website': "http://www.meuwebsite.com.br",
         'category': 'Uncategorized',
         'version': '8.0.1.0.0',
         'depends': ['base'],
@@ -64,9 +99,6 @@ Arquivo de Manifesto
 
 .. nextslide::
 
-2. Defina um ícone para o seu módulo, copiando uma imagem PNG para a pasta
-static/description/icon.png
-
 - O trecho -*- coding: utf-8 -*- permite que utilizemos caracteres não ASCII no arquivo.
 - **name:** O título do módulo
 - **summary:** Um subtítulo com uma linha
@@ -74,20 +106,16 @@ static/description/icon.png
 - **author:** O nome dos autores separados por vírgula.
 - **license:** AGPL-3 , LGPL-3 , Other OSI approved license etc.
 - **website:** Url para dar mais informações sobre os autores
-- **category:** `Lista de categorias possiveis <https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml>`_
 
 .. nextslide::
 
+- **category:** `Lista de categorias possiveis <https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml>`_
 - **versao:** Versão do módulo
 - **depends:** É uma lista de com os nomes técnicos que este módulo depende.
 
-**Importante:** Se não depender de nenhum módulo, ao menos deve depender do módulo **base**
-
-Qualquer referência que seu módulo realize com xmls ids, visões ou modelos refenciados por este módulo.
+**Importante:** Se não depender de nenhum módulo, ao menos deve depender do módulo **base**. Qualquer referência que seu módulo realize com xmls ids, visões ou modelos refenciados por este módulo.
 
 Esta lista garante que tudo será carregado na ordem correta.
-
-.. nextslide::
 
 - **data:** Lista dos caminhos dos arquivos de dados
 - **demo:** Lista dos caminhos dos arquivos de demo
@@ -112,9 +140,16 @@ Crie os arquivos:
     mkdir i18n
     mkdir -p static/description
 
+
+Defina um ícone para o seu módulo, copiando uma imagem PNG para a pasta
+static/description/icon.png
+
+.. image:: image/icon.png
+    :align: center
+
 .. nextslide::
 
-Edite o arquivo __init__.py com os dados:
+Edite o arquivo __init__.py da raíz do módulo com os dados:
 
 .. code-block:: python
 
@@ -123,27 +158,13 @@ Edite o arquivo __init__.py com os dados:
     from . import controllers
 
 
+Essa importação só é possívels pois os diretórios ``models`` e ``controllers`` possuem arquivos __init__.py em seus interiores.
+
 .. nextslide::
 
-.. code-block:: shell
+.. image:: image/estrutura.png
+    :align: center
 
-    .
-    ├── __init__.py
-    ├── __manifest__.py
-    │
-    ├── controllers
-    │
-    └── __init__.py
-    ├── data
-    ├── i18n
-    ├── models
-    │
-    └── __init__.py
-    ├── security
-    ├── static
-    │
-    └── description
-    └── views
 
 .. nextslide::
 
@@ -172,24 +193,15 @@ Crie um arquivo na pasta models, chamado de meu_modulo.py Com o conteudo:
         name = fields.Char(u'Nome', required=True)
         date = fields.Date('Date')
         partner_ids = fields.Many2many(
-            comodel_name = 'res.partner',
-            string = 'Parceiro',
+            comodel_name='res.partner',
+            string='Parceiro',
         )
 
-Crie um arquivo __init__.py na pasta models importando o seu módulo:
+Modifique arquivo __init__.py da pasta models importando o seu módulo:
 
 .. code-block:: python
 
     from . import meu_modulo
-
-.. nextslide::
-
-Edite o arquivo __init__.py da raiz para importar a pasta models:
-
-.. code-block:: python
-
-    from . import models
-
 
 .. nextslide::
 
@@ -198,12 +210,18 @@ Edite o arquivo __init__.py da raiz para importar a pasta models:
 - Modelos têm alguns atributos definidos com underline. O mais importante é o **_name**, que define um identificador único do modelo na instância
 - As mudanças nos modelos são carregadas quando atualizamos os módulos
 
+.. nextslide::
+
 Atualize seu módulo e verifique se o banco de dados e as tabelas de dados foram alteradas.
 
 
 .. code-block:: shell
 
-    bin/start_odoo -d dbname -u addon1,addon2 --stop-after-init
+    bin/start_odoo -d dbname -u meu_modulo --stop-after-init
+
+
+.. image:: image/atualizacao.png
+    :align: center
 
 
 Adicionando Menus e visões
@@ -236,30 +254,19 @@ Adicione-o na sessão data no arquivo __manifest__.py:
 
 .. nextslide::
 
-Complete o arquivo de dados:
-
-.. code-block:: xml
-
-    <act_window
-        id="meu_modulo_action"
-        name="Minha Açao"
-        res_model="meu.modulo" />
-
-    <menuitem
-        id="meu_modulo_menu"
-        name="Meu Menu"
-        action="meu_modulo_action"
-        parent=""
-        sequence="5" />
-
-
-.. nextslide::
-
 Atualize seu módulo e verifique as alterações
 
 .. code-block:: shell
 
-    bin/start_odoo -d dbname -u addon1,addon2 --stop-after-init
+    bin/start_odoo -d dbname -u meu_modulo --stop-after-init
+
+O ``<menuitem ... />`` cria um item de menu na barra superior do Odoo, onde são exibidos os módulos instalados. 
+
+Ao clicar no seu módulo, será chamado o item de índice ``meu_modulo_action``, que é uma janela ativa, contendo por padrão um formulário e alguns botões já funcionais.
+
+.. image:: image/2atualizacao.png
+    :align: center
+
 
 .. nextslide::
 
@@ -331,4 +338,29 @@ Defina uma busca personalizada:
     ...
     </odoo>
 
+
+.. nextslide::
+
+Atualize seu módulo e verifique se o banco de dados e as tabelas de dados foram alteradas.
+
+
+.. code-block:: shell
+
+    bin/start_odoo -d dbname -u meu_modulo --stop-after-init
+
+
+* ``meu_modulo_view_form`` é o formulário para cadastro de um novo campo. Cada um dos atributos "name" informam um campo do formulário.
+.. image:: image/3atualizacao.png
+    :align: center
+
+.. nextslide::
+
+* ``meu_modulo_view_tree`` é a exibição de todos os campos do formulário. Cada um dos atributos "name" definem uma das colunas de filtragem no formulário. 
+.. image:: image/4atualizacao.png
+    :align: center
+
+* ``meu_modulo_view_search`` configura a barra de pesquisa do formulário. 
+
+.. image:: image/5atualizacao.png
+    :align: center
 
