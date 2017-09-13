@@ -620,19 +620,15 @@ Adicione o seguinte código:
             compute_sudo=False,
             )
 
-* ``compute=`` Faz com que o campo seja preenchido automaticamente com o valor pelo método especificado
+* ``compute=`` Faz com que o campo seja preenchido automaticamente pelo método especificado
 
-* ``inverse=`` Inverte o campo
+* ``inverse=`` ...
 
 * ``search=`` Implementa a busca no campo
 
 * ``store=`` Diz se o campo será armazenado no banco. (``False`` por padrão em campos computados)
 
 .. nextslide::
-
-Também é possivel tornar os campos calculados editáveis.
-
-Lógica que implementa a escrita no campo:
 
 .. code-block:: python
 
@@ -641,6 +637,7 @@ Lógica que implementa a escrita no campo:
     class LibraryBook(models.Models):
 	#...
 
+        #Lógica que implementa escrita no campo
         @api.depends('date_release')
         def _compute_age(self):
             today = fields.Date.from_string(fields.Date.today())
@@ -654,24 +651,12 @@ Lógica que implementa a escrita no campo:
                 d = timedelta(days=book.age_days) - today
                 book.date_release = fields.Date.to_string(d)
 
-
-.. nextslide::
-
-Lógica que implementa a pesquisa no campo:
-
-.. code-block:: python
-
-    class LibraryBook(models.Models)
-    # ...
-
+        #Lógica que implementa a pesquisa no campo
         def _search_age(self, operator, value):
             today = fields.Date.from_string(fields.Date.today())
             value_days = timedelta(days=value)
             value_date = fields.Date.to_string(today - value_days)
             return [('date_release', operator, value_date)]
-
-
-Reinicie o Odoo e atualize o módulo.
 
 .. nextslide::
 
@@ -688,6 +673,21 @@ ser recalculado.
 
 - computed_sudo=True pode ser utilizado quando o cálculo deve ser feito com privilégios administrativos. Quando é preciso utilizar dados que podem não ser acessíveis aos usuários comuns.
 
+.. nextslide::
+
+Coloque o campo ``age_days`` na visão, em ``library_book_view_form`` e avalie os resultados:
+
+.. code-block:: xml
+
+        <field name="age_days" />
+
+
+.. image:: image/computed_fields_result.png
+   :align: center
+
+.. image:: image/computed_fields_result2.png
+   :align: center
+
 Exibindo campos relacionais salvos em outros modelos
 ----------------------------------------------------
 
@@ -699,11 +699,41 @@ Estes dados podem ser disponibilizados através de campos **related**
 
 .. code-block:: python
 
+    LibraryBook(models.Models):
+        #...
         publisher_city = fields.Char(
-            'Publisher City',
-            related='publisher_id.city')
+            string='Publisher City',
+            related='publisher_id.city',
+            store=True,
+        )
 
 - São campos calculados e podem ter o parâmetro store=True para serem pesquisáveis.
+
+.. nextslide::
+
+Na visão, em ``library_book_view_form`` adicione o campo publisher_city como apenas leitura:
+
+.. code-block:: xml
+
+    <field name="publisher_city" readonly="True"/>
+
+E em ``library_book_view_tree``:
+
+.. code-block:: xml
+
+    <field name="publisher_city"/>
+
+Quando for cadastrar um livro com um Publisher definido, o campo publisher_city buscará a cidade cadastrada para esse Publisher e criará uma cópia para seu livro.
+
+.. nextslide::
+
+.. image:: image/publisher.png
+   :align: center
+
+.. nextslide:: 
+
+.. image:: image/publisher_city.png
+   :align: center
 
 Adicionando campos dinâmicos através de referências
 ---------------------------------------------------
@@ -719,7 +749,8 @@ Permitem ao usuário definir o relacionamento com um modelo escolhido e então o
 
     ref_doc_id = fields.Reference(
         selection='_referencable_models',
-        string='Reference Document')
+        string='Reference Document',
+    )
 
 - Devemos sempre usar a api.model.
 - Podemos consultar a tabela de res.resquest.link ou definir uma lista de campos conforme a notação:
@@ -734,7 +765,7 @@ Relação entre modelos
 
 Adicionando funcionalidades através de herança
 --------------------------------------------
-Uma das funcionalidades mais importantes do Odoo é a habilidade de extender recursos de um módulo
+Uma das funcionalidades mais importantes do Odoo é a habilidade de estender recursos de um módulo
 em outro módulo sem a necessidade de editar o código dos recursos original.
 
 Esse recurso pode ser utilizado para adicionar campos em métodos, modificar campos existentes ou estender
@@ -751,7 +782,7 @@ no cadastro de parceiros:
 
 .. nextslide::
 
-2 .Segundo, adicione o metodo que utilizamos para calcular o count:
+2 .Segundo, adicione o método que utilizamos para calcular o count:
 
 .. literalinclude:: code/35.py
    :language: python
@@ -766,7 +797,7 @@ Modelos abstratos permitem criar um modelo genérico que implementa alguma
 característica que pode ser herdada por outros modelos.
 
 1. Crie um modelo abstrato para o recurso de arquivamento. Ele deve ser definido
-no modelo  LibraryBook.
+**dentro da classe  LibraryBook.**
 
 .. literalinclude:: code/32.py
    :language: python
@@ -774,7 +805,7 @@ no modelo  LibraryBook.
 
 .. nextslide::
 
-2. Edite o modelo LibraryBook para extender o modelo Archive
+2. Edite o modelo LibraryBook para estender o modelo Archive
 
 .. literalinclude:: code/33.py
    :language: python
