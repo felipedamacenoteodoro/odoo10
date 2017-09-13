@@ -2,7 +2,7 @@ Desenvolvimento Server Side
 ===========================
 
 Revisão:
-=======
+========
 
 Model
 -----
@@ -154,10 +154,10 @@ Definimos dois métodos:
 
 - Eles são métodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
 - Os métodos são decorados com **decorators** definidos em odoo.api
-- Eles realizam a conversão entre a antiga API(v5-v9) e a nova api (v8+). Portando v10 teremos somente a nova api.
+- Eles realizam a conversão entre a antiga API(v5-v9) e a nova api (v8+). Portando, na v10 teremos somente a nova api.
 
 Environment
-----------
+-----------
 
 - self.env.cr : Database cursor
 - self.env.user : Usuário que fez a chamada
