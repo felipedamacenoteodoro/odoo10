@@ -257,10 +257,7 @@ Durante o desenvolvimento pode ser preciso unir códigos c/ diferentes versões 
     OCA = https://github.com/OCA
     version = git https://github.com/odoo/odoo.git odoo 10.0 depth=1
     addons = git ${odoo:OCA}/partner-contact.git parts/partner-contact 10.0
-    git ${odoo:OCA}/product-attribute.git parts/product-attribute 10.0
 
-    merges = git origin parts/partner-contact pull/237/head
-        git origin parts/partner-contact pull/249/head
-        git origin parts/product-attribute pull/132/head
+    merges = git origin parts/partner-contact pull/465/head
 
 
