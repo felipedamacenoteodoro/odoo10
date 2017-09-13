@@ -1,0 +1,14 @@
+    <record id="library_book_view_search" model="ir.ui.view">
+        <field name="name">Library Book Search</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_ids"/>
+                <field name="pages"/>
+                <field name="date_release"/>
+                <filter string="S/ Parceiros"
+                    domain="[('partner_ids','=',False)]"/>
+            </search>
+        </field>
+    </record>
