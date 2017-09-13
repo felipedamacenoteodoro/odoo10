@@ -26,28 +26,25 @@ Instalação:
 
 .. code-block:: shell
 
-	curl -s https://raw.githubusercontent.com/kmee/dependencias.odoo/master/install-dependencies.sh \
-            | sudo bash
+	$ sh install-dependencies.sh
 
 2. Instalação do postgres
 
 .. code-block:: shell
 
-	curl -s https://raw.githubusercontent.com/kmee/dependencias.odoo/master/install-postgresql.sh \
-            | sudo bash
+	$ sh install-postgres.sh
 
 3. Permissão do postgres para o seu usuário
 
 .. code-block:: shell
 
-        curl -s https://raw.githubusercontent.com/kmee/dependencias.odoo/master/create-postgres-user.sh \
-            | sudo bash
+	$ sh create-postgres-user.sh
 
 Configuração do ambiente de desenvolvimento
 -------------------------------------------
 
 .. image:: image/tirinha.png
-    :align: center
+	:align: center
 
 Ambientes virtuais Python
 -------------------------
