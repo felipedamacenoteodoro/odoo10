@@ -4,23 +4,23 @@ Desenvolvendo com Odoo
 Desenvolvendo com Odoo
 ----------------------
 
-- É uma otima plataforma para se desenvolver;
+- É uma ótima plataforma para se desenvolver;
 - O core do framework é muito bom, te ajuda muito!
 - Permite a contrução de aplicações do Zero;
-- E adapatar aplicativos existentes para as suas necessidades através de uma mecanismo de extensão modular.
+- E adapatar aplicativos existentes para as suas necessidades através de um mecanismo de extensão modular.
 
 .. nextslide::
 
 - A Versão 8 trouxe uma gama de novas possibilidades ao adicionar recursos para se desenvolver sites.
-- O software e bem grande e e normal os ingressantes se sentirem um pouco perdidos.
-- Durante anos, os desenvolvedores Odoo aprenderam seu oficio atraves da leitura do codigo fonte do core.
+- O software e bem grande e é normal os ingressantes se sentirem um pouco perdidos.
+- Durante anos, os desenvolvedores Odoo aprenderam seu ofício atraves da leitura do código fonte do core.
 - Apesar de ser uma tecnica efetiva, e um processo demorado e voce acaba ficando sujeito a muitos erros.
 
 
 Backend Views
 -------------
 
-.. image:: image/backend2.png
+.. image:: image/backend2_10.png
     :align: center
 
 

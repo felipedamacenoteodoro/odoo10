@@ -57,7 +57,7 @@ Instalando o Odoo c/ Buildout
 
 
 Adicioando novos repositósios
-------------------------------
+-----------------------------
 Exercicio.
 
 Adicione o trecho no arquivo buildout.cfg

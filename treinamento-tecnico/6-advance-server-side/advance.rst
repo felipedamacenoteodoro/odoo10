@@ -4,15 +4,16 @@ Desenvolvimento Avançado
 Alterar o usuário através de uma ação
 -------------------------------------
 As vezes é necessário que uma ação seja executada com um contexto de segurança diferente. 
-Como por exemplo, executar uma ação como administrador. 
+Como, por exemplo, executar uma ação como administrador. 
 
 Vamos utilizar um usuário comum e modificar o número do telefone de uma empresa usando sudo().
 
-1. Definir um modelo qu extenda o modelo res_company
+1. Definir um modelo que estenda o modelo res_company
 2. Criar um método chamado update_phone_number()
 3. Dentro do método, tenha certeza que a ação está sendo executada em um simples registro
 4. Modifique o usuário do ambiente:
 
+.. nextslide:: 
 
 .. code-block:: python
 
@@ -25,10 +26,9 @@ Vamos utilizar um usuário comum e modificar o número do telefone de uma empres
           company_as_superuser = self.sudo()
           company_as_superuser.phone = new_number
 
-.. nextslide::
 
-Se você precisar de um usuário específico, pode utilizar um recordset contendo o
- usuário ou o id do usuário no banco de dados. Ex. utilizando o usuário "public_user"
+
+Se você precisar de um usuário específico, pode utilizar um recordset contendo o usuário ou o id do usuário no banco de dados. Ex. utilizando o usuário "public_user"
 
 .. code-block:: python
 
@@ -40,7 +40,7 @@ Chamar um metódo com um contexto modificado
 -------------------------------------------
 
 O context é parte do ambiente de um recordset. É utilizado para passar informações como timezone
-ou idioma do usuário a partir da interface ou em parametros especificados em uma action. 
+ou idioma do usuário a partir da interface ou em parâmetros especificados em uma action. 
 
 .. nextslide::
 
@@ -71,8 +71,8 @@ siga os passos abaixo.
 2. Crie um método chamado stock_in_location():
 3. Dentro do método, recupere um registro product.product:
 4. Busque todos os produtos:
-5. Crie um array com o nome do produto e o nível de estoque de todos os produtos presente no local especificado
-6. Verifique o resultado da chamada do metodo através do ipython
+5. Crie um array com o nome do produto e o nível de estoque de todos os produtos presentes no local especificado
+6. Verifique o resultado da chamada do método através do ipython
 
 .. code-block:: python
 
@@ -97,7 +97,7 @@ siga os passos abaixo.
 Executar um query SQL
 ---------------------
 
-Quando não for possível utilizar o método search() em uma operação, vocÊ pode executar
+Quando não for possível utilizar o método search() em uma operação, você pode executar
 queries SQL diretamente no Odoo. Por exemplo, vamos exibir os registros res.partner agrupados
 por país. Vamos utilizar uma versão simplificada do modelo res.partner:
 
@@ -119,7 +119,7 @@ por país. Vamos utilizar uma versão simplificada do modelo res.partner:
 
 1. Escreva uma classe que estenda res.partner
 2. Crie um método chamado partners_by_country()
-3. Verifique o resultado da chamada do metodo através do ipython
+3. Verifique o resultado da chamada do através do ipython
 
 .. code-block:: python
 
@@ -148,12 +148,12 @@ Wizard
 
 Criação de um assistente para guiar o usuário em uma atividade.
 
-Iremos utilizar um modelo simples para 'record book loans':
+Iremos utilizar um modelo simples para 'record book loads':
 
 .. code-block:: python
 
-	class LibraryBookLoan(models.Model):
-		_name = 'library.book.loan'
+	class LibraryBookLoad(models.Model):
+		_name = 'library.book.load'
 		book_id = fields.Many2one('library.book', 'Book',
 				required=True)
         member_id = fields.Many2one('library.member', 'Borrower',
@@ -169,26 +169,26 @@ Iremos utilizar um modelo simples para 'record book loans':
 
 .. code-block:: python
 
-	class LibraryLoanWizard(models.TransientModel):
+	class LibraryLoadWizard(models.TransientModel):
 
-	    _name = 'library.loan.wizard'
+	    _name = 'library.load.wizard'
 	    member_id = fields.Many2one('library.member', 'Member')
 	    book_ids = fields.Many2many('library.book', 'Books')
 
 
 2. Crie um método callback executando uma ação no modelo transitório. 
-Adicione o código abaixo na classe LibraryLoanWizard :
+Adicione o código abaixo na classe LibraryLoadWizard :
 
 .. code-block:: python
 
 	@api.multi
-	def record_loans(self):
+	def record_loads(self):
 		for wizard in self:
 		member = wizard.member_id
 		books = wizard.book_ids
-		loan = self.env['library.book.loan']
+		load = self.env['library.book.load']
 		for book in wizard.book_ids:
-			loan.create({'member_id': member.id,
+			load.create({'member_id': member.id,
 					'book_id': book.id})
 
 3. Crie um form view para o modelo.
@@ -197,9 +197,9 @@ Adicione o código abaixo na classe LibraryLoanWizard :
 
 .. code-block:: xml
 
-     <record id='library_loan_wizard_form' model='ir.ui.view'>
-        <field name='name'>library loan wizard form view</field>
-        <field name='model'>library.loan.wizard</field>
+     <record id='library_load_wizard_form' model='ir.ui.view'>
+        <field name='name'>library load wizard form view</field>
+        <field name='model'>library.load.wizard</field>
         <field name='arch' type='xml'>
             <form string="Borrow books">
                 <sheet>
@@ -211,7 +211,7 @@ Adicione o código abaixo na classe LibraryLoanWizard :
                     </group>
                 <sheet>
                 <footer>
-                    <button name='record_loans'
+                    <button name='record_loads'
                         string='OK'
                         class='btn-primary'
                         type='object'/>
@@ -230,15 +230,15 @@ Adicione o código abaixo na classe LibraryLoanWizard :
 
 .. code-block:: python
 
-    <act_window id="action_wizard_loan_books"
-        name="Record Loans"
-        res_model="library.loan.wizard"
+    <act_window id="action_wizard_load_books"
+        name="Record Loads"
+        res_model="library.load.wizard"
         view_mode="form"
         target="new"
         />
-    <menuitem id="menu_wizard_loan_books"
+    <menuitem id="menu_wizard_load_books"
         parent="library_book_menu"
-        action="action_wizard_loan_books"
+        action="action_wizard_load_books"
         sequence="20"
         />
 
@@ -246,7 +246,7 @@ Redirecionando o usuário
 ------------------------
 
 O método definido no wizard não retorna nada. Isso faz com que a caixa do wizard
-seja fechada após a execução da ação. Uma possíbildiade é retorar um dict com os
+seja fechada após a execução da ação. Uma possibilidade é retornar um dict com os
 campos de um ir.action. Neste caso, o cliente web irá processar a ação se como se
 algum item de menu fosse clicado pelo usuário.
 
@@ -270,7 +270,7 @@ algum item de menu fosse clicado pelo usuário.
 
 .. nextslide::
 
-Dica: Este macete pode ser adaptado para criarmos uma sequencia de wizards sendo executados.
+Dica: Este macete pode ser adaptado para criarmos uma sequência de wizards sendo executados.
 
 
 Definir métodos de onchange
@@ -279,7 +279,7 @@ Definir métodos de onchange
 Quando escrevemos modelos Odoo, há frequentemente a necessidade de que campos
 estejam interligados.
 
-Vamos ver agora o conceito de onchange que é um metodo que é chamado quando um campo é modificado na visão.
+Vamos ver agora o conceito de onchange que é um método que é chamado quando um campo é modificado na visão.
 
 .. nextslide::
 
@@ -293,38 +293,38 @@ Verificar exemplo feito c/  Luciano de retorno dos livros
         book_ids = fields.Many2many('library.book', 'Books')
         @api.multi
         def record_returns(self):
-            loan = self.env['library.book.loan']
+            load = self.env['library.book.load']
             for rec in self:
-                loans = loan.search(
+                loads = load.search(
                     [('state', '=', 'ongoing'),
                         ('book_id', 'in', rec.book_ids.ids),
                         ('member_id', '=', rec.member_id.id)]
                         )
-                loans.write({'state': 'done'})
+                loads.write({'state': 'done'})
 
 .. nextslide::
 
-Para popular automáticamente a lista de livro quando o usuário mudar, é necessário adicionar
+Para popular automaticamente a lista de livro quando o usuário mudar, é necessário adicionar
 o método onchange em LibraryReturnsWizard:
 
 .. code-block:: python
 
 	@api.onchange('member_id')
 	def onchange_member(self):
-		loan = self.env['library.book.loan']
-		loans = loan.search(
+		load = self.env['library.book.load']
+		loads = load.search(
 			[('state', '=', 'ongoing'),
 			('member_id', '=', self.member_id.id)]
 		)
-		self.book_ids = loans.mapped('book_id')
+		self.book_ids = loads.mapped('book_id')
 
 
 .. nextslide::
 
-- Quando o seu metodo de onchange estiver sendo executado, você tem acesso aos campos exibidos na visão atual, mas não necessáriamente todos os campos do modelo.
-- Isto acontece por que os on changes podem ser chamados quando um registro esta sendo criado pelo usuário antes mesmo de ser salvo no banco de dados.
-- Você não deve realizar transações dentro de metodos onchange, nunca deve persistir dados,visto que se o usuário cancelar a ação os dados serão perdidos.
-- Adicionalmente os onchanges podem retornar dominios e avisos para o usuário
+- Quando o seu método de onchange estiver sendo executado, você tem acesso aos campos exibidos na visão atual, mas não necessariamente a todos os campos do modelo.
+- Isto acontece porque os onchanges podem ser chamados quando um registro está sendo criado pelo usuário antes mesmo de ser salvo no banco de dados.
+- Você não deve realizar transações dentro de métodos onchange, nunca deve persistir dados,visto que se o usuário cancelar a ação os dados serão perdidos.
+- Adicionalmente os onchanges podem retornar domínios e avisos para o usuário
 
 Method and decorator
 ====================
@@ -335,9 +335,9 @@ Method and decorator
 
 Os decoratos são apenas um mapeamento para a nova api.
 
-``api`` namespace decoratos detectarão automaticamente a assinatura dos metodos. verificando se as assinaturas batem com a antiga ou a nova api.
+``api`` namespace decoratos detectarão automaticamente a assinatura dos métodos, verificando se as assinaturas batem com a antiga ou a nova api.
 
-Isto trouxe um pouco de lentidão, a versão 10 será vem mais rapida.
+Isto trouxe um pouco de lentidão, a versão 10 será bem mais rapida.
 
 Os nomes reconhecidos são:
 
@@ -347,20 +347,20 @@ Os nomes reconhecidos são:
 @api.returns
 ------------
 
-Garante o retorno de um unico recordset.
+Garante o retorno de um único recordset.
 
-Ele ira retornar um Recordset de um modelo especifico: ::
+Ele irá retornar um Recordset de um modelo específico: ::
 
     @api.returns('res.partner')
     def afun(self):
         ...
         return x  # a RecordSet
 
-Se uma chamada da antiga api buscar o metodo o retorno sera automaticamente convertido em uma lista de ids.
+Se uma chamada da antiga api buscar o método, o retorno será automaticamente convertido em uma lista de ids.
 
 Todos os decoradores herdam deste decorador para atualizar ou realizar o downgrade do valor retornado.
 
-@api.one ( descontiunado!!!!!!!)
+@api.one ( descontinuado!!!!!!!)
 ---------------------------
 
 Este decorador automaticamente faz o lool nos recordsets recebidos: ::
@@ -371,7 +371,7 @@ Este decorador automaticamente faz o lool nos recordsets recebidos: ::
 
 Utilizem o self.ensure_one()
 
-Exemplo de substituição do wizard do emprestimo de livro.
+Exemplo de substituição do wizard do empréstimo de livro.
 
 .. note::
    Caution: the returned value is put in a list. This is not always supported by
@@ -391,7 +391,7 @@ O Self será o recordset corrente sem interação: ::
 @api.model
 ----------
 
-Este  decorador ira converter uma chamada da antiga API para a nova API.
+Este  decorador irá converter uma chamada da antiga API para a nova API.
 It allows to be polite when migrating code. ::
 
     @api.model
@@ -400,15 +400,15 @@ It allows to be polite when migrating code. ::
 
 @api.constrains
 ---------------
-Este decorador assegura que a função decorada sera chamada no create, write e unlink.
+Este decorador assegura que a função decorada será chamada no create, write e unlink.
 
-Opcionalmente pode ser realizado um raise para exibir uma mensage. Muita gente esta usando isto
+Opcionalmente pode ser realizado um raise para exibir uma mensagem. Muita gente está usando isto
 para não precisar sobrescrever o write! Então foi criado um decorator @api.write
 
 @api.depends
 ------------
 
-Este decorador ira chamar a funçao decorada sempre que um campo especificado na lista
+Este decorador irá chamar a funçao decorada sempre que um campo especificado na lista
 for alterado pelo ORM ou pelo formulário: ::
 
     @api.depends('name', 'an_other_field')
@@ -430,7 +430,7 @@ Um dos grandes avanços da nova API é que os campos com depends e onchange são
 @api.onchange
 --------------
 
-Este decorator ira dispar uma chamada a função decora se qualquer campo especificado no decorator
+Este decorator irá disparar uma chamada a função decora se qualquer campo especificado no decorator
 for alterado na visão: ::
 
   @api.onchange('fieldx')
@@ -445,10 +445,12 @@ precisa de preocupar em alterar o RecordSet dentro da função e alterar o banco
 
 **Esta é grande diferença se comparado com o ``@api.depends``**
 
+.. nextslide::
+
 Quando a função retorna, as diferenças entre o cache e o RecordSet são retornados para o form.
 
 
 @api.noguess
 ------------
 
-Este decorator ira prevenir a nova API alterar o output do metodo.
+Este decorator irá prevenir a nova API alterar o output do método.

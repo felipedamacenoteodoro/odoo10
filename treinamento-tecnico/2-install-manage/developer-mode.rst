@@ -1,5 +1,5 @@
 Ferramentas do desenvolvedor
-==============================
+============================
 
 Ativando o modo desenvolvedor
 -----------------------------
@@ -26,7 +26,7 @@ Quando ativo
 
 Configurações Técnicas
 ----------------------
-Acesse cada um dos menus abaixo, eles são ferramentas muit úteis durante o desenvolvimento:
+Acesse cada um dos menus abaixo, eles são ferramentas muito úteis durante o desenvolvimento:
 
 - Email
 - Ações

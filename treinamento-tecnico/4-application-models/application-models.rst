@@ -1,6 +1,14 @@
 Modelos de dados
 ================
 
+Módulo de controle de biblioteca
+--------------------------------
+
+A partir dessa seção, trabalharemos na construção de um novo módulo para controle de uma biblioteca.
+
+
+
+
 Definindo um modelo de dados
 ----------------------------
 
@@ -278,12 +286,14 @@ Float com precisão decimal configurável
 
     <?xml version='1.0' encoding='UTF-8'?>
     <odoo>
+    ...
         <data noupdate="1">
             <record id="book_price_precision" model="decimal.precision">
                 <field name="name">Book Price</field>
                 <field name="digits">2</field>
             </record>
         </data>
+   ...
     </odoo>
 
 Campos relacionais
@@ -304,7 +314,7 @@ Podemos definir três tipos de campos relacionais no Odoo:
 1. Analisando do ponto de vista da **Biblioteca de Livros** temos:
 
 - Cada livro pode ter um editor;
-- Então podemos uma relação many-to-one entre livros e editores.
+- Então teremos uma relação many-to-one entre livros e editores.
 
 .. code-block:: python
 
@@ -331,7 +341,7 @@ Podemos definir três tipos de campos relacionais no Odoo:
     class ResPartner(models.Model):
         _name='res.partner'
         _inherit='res.partner'
-        book_ids = fields.One2many(
+        book_ids_pub = fields.One2many(
             comodel_name='library.book', 
             inverse_name='publisher_id',
             string='Published Books',
@@ -353,11 +363,9 @@ Podemos definir três tipos de campos relacionais no Odoo:
             string='Authors',
         )
 
-    class AutPartner(models.Model):
+    class ResPartner(models.Model):
         # ...
-        _name='aut.partner'
-        _inherit='aut.partner'
-        book_ids = fields.Many2many(
+        book_ids_aut = fields.Many2many(
             comodel_name='library.book',
             string='Authored Books',
             # relation='library_book_res_partner_rel' Opcional
@@ -386,8 +394,7 @@ Hierarquia
 ----------
 
 São representações de modelos relacionados com eles mesmos.
-
-Adicione um novo arquivo na pasta models/library_book_categ.py , para as categorias, lembre de importar o arquivo no __init__.py
+Crie o arquivo models/library_book_categ.py , para as categorias, lembre de importá-lo no arquivo __init__.py
 
 .. code-block:: python
 
@@ -400,13 +407,16 @@ Adicione um novo arquivo na pasta models/library_book_categ.py , para as categor
 
         name = fields.Char('Category')
         parent_id = fields.Many2one(
-            'library.book.category',
+            comodel_name='library.book.category',
             string='Parent Category',
             ondelete='restrict',
-            index=True)
+            index=True,
+        )
         child_ids = fields.One2many(
-            'library.book.category', 'parent_id',
-            string='Child Categories')
+            comodel_name='library.book.category', 
+            inverse_name='parent_id',
+            string='Child Categories',
+        )
 
 .. nextslide::
 
@@ -438,7 +448,7 @@ Constraints
             raise models.ValidationError(
                 'Release date must be in the past')
 
-2. SQL: lista coms tuplas definindo as contraints, no formato (name, sql_def, message).
+2. SQL: lista com tuplas definindo as contraints, no formato (name, sql_def, message).
 
 .. code-block:: python
 
@@ -454,7 +464,7 @@ Campos calculados
 Usamos este recurso quando precisamos que um campo seja calculado a partir de
 outros valores no mesmo modelo ou até mesmo nos modelos relacionados.
 
-Um exemplo tipico é quando o total é calculado a partir da multiplicação do preço com a quantidade.
+Um exemplo típico é quando o total é calculado a partir da multiplicação do preço com a quantidade.
 
 .. code-block:: python
 
@@ -473,7 +483,7 @@ Um exemplo tipico é quando o total é calculado a partir da multiplicação do 
         def _compute_age(self):
             today = fDate.from_string(fDate.today())
             for book in self.filtered('date_release'):
-                delta = (fDate.from_string(book.date_release - today)
+                delta = (fDate.from_string(book.date_release - today))
                 book.age_days = delta.days
 
 .. nextslide::
@@ -507,30 +517,27 @@ Reinicie o Odoo e atualize o módulo.
 
 .. nextslide::
 
-- A definição de um campo calculado é como qualquer outro exceto pelo parametro
-compute que é usado para realizar o calculado do mesmo.
+- A definição de um campo calculado é como qualquer outro exceto pelo parâmetro ``compute`` que é usado para realizar o cálculo do mesmo.
 
-- Campos calculados são computados em tempo de execução e a não ser que você
-explicitamente suporte a escrita (inverse) ou a pesquisa (search) isto não será
-possível.
+- Campos calculados são computados em tempo de execução e, a não ser que você explicitamente dê suporte à escrita (inverse), ou à pesquisa (search), isto não será possível.
 
-- Podemos tornar campos calculados pesquisaveis ao implementarmos o metodo search.
+- Podemos tornar campos calculados pesquisáveis ao implementarmos o metodo ``search``.
 Opcionalmente podemos utilizar o parametro **store=True** para tornar o campo
 pesquisável. Graças ao decorator @api.depends o ORM saberá quando este campo deve
 ser recalculado.
 
-- computed_sudo=True pode ser utilizado quando o calculo deve ser feito com privilégios
-administrativos. Quando é preciso utilizar dados que podem não ser acessiveis aos
-usuários comuns.
+.. nextslide::
+
+- computed_sudo=True pode ser utilizado quando o cálculo deve ser feito com privilégios administrativos. Quando é preciso utilizar dados que podem não ser acessíveis aos usuários comuns.
 
 Exibindo campos relacionais salvos em outros modelos
 ----------------------------------------------------
 
 Quando o cliente Odoo acessa as informações ele só tem acesso aos dados dos
-campos disponiveis nos modelos da consulta. O lado do cliente não pode usar notação
+campos disponíveis nos modelos da consulta. O lado do cliente não pode usar notação
 ponto para acessar dados relacionais.
 
-Estes dados podem ser disponibilizados atraves de campos **related**
+Estes dados podem ser disponibilizados através de campos **related**
 
 .. code-block:: python
 
@@ -538,12 +545,12 @@ Estes dados podem ser disponibilizados atraves de campos **related**
             'Publisher City',
             related='publisher_id.city')
 
-- São campos calculados e podem ter o parametro store=True para serem pesquisaveis.
+- São campos calculados e podem ter o parâmetro store=True para serem pesquisáveis.
 
-Adicionando campos dinâmicos através de referencias
+Adicionando campos dinâmicos através de referências
 ---------------------------------------------------
 
-Permitem ao usuário definir o relacionamento com qual modelo ele quer e então selecionar o objeto.
+Permitem ao usuário definir o relacionamento com um modelo escolhido e então o selecioná-lo.
 
 .. code-block:: python
 
@@ -567,17 +574,17 @@ Permitem ao usuário definir o relacionamento com qual modelo ele quer e então 
 Relação entre modelos
 =====================
 
-Adicionando funcionalides atraves de herança
+Adicionando funcionalidades através de herança
 --------------------------------------------
-Uma das funcionalidades mais importantes do Odoo, é a habilidade de extender recursos de um módulo
-em outro módulo sem a necessidade de editar o código do recursos original.
+Uma das funcionalidades mais importantes do Odoo é a habilidade de extender recursos de um módulo
+em outro módulo sem a necessidade de editar o código dos recursos original.
 
-Esse recurso pode ser utilizado para adicionar campos em métodos, modificar campos existentes, extender
+Esse recurso pode ser utilizado para adicionar campos em métodos, modificar campos existentes ou estender
 métodos existentes para adicionar uma lógica adicional.
 
 .. nextslide::
 
-1. Primeiro, precisamos verificar que o campo authored_book_ids esta disponivel
+1. Primeiro, precisamos verificar que o campo authored_book_ids está disponível
 no cadastro de parceiros:
 
 .. literalinclude:: code/34.py
@@ -617,7 +624,7 @@ no modelo  LibraryBook.
 
 Delegação para copiar funcionalidades
 -------------------------------------
-Usando a hernaça tradicional _inherit executa a modificação no local para estender a
+Usando a hernaça tradicional _inherit executa a modificação no local para estender as	
 características do modelo.
 
 Mas há casos em que em vez de modificar um modelo existente, é necessário criar um novo
