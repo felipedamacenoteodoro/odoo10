@@ -4,9 +4,9 @@ Modelos de dados
 Definindo um modelo de dados
 ----------------------------
 
-Modelos de dados tem atributos definindo seu comportamento.
+Modelos de dados têm atributos definindo seu comportamento.
 
-Estes atributos são pre fixados com underline, o mais importante é o **_name** que definem o identificador global do modelo.
+Estes atributos são pré-fixados com underline, o mais importante é o **_name** que define o identificador global do modelo.
 
 
 Definindo uma descrição amigável
@@ -16,7 +16,7 @@ Definindo uma descrição amigável
 
     _description = 'Library Book'
 
-- OBS: A descrição é um campo importante para o modulo de email, pois define algumas notificações quando novos registros são criados.
+- OBS: A descrição é um campo importante para o módulo de email, pois define algumas notificações quando novos registros são criados.
 
 .. nextslide::
 
@@ -40,13 +40,13 @@ Representando o modelo de outra forma: _rec_name
 
 - Quando referenciamos um modelo relacional este campo é utilizado para representar o modelo, ao invés do id.
 - Por padrão o campo **_rec_name** sempre exibe o campo **name** por isso é importante defini-lo.
-- Se o campo name não for definido e nem _rec_name o nome do modelo será uma tupla: (_name, id)
+- Se o campo name não for definido e nem _rec_name então o nome do modelo será uma tupla: (_name, id)
 
 Display name / name_get()
 -------------------------
 
 - A representação de um modelo é definida por um campo **display_name**
-- Seu valor é gerado pela função name_get() onde a implementação padrão utilza o campo **_rec_name**
+- Seu valor é gerado pela função name_get() onde a implementação padrão utiliza o campo **_rec_name**
 
 Sobrescrevendo esta lógica:
 
@@ -57,14 +57,14 @@ Sobrescrevendo esta lógica:
 Campos
 ======
 
-Nao relacionais
+Não relacionais
 ---------------
 
-Campos são adicionados aos modelos quando definimos um atributo em nas classes Python. Por exemplo:
+Campos são adicionados aos modelos quando definimos um atributo nas classes Python. Por exemplo:
 
 .. code-block:: python
 
-    from openerp import models, fields
+    from odoo import models, fields
 
 
     class AModel(models.Model):
@@ -115,29 +115,29 @@ Atributos
 
 .. nextslide::
 
-- string is the field's title, used in UI view labels. It actually is optional; if not set, a label will be derived from the field name by adding title case and replacing underscores with spaces.
-- size only applies to Char fields and is the maximum number of characters allowed. In general, it is advised not to use it.
-- translate when set to True , makes the field translatable; it can hold a different value depending on the user interface language.
-- default is the default value. It can also be a function that is used to calculate the default value. For example, default=_compute_default , where _compute_ default is a method defined on the model before the field definition.
+- **string** é o título do campo, usado em 'UI view labels'. Se não for setado, uma label será gerada a partir do campo **name**, substituindo underscores por espaço e capitalizando as primeiras letras das palavras.
+- **size** apenas se aplica a campos Char e indica o máximo número de caracteres permitidos. Em geral, seu uso não é recomendado.
+- **translate** quando é setado como True, deixa com campo traduzível; Pode ter diferentes valores dependendo do idioma da interface do usuário.
+- **default** é o valor padrão. Também pode ser uma função usada para calcular o valor padrão. Por exemplo, default=_compute_default, onde compute_default é um método definido no modelo previamento ao campo.
 
 .. nextslide::
 
-- help is an explanation text displayed in the UI tooltips.
-- groups makes the field available only to some security groups. It is a string containing a comma-separated list of XML IDs for security groups. This is addressed in more detail in Chapter 10, Access Security.
-- states allows the user interface to dynamically set the value for the readonly , required , and invisible attributes, depending on the value of the state field. Therefore, it requires a state field to exist and be used in the form view (even if it is invisible).
+- **help** é um texto de explicação exibida na 'UI tooltips'.
+- **groups** faz com que o campo fique disponível apenas para aguns security groups. É composto por uma string contendo uma lista de XML IDs para security groups separadas por vírgula. 
+- **states** permite a interface de usuário setar dinamicamente valores para readonly, required e invisible, dependendo do valor contido no campo **state**. Além isso, é necessária a existência e utilização de um campo **state** no Form View (mesmo que seja um campo invisible).
 
 .. nextslide::
 
-- copy flags if the field value is copied when the record is duplicated. By default, it is True for non-relational and Many2one fields and False for One2many and computed fields.
-- index , when set to True , makes for the creation of a database index for the field, allowing faster searches. It replaces the deprecated select=1 attribute.
-- The readonly flag makes the field read-only by default in the user interface.
-- The required flag makes the field mandatory by default in the user interface.
+- **copy** serve como uma flag, indicando se o valor do campo foi copiado enquanto o record está duplicado. Por padrão, é TRUE para campos não-relacionais ou Many2one ou FALSE para One2many e campos computados. 
+- **index**, quando setado para True, habilita a criação de um index no banco para o campo, possibilitando buscas mais rápidas. Veio para substituir o atributo obsoleto select=1.
+- **readonly** é uma flag que habilita o campo apenas para a leitura como configuração padrão na interface de usuário.
+- **required** é uma flag que torna o campo obrigatório por padrão na interface de usuário.
 
 .. nextslide::
 
-- The sanitize flag is used by HTML fields and strips its content from potentially insecure tags.
-- strip_style is also an HTML field attribute and has the sanitization to also remove style elements.
-- company_dependent flag makes the field store different values per company. It replaces the deprecated Property field type.
+- **sanitize** é uma flag usada por campos HTML que retira tags inseguras de seu conteúdo.
+- **strip_style** também é um atributo de campo HTML que utiliza o **sanitize** para remover também elementos de estilo inseguros.
+- **company_depentent** é uma flag que permite ao campo guardar diferentes valores por empresas. Veio para substituir o obsoleto campo Property.
 
 Campos não relacionais
 ----------------------
@@ -145,8 +145,8 @@ Campos não relacionais
 Os campos não relacionais podem ser:
 
 - **Char** para valores;
-- **Text** para textos de multiplas linhas;
-- **Selection** para lista de seleção, definido por uma lista de tuplas. Sendo que o valor a ser salvo no bando de dados pode ser somente do tipo inteiro e char.
+- **Text** para textos de múltiplas linhas;
+- **Selection** para lista de seleção, definido por uma lista de tuplas. Sendo que o valor a ser salvo no banco de dados pode ser somente do tipo inteiro e char.
 - **Html** similar ao campo de texto, mas espera uma HMTL.
 - **Binary** salva dados binários (arquivos, imagens e documentos).
 
@@ -156,7 +156,7 @@ Os campos não relacionais podem ser:
 - **Date** O ORM lida com elas no formato string. Mas elas são salvas no DB no formato DATE.
 - **Datetime** O ORM lida com elas no formato string. Mas elas são salvas no DB no formato DATE UTC.
 - **Integer**
-- **Float** Valores numéricos, opicionalmente definidos com o numero de digitos e sua parte decimal.
+- **Float** Valores numéricos, opicionalmente definidos com o número de dígitos e sua parte decimal.
 - **Monetary** Podem salvar um valor em determinada moeda. **Somente na v9+**
 
 .. nextslide::
@@ -167,7 +167,7 @@ Defina alguns campos novos:
    :language: python
    :linenos:
 
-Metodos especiais de data
+Métodos especiais de data
 -------------------------
 
 **Date**
@@ -184,7 +184,7 @@ Alguns metodos definidos no date que podemos utilizar:
 
 .. code::
 
-    >>> from openerp import fields
+    >>> from odoo import fields
 
     >>> adate = fields.Date()
     >>> fields.Date.today()
@@ -227,20 +227,20 @@ Alguns metodos definidos no datetime que podemos utilizar:
 Campos padrão
 -------------
 
-Todo modelo tem alguns campos padrão. Que são gerados automaticamenete:
+Todo modelo tem alguns campos padrão. Que são gerados automaticamente:
 
-- create_date is the record creation timestamp
-- create_uid is the user that created the record
-- write_date is the last recorded edit timestamp
-- write_uid is the user that last edited the record
+- **create_date** is the record creation timestamp
+- **create_uid** is the user that created the record
+- **write_date** is the last recorded edit timestamp
+- **write_uid** is the user that last edited the record
 
 - Eles podem ser desativados com o atributo _log_access=False
-- Para exibi-los na visao é preciso sobrecreve-los no modelo.
+- Para exibi-los na visao é preciso sobrescrevê-los no modelo.
 
 Active
 ------
 
-Um outro campo especial é o o campo 'active'. Ele deve ser um campo booleano para determinar se o registro sera ou não ativo.
+Um outro campo especial é o o campo 'active'. Ele deve ser um campo booleano para determinar se o registro será ou não ativo.
 
 .. code-block:: python
 
@@ -251,24 +251,24 @@ Por definição todas as visões tem os dominio [('active', '=', False)]
 Como alternativa podemos adicionar no contexto 'active_test': False para que o
 ORM não filtre somente pelos campos ativos.
 
-Float c/ precisão decimal configurável
+Float com precisão decimal configurável
 --------------------------------------
-1. Adicione uma nova dependencia ao nosso modulo:
+1. Adicione uma nova dependência ao nosso módulo:
 
 .. code-block:: python::
 
-    'depends': ['base', 'decimal_precision],
+    'depends': ['base', 'decimal_precision'],
 
 2. Adicione o trecho:
 
 .. code-block:: python:
 
-    from openerp.addons import decimal_precision as dp
+    from odoo.addons import decimal_precision as dp
     # ...
     class LibraryBook(models.Model):
     # ...
         cost_price = fields.Float(
-            'Book Cost', dp.get_precision('Book Price))
+            'Book Cost', dp.get_precision('Book Price'))
 
 .. nextslide::
 
@@ -277,14 +277,16 @@ Float c/ precisão decimal configurável
 .. code-block:: xml
 
     <?xml version='1.0' encoding='UTF-8'?>
-    <openerp>
+    <odoo>
+    ...
         <data noupdate="1">
             <record id="book_price_precision" model="decimal.precision">
                 <field name="name">Book Price</field>
                 <field name="digits">2</field>
             </record>
         </data>
-    </openerp>
+   ...
+    </odoo>
 
 Campos relacionais
 ==================
@@ -293,7 +295,7 @@ Campos relacionais
 Campos relacionais
 ------------------
 
-Podemos definir três tipos campos relacionais no Odoo:
+Podemos definir três tipos de campos relacionais no Odoo:
 
 1. many-to-one
 2. one-to-many
@@ -301,17 +303,18 @@ Podemos definir três tipos campos relacionais no Odoo:
 
 .. nextslide::
 
-1. Analisando do ponto de vista da **Bibloteca de Livros** temos:
+1. Analisando do ponto de vista da **Biblioteca de Livros** temos:
 
 - Cada livro pode ter um editor;
-- Então podemos uma relação many-to-one entre livros e editores.
+- Então teremos uma relação many-to-one entre livros e editores.
 
 .. code-block:: python
 
     class LibraryBook(models.Model):
         # ...
         publisher_id = fields.Many2one(
-            'res.partner', string='Publisher',
+            comodel_name='res.partner', 
+            string='Publisher',
             # optional:
             ondelete='set null',
             context={},
@@ -322,41 +325,45 @@ Podemos definir três tipos campos relacionais no Odoo:
 
 2. Analisando do ponto de vista do **Editor** temos:
 
-- Cada editor pode ter multiplos livros;
+- Cada editor pode ter múltiplos livros;
 - Então a relação anterior de many-to-one implica uma relação reversa one-to-many.
 
 .. code-block:: python
 
     class ResPartner(models.Model):
-        _inherit = 'res.partner'
-        book_ids = fields.One2many(
-            'library.book', 'publisher_id',
-            string='Published Books'
+        _name='res.partner'
+        _inherit='res.partner'
+        book_ids_pub = fields.One2many(
+            comodel_name='library.book', 
+            inverse_name='publisher_id',
+            string='Published Books',
             )
 
 .. nextslide::
 
 3. Analisando do ponto de vista dos **Livros** temos:
 
-- Cada livro pode ter multiplos autores;
-- Cada autor pode ter mutiplos livros; Então temos uma relação many-to-many.
+- Cada livro pode ter múltiplos autores;
+- Cada autor pode ter mútiplos livros; Então temos uma relação many-to-many.
 
 .. code-block:: python
 
     class LibraryBook(models.Model):
         # ...
         author_ids = fields.Many2many(
-            'res.partner', string='Authors')
+            comodel_name='res.partner', 
+            string='Authors',
+        )
 
     class ResPartner(models.Model):
         # ...
-        book_ids = fields.Many2many(
-            'library.book',
+        book_ids_aut = fields.Many2many(
+            comodel_name='library.book',
             string='Authored Books',
             # relation='library_book_res_partner_rel' Opcional
         )
 
-Atualize o seu modulo e veja o resultado em configurações tecnicas.
+Atualize o seu módulo e veja o resultado na aba Dados Técnicos.
 
 
 .. nextslide::
@@ -364,28 +371,27 @@ Atualize o seu modulo e veja o resultado em configurações tecnicas.
 Atributos:
 
 - ondelete: setnull ( default ) / restrict / cascade.
-- context: adiciona variáveis no contexto do cliente ao clicar no campo atraves dos registos relacionado. Podemos por exemplo definir um valor padrão para o modelo relacionado.
+- context: adiciona variáveis no contexto do cliente ao clicar no campo através dos registros relacionados. Podemos por exemplo definir um valor padrão para o modelo relacionado.
 - domain: Permite limitar os registros relacionados.
 
 .. nextslide::
 
 Observações:
 
-- One2many: São relações reversas de Many2One, apesar deles serem adionados nos modelos como qualquer outro campo eles não tem representação no banco de dados.
-- Many2many: Não são adicionadas colunas nas duas tabelas. É utilizado uma tabela intermediária. O Odoo gera estas tabelas automticamente.
+- One2many: São relações reversas de Many2One, apesar deles serem adionados nos modelos como qualquer outro campo eles não têm representação no banco de dados.
+- Many2many: Não são adicionadas colunas nas duas tabelas. É utilizado uma tabela intermediária. O Odoo gera estas tabelas automaticamente.
 - auto_join: Podem ser usados nos campos Many2one, permitem o ORM utilizar joins, podendo resolver problemas de performance. Apesar de pular regras de controle de acesso.
 
 Hierarquia
 ----------
 
 São representações de modelos relacionados com eles mesmos.
-
-Adicione um novo arquivo na pasta models/library_book_categ.py , para as categorias, lembre de importar o arquivo no __init__.py
+Crie o arquivo models/library_book_categ.py , para as categorias, lembre de importá-lo no arquivo __init__.py
 
 .. code-block:: python
 
     # -*- coding: utf-8 -*-
-    from openerp import models, fields, api
+    from odoo import models, fields, api
 
     class BookCategory(models.Model):
 
@@ -393,13 +399,16 @@ Adicione um novo arquivo na pasta models/library_book_categ.py , para as categor
 
         name = fields.Char('Category')
         parent_id = fields.Many2one(
-            'library.book.category',
+            comodel_name='library.book.category',
             string='Parent Category',
             ondelete='restrict',
-            index=True)
+            index=True,
+        )
         child_ids = fields.One2many(
-            'library.book.category', 'parent_id',
-            string='Child Categories')
+            comodel_name='library.book.category', 
+            inverse_name='parent_id',
+            string='Child Categories',
+        )
 
 .. nextslide::
 
@@ -417,7 +426,7 @@ Adicione um novo arquivo na pasta models/library_book_categ.py , para as categor
                 raise models.ValidationError(
                     'Error! You cannot create recursive categories.')
 
-Contraints
+Constraints
 ----------
 
 1. Python
@@ -431,7 +440,7 @@ Contraints
             raise models.ValidationError(
                 'Release date must be in the past')
 
-2. SQL: lista coms tuplas definindo as contraints, no formato (name, sql_def, message).
+2. SQL: lista com tuplas definindo as contraints, no formato (name, sql_def, message).
 
 .. code-block:: python
 
@@ -447,7 +456,7 @@ Campos calculados
 Usamos este recurso quando precisamos que um campo seja calculado a partir de
 outros valores no mesmo modelo ou até mesmo nos modelos relacionados.
 
-Um exemplo tipico é quando o total é calculado a partir da multiplicação do preço com a quantidade.
+Um exemplo típico é quando o total é calculado a partir da multiplicação do preço com a quantidade.
 
 .. code-block:: python
 
@@ -466,7 +475,7 @@ Um exemplo tipico é quando o total é calculado a partir da multiplicação do 
         def _compute_age(self):
             today = fDate.from_string(fDate.today())
             for book in self.filtered('date_release'):
-                delta = (fDate.from_string(book.date_release - today)
+                delta = (fDate.from_string(book.date_release - today))
                 book.age_days = delta.days
 
 .. nextslide::
@@ -496,34 +505,31 @@ Logica que implementa a pesquisa no campo:
             value_date = fDate.to_string(today - value_days)
             return [('date_release', operator, value_date)]
 
-Reinicie o Odoo e atualize o modulo.
+Reinicie o Odoo e atualize o módulo.
 
 .. nextslide::
 
-- A definição de um campo calculado é como qualquer outro exceto pelo parametro
-compute que é usado para realizar o calculado do mesmo.
+- A definição de um campo calculado é como qualquer outro exceto pelo parâmetro ``compute`` que é usado para realizar o cálculo do mesmo.
 
-- Campos calculados são computados em tempo de execução e a não ser que você
-explicitamente suporte a escrita (inverse) ou a pesquisa (search) isto não será
-possível.
+- Campos calculados são computados em tempo de execução e, a não ser que você explicitamente dê suporte à escrita (inverse), ou à pesquisa (search), isto não será possível.
 
-- Podemos tornar campos calculados pesquisaveis ao implementarmos o metodo search.
+- Podemos tornar campos calculados pesquisáveis ao implementarmos o metodo ``search``.
 Opcionalmente podemos utilizar o parametro **store=True** para tornar o campo
 pesquisável. Graças ao decorator @api.depends o ORM saberá quando este campo deve
 ser recalculado.
 
-- computed_sudo=True pode ser utilizado quando o calculo deve ser feito com privilégios
-administrativos. Quando é preciso utilizar dados que podem não ser acessiveis aos
-usuários comuns.
+.. nextslide::
+
+- computed_sudo=True pode ser utilizado quando o cálculo deve ser feito com privilégios administrativos. Quando é preciso utilizar dados que podem não ser acessíveis aos usuários comuns.
 
 Exibindo campos relacionais salvos em outros modelos
 ----------------------------------------------------
 
 Quando o cliente Odoo acessa as informações ele só tem acesso aos dados dos
-campos disponiveis nos modelos da consulta. O lado do cliente não pode usar notação
+campos disponíveis nos modelos da consulta. O lado do cliente não pode usar notação
 ponto para acessar dados relacionais.
 
-Estes dados podem ser disponibilizados atraves de campos **related**
+Estes dados podem ser disponibilizados através de campos **related**
 
 .. code-block:: python
 
@@ -531,12 +537,12 @@ Estes dados podem ser disponibilizados atraves de campos **related**
             'Publisher City',
             related='publisher_id.city')
 
-- São campos calculados e podem ter o parametro store=True para serem pesquisaveis.
+- São campos calculados e podem ter o parâmetro store=True para serem pesquisáveis.
 
-Adicionando campos dinâmicos através de referencias
+Adicionando campos dinâmicos através de referências
 ---------------------------------------------------
 
-Permitem ao usuário definir o relacionamento com qual modelo ele quer e então selecionar o objeto.
+Permitem ao usuário definir o relacionamento com um modelo escolhido e então o selecioná-lo.
 
 .. code-block:: python
 
@@ -560,17 +566,17 @@ Permitem ao usuário definir o relacionamento com qual modelo ele quer e então 
 Relação entre modelos
 =====================
 
-Adicionando funcionalides atraves de herança
+Adicionando funcionalidades através de herança
 --------------------------------------------
-Uma das funcionalidades mais importantes do Odoo, é a habilidade de extender recursos de um módulo
-em outro módulo sem a necessidade de editar o código do recursos original.
+Uma das funcionalidades mais importantes do Odoo é a habilidade de extender recursos de um módulo
+em outro módulo sem a necessidade de editar o código dos recursos original.
 
-Esse recurso pode ser utilizado para adicionar campos em métodos, modificar campos existentes, extender
+Esse recurso pode ser utilizado para adicionar campos em métodos, modificar campos existentes ou estender
 métodos existentes para adicionar uma lógica adicional.
 
 .. nextslide::
 
-1. Primeiro, precisamos verificar que o campo authored_book_ids esta disponivel
+1. Primeiro, precisamos verificar que o campo authored_book_ids está disponível
 no cadastro de parceiros:
 
 .. literalinclude:: code/34.py
@@ -610,7 +616,7 @@ no modelo  LibraryBook.
 
 Delegação para copiar funcionalidades
 -------------------------------------
-Usando a hernaça tradicional _inherit executa a modificação no local para estender a
+Usando a hernaça tradicional _inherit executa a modificação no local para estender as	
 características do modelo.
 
 Mas há casos em que em vez de modificar um modelo existente, é necessário criar um novo

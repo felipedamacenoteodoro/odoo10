@@ -29,7 +29,6 @@ Instalação / Gerenciamento
    2-install-manage/manage-databases
    2-install-manage/developer-mode
    2-install-manage/module-upgrade
-   2-install-manage/buildout
 
 Desenvolvimento Odoo
 ====================
