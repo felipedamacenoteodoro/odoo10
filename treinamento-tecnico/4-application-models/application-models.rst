@@ -675,7 +675,7 @@ ser recalculado.
 
 .. nextslide::
 
-Coloque o campo ``age_days`` na visão, em ``library_book_view_form`` e avalie os resultados:
+Coloque o campo ``age_days`` na visão, em ``library_book_view_tree`` e avalie os resultados:
 
 .. code-block:: xml
 
