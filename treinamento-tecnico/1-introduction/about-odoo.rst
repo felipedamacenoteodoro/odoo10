@@ -4,31 +4,33 @@ Um pouco de arquitetura, historia e experiencias.
 
 O Odoo
 ------
-    Fazendo companhias um lugar melhor. Um app por vez.
+    Fazendo das companhias um lugar melhor. Um app por vez.
 
 .. nextslide::
 
-Odoo é uma plataforma de codigo aberto de aplicativos de gestão empresárial.
+Odoo é uma plataforma de código aberto de aplicativos de gestão empresarial.
 
 - Utilizado por grandes companhias, pequenas empresas e diferentes tipos de
-negócios de organizações de for a auxilia-los a gerenciar, automatizar, medir
-e otimizar suas operações, finanças e projetos.
+  negócios em organizações de forma a auxiliá-las a gerenciar, automatizar, medir
+  e otimizar suas operações, finanças e projetos.
 
-História
---------
+História (Fabien Pinckaers)
+---------------------------
 2005
 
-- "Então, em 2005, eu comecei a desenvolver o TinyERP.."
+- "Então, em 2005, eu comecei a desenvolver o TinyERP..."
 - "Para fazer as coisas acontecer, eu trabalhei duro, muito duro. Eu trabalhei 13 horas por dia, 7 dias por semana, sem férias por 7 anos.
-- Pode imaginar qual pequeno eu me senti quando um dos diretores da Danone me perguntou: Por que eu deveria pagar milhoes de dolares em um pequeno(Tiny) software
+- "Pode imaginar qual pequeno eu me senti quando um dos diretores da Danone me perguntou:
+  'Por que eu deveria pagar milhoes de dolares em um pequeno(Tiny) software?' Então renomeamos
+  o TinyERP para OpenERP"
 
 .. nextslide::
 
 2010
 
-- OpenERP um produto poderoso, porem feio;
+- OpenERP era um produto poderoso, porem feio;
 - O pivo/mudança de estratégia: Empresa de serviços se tornou um editor de software;
-- 9.8 milhoes de Euros: Pesquisa e desenvolvimento / Equipe de vendas / 500 parceiros / 100 paises:
+- 9.8 milhoes de Euros: Pesquisa e desenvolvimento / Equipe de vendas / 500 parceiros / 100 paises;
 - Contratos com 6 zeros.
 
 .. nextslide::

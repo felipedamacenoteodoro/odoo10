@@ -1,6 +1,14 @@
 Modelos de dados
 ================
 
+Módulo de controle de biblioteca
+--------------------------------
+
+A partir dessa seção, trabalharemos na construção de um novo módulo para controle de uma biblioteca.
+
+
+
+
 Definindo um modelo de dados
 ----------------------------
 

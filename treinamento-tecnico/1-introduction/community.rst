@@ -87,7 +87,7 @@ Como contribuir?
     - Odoo: https://github.com/odoo/odoo/wiki/Contributing
     - OCA: https://odoo-community.org/page/review
 2. Siga as regras
-3. Faça pelos outros para que eles façam por voce;
+3. Faça pelos outros para que eles façam por você;
 
-"Gaste o seu tempo de espera revendo as contribuições dos outros "[...] As coisas mais interessantes que aprendi sobre programação em geral e especificamente em Odoo era por ter o meu código revisto ou revendo o código de outras pessoas."
+"Gaste o seu tempo de espera revendo as contribuições dos outros [...] As coisas mais interessantes que aprendi sobre programação em geral e especificamente em Odoo era por ter o meu código revisto ou revendo o código de outras pessoas."
 -- Holger Brunn, membro da comunidade.

@@ -125,7 +125,7 @@ Exercicio
 
 Arquivo do buildout.cfg
 -----------------------
-Crie o arquivo de configuração:
+7. Crie o arquivo de configuração buildout.cfg na pasta raiz, e insira o seguinte texto:
 
 .. code-block:: python
 
@@ -142,8 +142,17 @@ Crie o arquivo de configuração:
     
     [odoo]
     recipe = anybox.recipe.odoo:server
-    version = git https://github.com/oca/ocb.git odoo 7554efa59b1bf0a0380ffa753f7519a55c5c6fc8 depth=1
+    version = git https://github.com/oca/ocb.git odoo 10.0 depth=1
     parts = local specific-parts/specific-addons
+
+Executando o buidout
+--------------------
+
+8. Execute o buildout
+
+.. code-block:: shell
+
+    bin/buildout
 
 O Recipe Odoo
 -------------
@@ -187,7 +196,7 @@ O parametro -N é responsável por agilizar a re-execução do buildout, evitand
      bin/buildout -N 
 
 
-Adicioando novos repositósios
+Adicionando novos repositósios
 ------------------------------
 Adicione o trecho no arquivo buildout.cfg
 
@@ -195,7 +204,7 @@ Adicione o trecho no arquivo buildout.cfg
 
     [odoo]
 
-    addons = git git@github.com:OCA/project.git parts/oca/project 8.0
+    addons = git git@github.com:OCA/project.git parts/oca/project 10.0
 
 Adionando uma dependencia python de um addon
 --------------------------------------------
@@ -205,19 +214,13 @@ sessão [odoo] e versiona-lo na sessão [versions] conforme:
 
 .. code-block:: shell
 
+    [buildout]
+    ...
+    versions = versions
+
     [odoo]
     ...
     eggs = pycorreios
-
-
-Forçando uma versão específica
-------------------------------
-
-.. code-block:: shell 
-
-    [buildout]
-    ...
-    verions = versions
 
     [versions]
     pycorreios = 0.1.1
@@ -252,9 +255,9 @@ Durante o desenvolvimento pode ser preciso unir códigos c/ diferentes versões 
 
     [odoo]
     OCA = https://github.com/OCA
-    version = git https://github.com/odoo/odoo.git odoo 8.0 depth=1
-    addons = git ${odoo:OCA}/partner-contact.git parts/partner-contact 8.0
-    git ${odoo:OCA}/product-attribute.git parts/product-attribute 8.0
+    version = git https://github.com/odoo/odoo.git odoo 10.0 depth=1
+    addons = git ${odoo:OCA}/partner-contact.git parts/partner-contact 10.0
+    git ${odoo:OCA}/product-attribute.git parts/product-attribute 10.0
 
     merges = git origin parts/partner-contact pull/237/head
         git origin parts/partner-contact pull/249/head

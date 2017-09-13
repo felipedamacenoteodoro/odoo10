@@ -72,7 +72,7 @@ No navegador:
 - Um módulo Odoo é um diretório contendo arquivos;
 - O nome da pasta é o nome técnico;
 - O 'name' definido no dicionário do manifesto é o Título do módulo.
-- O arquivo __manifest__.py é o manifesto do módulo. Ele contém um dicionário com os detalhes do módulo: descrição, depêndencias, data que deve ser carregada e etc;
+- O arquivo __manifest__.py é o manifesto do módulo. Ele contém um dicionário com os detalhes do módulo: descrição, depêndencias, data que deve ser carregado, etc;
 - O diretório deve ser importável pelo python, ou seja, ter um arquivo __init__.py mesmo que vazio. Ele também pode conter os módulos python e submódulos que devem ser importados.
 
 Arquivo de Manifesto
@@ -91,7 +91,7 @@ Preencha seu arquivo __manifest__.py com as chaves mais significativas conforme 
         'license': "AGPL-3",
         'website': "http://www.meuwebsite.com.br",
         'category': 'Uncategorized',
-        'version': '8.0.1.0.0',
+        'version': '10.0.1.0.0',
         'depends': ['base'],
         #'data': ['views/meu_modulo.xml'],
         #'demo': ['demo.xml'],
@@ -178,7 +178,7 @@ Um módulo Odoo pode conter três tipos de aquivos:
 Adicionando modelos
 -------------------
 
-Crie um arquivo na pasta models, chamado de meu_modulo.py Com o conteudo:
+Crie um arquivo na pasta models, chamado de meu_modulo.py com o conteúdo:
 
 .. code-block:: python
 
@@ -186,15 +186,15 @@ Crie um arquivo na pasta models, chamado de meu_modulo.py Com o conteudo:
 
     from odoo import models, fields
 
-    class Meumodulo(models.Model):
+    class MeuModulo(models.Model):
 
         _name = 'meu.modulo'
 
-        name = fields.Char(u'Nome', required=True)
-        date = fields.Date('Date')
+        name = fields.Char(string=u'Nome', required=True)
+        date = fields.Date(string=u'Data')
         partner_ids = fields.Many2many(
             comodel_name='res.partner',
-            string='Parceiro',
+            string=u'Parceiro',
         )
 
 Modifique arquivo __init__.py da pasta models importando o seu módulo:

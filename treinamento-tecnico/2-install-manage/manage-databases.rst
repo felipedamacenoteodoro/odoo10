@@ -26,6 +26,17 @@ Ferramentas
     - pg_dump: Backup somente do banco de dados;
 - Restaurar um banco de dados;
 
+Restaurando um banco de dados
+-----------------------------
+
+Alternativamente à restauração pela interface, pode-se restaurar um banco de dados pela linha de comando:
+
+.. code-block:: shell
+
+    $ createdb nome-do-banco
+    $ psql nome-do-banco
+    nome-do-banco=> \i dump.sql
+
 
 
 
