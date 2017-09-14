@@ -1,5 +1,6 @@
 # ...
-from odoo import api, models # if not already imported
+from odoo import api # if not already imported
+
 class ResPartner(models.Model):
 # ...
 	@api.depends('authored_book_ids')

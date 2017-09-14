@@ -1,0 +1,16 @@
+    <record id="library_book_view_tree" model="ir.ui.view">
+        <field name="name">Library Book List</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="short_name"/>
+                <field name="pages"/>
+                <field name="date_release"/>
+                <field name="date_updated"/>
+                <field name="date"/>
+                <field name="reader_rating"/>
+                <field name="partner_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>

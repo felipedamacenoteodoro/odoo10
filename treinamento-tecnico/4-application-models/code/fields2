@@ -1,0 +1,17 @@
+    description = fields.Html('Description')
+    cover = fields.Binary('Book Cover')
+    out_of_print = fields.Boolean('Out of Print?')
+    date_release = fields.Date('Release Date')
+    date_updated = fields.Datetime('Last Updated')
+    pages = fields.Integer('Number of Pages')
+    reader_rating = fields.Float(
+        'Reader Average Rating',
+        (14, 4),  # Optional precision (total, decimals),
+    )
+
+    def name_get(self):
+        result = []
+        for record in self:
+            result.append((
+                record.id, u"%s (%s)" % (record.name, record.date_released)))
+            return result

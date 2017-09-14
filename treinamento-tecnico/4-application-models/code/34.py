@@ -1,8 +1,10 @@
 class ResPartner(models.Model):
-	_inherit = 'res.partner'
+        #...
+
 	_order = 'name'
+
 	authored_book_ids = fields.Many2many(
-	    comodel_name='library.book', 
+	    comodel_name='library.book',
 	    string='Authored Books',
 	)
 	count_books = fields.Integer(
