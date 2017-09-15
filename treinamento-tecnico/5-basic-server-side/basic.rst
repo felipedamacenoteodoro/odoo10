@@ -1,6 +1,37 @@
 Desenvolvimento Server Side
 ===========================
 
+Ipython:
+========
+
+Antes de começarmos essa seção, vamos aprender a instalar e utilizar uma nova ferramenta de desenvolvimento, o Ipython.
+
+Atualizando o buildout
+----------------------
+Altere o arquivo buildout.cfg adicionando o seguinte código
+
+.. code-block:: shell
+
+   [odoo]
+   ...
+   eggs = ...
+       ipython
+
+   odoo_scripts =
+       ipython command-line-options=-d arguments=user_ns=dict(session=session)
+
+   [versions]
+   ...
+   ipython = 5.3.0
+
+Executando o buildout
+---------------------
+Execute novamente o buildout
+
+.. code-block:: shell
+
+    $ bin/buildout -N
+
 Revisão:
 ========
 
