@@ -7,21 +7,23 @@ Revisão:
 Model
 -----
 
-- Model é uma representação de um objeto de negócio, sendo que até o momento eles podem ser persistentes ou abstratos:
+- Model é uma representação de um objeto de negócio, eles podem ser persistentes, não persistentes e abstratos:
 
 .. code-block:: python
 
-    class A(models.Model):
+    class MeuModeloPersistente(models.Model):
         ...
-    class B(models.AbstractMethod):
+    class MeuModeloAbstrato(models.AbstractMethod):
+        ...
+    class MeuModeloNaoPersistente(models.TransientMethod):
         ...
 
 .. nextslide::
 
-- Um model é basicamente uma classe Python que define vários atributos:
-    - Atributos especiais iniciados com UNDERLINE: **_name**, **_rec_name** etc;
-    - Campos salvos no banco de dados: "variáveis" definidas com fields;
-    - O nome do campo no banco de dados é o mesmo nome dado à variável!
+- Um model é uma classe Python! Que faz herança de uma das classes, como exemplificado acima, do arquivo 'parts/odoo/odoo/models.py' e é composta de atributos e métodos:
+    - *Atributos especiais* iniciados com UNDERLINE _name, _rec_name etc;
+    - Atributos derivados do módulo *fields* são do ORM e dependendo do tipo de modelo são campos salvos no banco de dados;
+    - Quando o modelo é do tipo persistente o nome do atributo é o mesmo nome do campo no bando de dados!
 
 .. code-block:: python
 
@@ -93,7 +95,7 @@ Desenvolvimento  Server Side
 * Filtrando recordsets;
 * Atravessando as relações de registros;
 * Estendendo a lógica de negócios definida em um modelo;
-* Estendendo write() e create();
+* Estendendo os métodos de criação e alteração: write() e create();
 * Customizando como os registros são procurados;
 
 Introdução
@@ -152,9 +154,10 @@ novo passado como um argumento:
 
 Definimos dois métodos:
 
-- Eles são métodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
-- Os métodos são decorados com **decorators** definidos em odoo.api
-- Eles realizam a conversão entre a antiga API(v5-v9) e a nova api (v8+). Portando, na v10 teremos somente a nova api.
+- Eles são metodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
+- Os metodos são decorados com **decorators** definidos em odoo.api
+
+
 
 Environment
 -----------
