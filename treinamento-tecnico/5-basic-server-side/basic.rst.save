@@ -1,0 +1,196 @@
+Desenvolvimento Server Side
+===========================
+
+Revisão
+========
+
+Model
+-----
+
+- Model é uma representação de um objeto de negócio, sendo que até o momento eles podem ser persistentes ou abstratos:
+
+.. code-block:: python
+
+    class A(models.Model):
+        ...
+    class B(models.AbstractMethod):
+        ...
+
+.. nextslide::
+
+- Um model é basicamente uma classe Python que define vários atributos:
+    - Atributos especiais iniciados com UNDERLINE: **_name**, **_rec_name** etc;
+    - Campos salvos no banco de dados: "variáveis" definidas com fields;
+    - O nome do campo no banco de dados é o mesmo nome dado à variável!
+
+.. code-block:: python
+
+    class A(models.Model):
+        _name ='a'
+        valor = fields.Float(...)
+
+Recordset
+---------
+- Um objeto Recordset representa os registros em uma tabela base ou os registros resultantes da execução de uma consulta.
+
+- Quando métodos definidos em um modelo são executados o atributo **self** é um **recordset**.
+
+.. code-block:: python
+
+    def do_operation(self):
+        print self # => a.model(1, 2, 3, 4, 5)
+        for record in self:
+            print record # => a.model(1), then a.model(2), then a.model(3), ...
+
+Acesso aos campos
+-----------------
+
+**Recordsets proveem um padrão denominado "Active-Record"**:
+
+Em Engenharia de software, active record é um padrão de projeto encontrado em softwares que armazenam seus dados em Banco de dados relacionais. Assim foi nomeado por Martin Fowler em seu livro Patterns of Enterprise Application Architecture[1].
+
+A interface de um certo objeto deve incluir funções como, por exemplo:
+
+- Inserir(Insert) / Atualizar(Update) / Apagar(Delete);
+- Propriedades que correspondam de certa forma diretamente às colunas do banco de dados associado.
+
+.. nextslide::
+
+Portanto, modelos podem ser escritos e lidos de forma direta através de um record.
+
+Mas somente nos singletons(apenas uma instância de model) que setar um field dispara um update no banco de dados. 
+
+Exemplo:
+
+.. code-block:: python
+
+    >>> record.name
+    Example Name
+    >>> record.company_id.name
+    Company Name
+    >>> record.name = "Bob"
+    >>> record.do_operation()
+
+
+Desenvolvimento  Server Side
+----------------------------
+
+``Tópicos:``
+
+* Definindo metódos de modelos e usando API decorators;
+* Saída de erros para os usuários;
+* Obtendo um recordset para um modelo diferente;
+* Criando novas records;
+* Update de valores de uma recordset;
+* Procurando por registros;
+* Combinando recordsets;
+
+.. nextslide::
+
+* Filtrando recordsets;
+* Atravessando as relações de registros;
+* Estendendo a lógica de negócios definida em um modelo;
+* Estendendo write() e create();
+* Customizando como os registros são procurados;
+
+Introdução
+----------
+Quando falamos de Modelo de Aplicações, nós vimos como declarar ou estender
+modelos em módulos customizados. As receitas deste capítulo abgrangem campos
+calculados bem como métodos para restringir os valores dos campos.
+
+Vamos focar nos conceitos básicos de desenvolvimento do lado servidor seguindo as
+definições Odoo de métodos, manipulação de registros e estender metódos herdados.
+
+
+Model methods & API Decorators
+------------------------------
+As classes de modelo podem conter:
+
+- Campos para os dados personalizados, através da definição de fields;
+- Comportamento personalizado através da definição de métodos da classe;
+
+Vamos ver como escrever um método que pode ser chamado por um botão na interface
+do usuário, ou por algum outro pedaço de código em nossa aplicação.
+
+Este método irá atuar sobre LibraryBooks e executar as ações necessárias para
+alterar o estado de uma seleção de livros.
+
+.. nextslide::
+
+Adicione o campo ``state`` no modelo LibraryBook como exibido abaixo:
+
+.. literalinclude:: code/1.py
+   :language: python
+   :linenos:
+
+.. nextslide::
+
+Para definir um metódo na LibraryBook para permitir a mudança do estado de
+uma seleção de livros, precisaremos adicionar o seguinte código na definição
+do modelo:
+
+1. Adicione um método auxiliar para verificar se a mudança de estado é permitido:
+
+.. literalinclude:: code/2.py
+   :language: python
+   :linenos:
+
+.. nextslide::
+
+2. Adicione um método para alterar o estado de alguns livros para um
+novo passado como um argumento:
+
+.. literalinclude:: code/3.py
+   :language: python
+   :linenos:
+
+.. nextslide::
+
+Definimos dois métodos:
+
+- Eles são métodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
+- Os métodos são decorados com **decorators** definidos em odoo.api
+- Eles realizam a conversão entre a antiga API(v5-v9) e a nova api (v8+). Portando, na v10 teremos somente a nova api.
+
+Environment
+-----------
+
+- self.env.cr : Database cursor
+- self.env.user : Usuário que fez a chamada
+- self.env.context : É o contexto, um dicionário python, contendo diversas informações como:
+    - Linguagem do usuário;
+    - Timezone
+    - E outras chaves específicas definidas em tempo de execução através da interface de usuário
+
+
+Saída de erros para os usuários
+-------------------------------
+
+Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
+
+* *Simulando o erro*: causado por uma problema de permissão, disco cheio, etc. **IOError** ou **OSError**.
+
+.. literalinclude:: code/4.py
+   :language: python
+   :linenos:
+
+.. nextslide::
+
+1. Adicione os seguintes imports no início do arquivo ``library_book.py``
+
+.. literalinclude:: code/5.py
+   :language: python
+   :linenos:
+
+.. nextslide::
+
+2. Modifique o metódo para capturar a excessão e gerar uma saída legível:
+
+.. literalinclude:: code/6.py
+   :language: python
+   :linenos:
+
+Obtendo um recordset para um modelo diferente
+---------------------------------------------
+
