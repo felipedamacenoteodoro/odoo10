@@ -1,81 +1,27 @@
 Desenvolvimento Server Side
 ===========================
 
-IPython
-========
-
-Antes de começarmos essa seção, vamos aprender a instalar e utilizar uma nova ferramenta de desenvolvimento, o IPython.
-
-Atualizando o buildout
-----------------------
-Altere o arquivo buildout.cfg adicionando o seguinte código
-
-.. code-block:: shell
-
-   [odoo]
-   ...
-   eggs = ...
-       ipython
-
-   odoo_scripts =
-       ipython command-line-options=-d arguments=user_ns=dict(session=session)
-
-   [versions]
-   ...
-   ipython = 5.3.0
-
-Executando o buildout
----------------------
-Execute novamente o buildout
-
-.. code-block:: shell
-
-    $ bin/buildout -N
-
-
-Preparando o IPython
---------------------
-
-No terminal, inicie o IPython:
-
-.. code-block:: shell
-
-    bin/ipython_odoo -d dbname --
-
-Após isso, vamos buscar nosso módulo pelo IPython:
-
-.. code-block:: shell
-   
-    In [1]: library = session.env['library.book']
-
-    In [2]: self = library.search([])
- 
-    In [3]: self 
-    Out[3]: library.book[1, 2, 3, ...]  
-
 Revisão
 ========
 
 Model
 -----
 
-- Model é uma representação de um objeto de negócio, eles podem ser persistentes, não persistentes e abstratos:
+- Model é uma representação de um objeto de negócio, sendo que até o momento eles podem ser persistentes ou abstratos:
 
 .. code-block:: python
 
-    class MeuModeloPersistente(models.Model):
+    class A(models.Model):
         ...
-    class MeuModeloAbstrato(models.AbstractMethod):
-        ...
-    class MeuModeloNaoPersistente(models.TransientMethod):
+    class B(models.AbstractMethod):
         ...
 
 .. nextslide::
 
-- Um model é uma classe Python! Que faz herança de uma das classes, como exemplificado acima, do arquivo 'parts/odoo/odoo/models.py' e é composta de atributos e métodos:
-    - *Atributos especiais* iniciados com UNDERLINE _name, _rec_name etc;
-    - Atributos derivados do módulo *fields* são do ORM e dependendo do tipo de modelo são campos salvos no banco de dados;
-    - Quando o modelo é do tipo persistente o nome do atributo é o mesmo nome do campo no banco de dados!
+- Um model é basicamente uma classe Python que define vários atributos:
+    - Atributos especiais iniciados com UNDERLINE: **_name**, **_rec_name** etc;
+    - Campos salvos no banco de dados: "variáveis" definidas com fields;
+    - O nome do campo no banco de dados é o mesmo nome dado à variável!
 
 .. code-block:: python
 
@@ -92,22 +38,9 @@ Recordset
 .. code-block:: python
 
     def do_operation(self):
-        print self # => a.model(1, 2, 3, 4, ...)
+        print self # => a.model(1, 2, 3, 4, 5)
         for record in self:
             print record # => a.model(1), then a.model(2), then a.model(3), ...
-
-
-No IPython:
-
-.. code-block:: shell
-
-    In [1]: for record in self:
-       ...:     print record
-       ...:    
-    library.book(6,)
-    library.book(8,)
-    library.book(14,)
-    ...
 
 Acesso aos campos
 -----------------
@@ -139,9 +72,6 @@ Exemplo:
     >>> record.do_operation()
 
 
-Desenvolvimento Server Side
-===========================
-
 Desenvolvimento  Server Side
 ----------------------------
 
@@ -160,7 +90,7 @@ Desenvolvimento  Server Side
 * Filtrando recordsets;
 * Atravessando as relações de registros;
 * Estendendo a lógica de negócios definida em um modelo;
-* Estendendo os métodos de criação e alteração: write() e create();
+* Estendendo write() e create();
 * Customizando como os registros são procurados;
 
 Introdução
@@ -219,10 +149,9 @@ novo passado como um argumento:
 
 Definimos dois métodos:
 
-- Eles são metodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
-- Os metodos são decorados com **decorators** definidos em odoo.api
-
-
+- Eles são métodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
+- Os métodos são decorados com **decorators** definidos em odoo.api
+- Eles realizam a conversão entre a antiga API(v5-v9) e a nova api (v8+). Portando, na v10 teremos somente a nova api.
 
 Environment
 -----------
@@ -240,7 +169,7 @@ Saída de erros para os usuários
 
 Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
-* *Alertando o usuário*: Se a transição de estados não for permitida, deve-se lançar uma mensagem de erro.
+* *Simulando o erro*: causado por uma problema de permissão, disco cheio, etc. **IOError** ou **OSError**.
 
 .. literalinclude:: code/4.py
    :language: python
@@ -248,7 +177,7 @@ Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
 .. nextslide::
 
-1. Adicione o seguinte import no início do arquivo python
+1. Adicione os seguintes imports no início do arquivo ``library_book.py``
 
 .. literalinclude:: code/5.py
    :language: python
@@ -256,7 +185,7 @@ Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
 .. nextslide::
 
-2. Modifique o metódo para gerar uma mensagem de erro:
+2. Modifique o metódo para capturar a excessão e gerar uma saída legível:
 
 .. literalinclude:: code/6.py
    :language: python
@@ -266,9 +195,9 @@ Obtendo um recordset para um modelo diferente
 ---------------------------------------------
 
 Quando escrevemos código para o Odoo, os metódos do modelo atual são chamados via self.
-Não é possível instânciar diretamente uma classe de um modelo diferente.
+Não é possível instanciar diretamente uma classe de um modelo diferente.
 
-Para isso, vamos escrever um pequeno método no modelo library.book buscando todas os
+Para isso, vamos escrever um pequeno método no modelo library.book buscando todos os
 library.members.
 
 .. nextslide::
