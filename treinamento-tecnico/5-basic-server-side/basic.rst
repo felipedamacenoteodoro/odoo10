@@ -1,6 +1,37 @@
 Desenvolvimento Server Side
 ===========================
 
+Ipython:
+========
+
+Antes de começarmos essa seção, vamos aprender a instalar e utilizar uma nova ferramenta de desenvolvimento, o Ipython.
+
+Atualizando o buildout
+----------------------
+Altere o arquivo buildout.cfg adicionando o seguinte código
+
+.. code-block:: shell
+
+   [odoo]
+   ...
+   eggs = ...
+       ipython
+
+   odoo_scripts =
+       ipython command-line-options=-d arguments=user_ns=dict(session=session)
+
+   [versions]
+   ...
+   ipython = 5.3.0
+
+Executando o buildout
+---------------------
+Execute novamente o buildout
+
+.. code-block:: shell
+
+    $ bin/buildout -N
+
 Revisão:
 ========
 
@@ -175,7 +206,7 @@ Saída de erros para os usuários
 
 Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
-* *Simulando o erro*: causado por uma problema de permissão, disco cheio, etc. **IOError** ou **OSError**.
+* *Alertando o usuário*: Se a transição de estados não for permitida, deve-se lançar uma mensagem de erro.
 
 .. literalinclude:: code/4.py
    :language: python
@@ -183,7 +214,7 @@ Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
 .. nextslide::
 
-1. Adicione os seguintes imports no início do arquivo python
+1. Adicione o seguinte import no início do arquivo python
 
 .. literalinclude:: code/5.py
    :language: python
@@ -191,7 +222,7 @@ Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
 .. nextslide::
 
-2. Modifique o metódo para capturar a excessão e gerar uma saída legível:
+2. Modifique o metódo para gerar uma mensagem de erro:
 
 .. literalinclude:: code/6.py
    :language: python
