@@ -175,7 +175,7 @@ Saída de erros para os usuários
 
 Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
-* *Simulando o erro*: causado por uma problema de permissão, disco cheio, etc. **IOError** ou **OSError**.
+* *Alertando o usuário*: Se a transição de estados não for permitida, deve-se lançar uma mensagem de erro.
 
 .. literalinclude:: code/4.py
    :language: python
@@ -183,7 +183,7 @@ Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
 .. nextslide::
 
-1. Adicione os seguintes imports no início do arquivo python
+1. Adicione o seguinte import no início do arquivo python
 
 .. literalinclude:: code/5.py
    :language: python
@@ -191,7 +191,7 @@ Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
 
 .. nextslide::
 
-2. Modifique o metódo para capturar a excessão e gerar uma saída legível:
+2. Modifique o metódo para gerar uma mensagem de erro:
 
 .. literalinclude:: code/6.py
    :language: python
