@@ -642,7 +642,7 @@ Adicione o seguinte código:
         def _compute_age(self):
             today = fields.Date.from_string(fields.Date.today())
             for book in self.filtered('date_release'):
-                delta = (fields.Date.from_string(book.date_release - today))
+                delta = (today - fields.Date.from_string(book.date_release))
                 book.age_days = delta.days
     
         def _inverse_age(self):
