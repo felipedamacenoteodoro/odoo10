@@ -6,5 +6,6 @@ class LibraryBook(models.Model):
         ('available', 'Available'),
         ('borrowed', 'Borrowed'),
         ('lost', 'Lost')],
+        default='draft',
         string='State',
     )

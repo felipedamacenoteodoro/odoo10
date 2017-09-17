@@ -138,6 +138,14 @@ Exemplo:
     >>> record.name = "Bob"
     >>> record.do_operation()
 
+IPython:
+
+.. code-block:: shell
+
+    In [1]: self[0].name
+    Out[1]: u'Ensaio sobre a Cegueira'
+
+
 
 Desenvolvimento Server Side
 ===========================
@@ -219,10 +227,41 @@ novo passado como um argumento:
 
 Definimos dois métodos:
 
-- Eles são metodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
-- Os metodos são decorados com **decorators** definidos em odoo.api
+- Eles são métodos Python comuns, tendo self como argumento, mas também podem ter argumentos adicionais.
+- Os métodos são decorados com **decorators** definidos em odoo.api
+
+.. nextslide:: 
+
+Testando os métodos definidos anteriormente:
+
+.. code-block:: shell
+
+    In [1]: self[0].state = 'draft' #Definindo o estado do livro como 'draft'
+
+    In [2]: self[0].is_allowed_transition('draft','borrowed') #Verificando se transição de estado é possível
+    Out[2]: False #Não é possível
+
+    In [3]: self[0].is_allowed_transition('draft','available') #Verificando se transção de estado é possível
+    Out[3]: True #É possível
+
+    In [4]: self[0].change_state('borrowed')
+
+    In [5]: self[0].state #Verificando se o estado foi alterado
+    Out[5]: 'draft'  #O estado não foi alterado por não ser possível
+
+    In [6]: self[0].change_state('available')
+
+    In [7]: self[0].state #Verificando se o estado foi alterado
+    Out[7]: 'available' #O estado foi alterado com sucesso
 
 
+Para que as alterações no banco sejam persistidas:
+
+.. code-block:: shell
+
+    In [8]: session.cr.commit()
+
+    
 
 Environment
 -----------
@@ -254,13 +293,18 @@ Como apresentar uma mensagem amigável ao usuário quando quando ocorrer um erro
    :language: python
    :linenos:
 
-.. nextslide::
-
 2. Modifique o metódo para gerar uma mensagem de erro:
 
 .. literalinclude:: code/6.py
    :language: python
    :linenos:
+
+.. nextslide:: 
+
+Testando o método com tratamento de erro:
+
+.. image:: image/error.png
+    :align: center
 
 Obtendo um recordset para um modelo diferente
 ---------------------------------------------
@@ -291,13 +335,17 @@ Criando novas records
 Criando registros para popular a tabela de parceiros.
 Vamos criar o representante de uma empresa com alguns contatos.
 
+Primeiro, adicione os seguintes campos na classe ResPartner:
+
 .. literalinclude:: code/9.py
    :language: python
    :linenos:
 
 .. nextslide::
 
-Primeiramente, crie um método create_contacts():
+Ainda na classe ResPartner, siga os procedimentos:
+
+0. Crie um método create_contacts():
 
 .. literalinclude:: code/50.py
    :language: python
@@ -338,11 +386,26 @@ como esperado pelo método create():
    :language: python
    :linenos:
 
-Quando o método create() é chamado no passo 5, 3 registros são criados:
+Quando o método create() é chamado no passo 5, três registros são criados:
 
 * Um para o parceiro principal - a empresa - , quando retornado por *create*
 * Um para cada um dos 2 contatos, quando disponível em record.child_ids
 
+
+.. nextslide::
+
+Testando o código:
+
+.. code-block:: shell
+
+    In [1]: session.env['res.partner'].create_contacts()
+
+    In [2]: session.cr.commit
+
+O resultado pode ser visto na interface do Odoo, no cadastro de novos livros:
+
+.. image:: image/create_contacts.png
+    :align: center
 
 
 Update de valores de uma recordset
@@ -354,7 +417,7 @@ alterando os valores de alguns dos seus campos.
 Veremos como adicionar um contato de um parceiro e modificar o campo 
 data do parceiro.
 
-Para atualizar um parceiro, escreva um novo método chamado add_contact() como este:
+Para atualizar um parceiro, escreva um novo método chamado add_contacts() na classe ResPartner como este:
 
 Opção 1:
 
@@ -384,7 +447,7 @@ Vamos ver como procurar um parceiro (empresa) e seus contatos pelo *nome da empr
 
 .. nextslide::
 
-2. Escrevam seu critério para o domínio de busca:
+2. Escreva seu critério para o domínio de busca:
 
 .. literalinclude:: code/18.py
    :language: python
@@ -400,7 +463,7 @@ Vamos ver como procurar um parceiro (empresa) e seus contatos pelo *nome da empr
 Combinando recordsets
 ---------------------
 
-Às vezes, você vai achar registros que não são exatamente o que você precisa.
+As vezes você vai encontrar registros que não são exatamente o que você precisa.
 
 Supported Operations RecordSet also support set operations you can add, union and intersect, ... recordset:
 
@@ -439,7 +502,7 @@ Atravessando as relações de registros
 Alterando comportamentos já definidos através de outros módulos
 ---------------------------------------------------------------
 
-Quando a definimos um modelo que estende outro modelo,
+Quando definimos um modelo que estende outro modelo,
 muitas vezes é necessário personalizar o comportamento de alguns
 métodos definidos no modelo original.
 
@@ -450,9 +513,13 @@ Esta é uma tarefa muito fácil no Odoo.
 .. nextslide::
 
 Crie um novo módulo adicional: **library_load_return_date** que
-depende do **meu_modulo.**
+depende do **library.book**
 
-Neste módulo, extenda o modelo library.book.load como a seguir:
+Download do módulo já criado: :download:`library_load_return_date.zip <code/library_load_return_date.zip>`
+
+.. nextslide::
+
+Neste módulo(arquivo models/library.book.load.py), estenda o modelo library.book.load como a seguir:
 
 .. literalinclude:: code/23.py
    :language: python
@@ -461,7 +528,7 @@ Neste módulo, extenda o modelo library.book.load como a seguir:
    :linenos:
    :linenos:
 
-Extenda o modelo library.member como a seguir:
+Cria uma classe ``LibraryMember`` que estenda o modelo library.member como a seguir:
 
 .. literalinclude:: code/24.py
    :language: python
@@ -479,7 +546,7 @@ Para estender a lógica do modelo library.load.wizard:
 
 .. nextslide:: 
 
-2. Em library_load_return_date, crie uma classe que extenda library.load.wizard e defina
+2. Em library_load_return_date, crie uma classe que estenda library.load.wizard e defina
 o método _prepare_load como a seguir:
 
 .. literalinclude:: code/26.py

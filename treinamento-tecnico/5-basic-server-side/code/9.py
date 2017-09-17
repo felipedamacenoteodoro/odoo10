@@ -1,6 +1,5 @@
 class ResPartner(models.Model):
-
-    _name = 'res.partner'
+    #[...]
 
     name = fields.Char('Name', required=True)
     email = fields.Char('Email')
