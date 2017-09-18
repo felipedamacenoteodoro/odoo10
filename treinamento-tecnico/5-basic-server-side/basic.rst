@@ -556,7 +556,7 @@ Adicione o campo manager_remarks no modelo library.book. Nós precisamos somente
 Library Managers tenham privilégios para escrever nos campos.
 
 .. literalinclude:: code/28.py
-   :language: csv
+   :language: python
    :linenos:
 
 .. nextslide::
@@ -571,7 +571,7 @@ de *manager_remarks*, vamos modificar o seguinte:
 .. nextslide::
 
 .. literalinclude:: code/29.py
-   :language: csv
+   :language: python
    :linenos:
 
 *continua*
@@ -579,7 +579,7 @@ de *manager_remarks*, vamos modificar o seguinte:
 .. nextslide::
 
 .. literalinclude:: code/30.py
-   :language: csv
+   :language: python
    :linenos:
 
 
