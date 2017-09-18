@@ -517,42 +517,26 @@ depende do **library.book**
 
 Download do módulo já criado: :download:`library_load_return_date.zip <code/library_load_return_date.zip>`
 
+Aqui será dada apenas uma explicação não-funcional, a funcionalidade será praticada no próximo arquivo de Slides.
+
 .. nextslide::
 
-Neste módulo(arquivo models/library.book.load.py), estenda o modelo library.book.load como a seguir:
+No novo módulo criado(models/library_book_load.py), estenda o modelo library.book:
 
 .. literalinclude:: code/23.py
    :language: python
-.. literalinclude:: code/28.py
-   :language: csv
-   :linenos:
-   :linenos:
-
-Cria uma classe ``LibraryMember`` que estenda o modelo library.member como a seguir:
-
-.. literalinclude:: code/24.py
-   :language: python
    :linenos:
 
 .. nextslide::
 
-Para estender a lógica do modelo library.load.wizard:
-
-1. No módulo meu_modulo, modifique o método record_loads() na classe LibraryLoadWizard.
-
-.. literalinclude:: code/25.py
-   :language: python
-   :linenos:
-
-.. nextslide:: 
-
-2. Em library_load_return_date, crie uma classe que estenda library.load.wizard e defina
-o método _prepare_load como a seguir:
+Em library_load_return_date, defina o método _compute_age como a seguir:
 
 .. literalinclude:: code/26.py
    :language: python
    :linenos:
 
+
+Isso fará com que livros cuja 'idade' seja '0', passem a ter idade '-1'.
 
 
 Estendendo write() e create()
