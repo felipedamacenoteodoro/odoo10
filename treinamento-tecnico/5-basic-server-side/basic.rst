@@ -1,8 +1,5 @@
-Desenvolvimento Server Side
-===========================
-
 IPython
-========
+=======
 
 Antes de começarmos essa seção, vamos aprender a instalar e utilizar uma nova ferramenta de desenvolvimento, o IPython.
 
@@ -150,9 +147,6 @@ IPython:
 Desenvolvimento Server Side
 ===========================
 
-Desenvolvimento  Server Side
-----------------------------
-
 ``Tópicos:``
 
 * Definindo metódos de modelos e usando API decorators;
@@ -266,8 +260,8 @@ Para que as alterações no banco sejam persistidas:
 Environment
 -----------
 
-- self.env.cr : Database cursor
-- self.env.user : Usuário que fez a chamada
+- self.env.cr : Database cursor (cr.commit(), cr.execute(sql), etc..)
+- self.env.user : Usuário que fez a chamada, que esta interagindo com o sistema.
 - self.env.context : É o contexto, um dicionário python, contendo diversas informações como:
     - Linguagem do usuário;
     - Timezone
