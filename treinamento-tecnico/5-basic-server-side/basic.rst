@@ -400,7 +400,7 @@ Testando o código:
 
     In [1]: session.env['res.partner'].create_contacts()
 
-    In [2]: session.cr.commit
+    In [2]: session.cr.commit()
 
 O resultado pode ser visto na interface do Odoo, no cadastro de novos livros:
 
