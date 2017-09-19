@@ -554,6 +554,23 @@ Crie o arquivo models/library_book_categ.py , para as categorias, lembre-se de i
         def _check_recursion(self):
             return self.parent_id == self.id
 
+.. nextslide::
+
+parent_left e parent_right são campos especiais relacionados ao parent_id. O propósito desses campos é fazer queries mais eficientes na hierarquia. Com esses campos é possível obter todos os descendentes de um registro sem queries recursivas no banco de dados.
+
+Os campos são usados para a estruturação de uma árvore binária, onde cada registro é um nó, e os registros decendentes tem os valores de parent_left e parent_right entre os valores de parent_left e parent_right do nó raiz.
+
+.. code-block:: shell
+
+ - Customers (1, 10) # nó raiz
+     - Consumers (2, 3) # nó filho
+     - Partners (4, 9)  # nó filho
+        - Basic Partners (5, 6) # nó neto
+        - Gold Partners (7, 8)  # nó neto
+ - Suppliers (11, 12)  # nó irmão
+
+.. nextslide::
+
 Arquivo ``models/__init__.py``
 
 .. code-block:: python
@@ -563,7 +580,7 @@ Arquivo ``models/__init__.py``
 
 
 Constraints
-----------
+-----------
 
 Na classe ``LibraryBook``, adicione os seguintes trechos:
 
