@@ -111,7 +111,7 @@ action específica para ela.
 		<field name="act_window_id" ref="action_all_editors" />
 		<field name="view_id" ref="form_all_editors" />
 		<field name="view_mode">form</field>
-		<fieldn ame="sequence">10</field>
+		<field name="sequence">10</field>
 	</record>
 
 
@@ -606,40 +606,3 @@ As visualizações Gráfico
         </graph>
     </field>
     </record>
-
-
-Relatórios Qweb
----------------
-
-1.	 Defina a visão do seu relatório:
-
-.. code-block:: xml
-
-    <template id="qweb_res_partner_birthdays">
-        <t t-call="report.html_container">
-            <t t-call="report.internal_layout">
-                <div class="page">
-                    <h2>Partner's birthdays</h2>
-                    <div t-foreach="docs" t-as="o" class="row mt4 mb4">
-                        <div class="col-md-6"><t t-esc="o.name" /></div>
-                        <div class="col-md-6">
-                            <t t-if="o.birthdate" t-esc="o.birthdate" />
-                            <t t-if="not o.birthdate">-</t>
-                    </div>
-                    </div>
-                </div>
-            </t>
-        </t>
-    </template>
-
-.. nextslide::
-
-2. Use o templatem em um relatório:
-
-.. code-block:: xml
-
-    <report id="report_res_partner_birthdays"
-        name="meu_modulo.qweb_res_partner_birthdays"
-        model="res.partner"
-        string="Birthdays"
-        report_type="qweb-pdf" />
