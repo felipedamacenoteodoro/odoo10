@@ -326,6 +326,48 @@ o método onchange em LibraryReturnsWizard:
 - Você não deve realizar transações dentro de métodos onchange, nunca deve persistir dados,visto que se o usuário cancelar a ação os dados serão perdidos.
 - Adicionalmente os onchanges podem retornar domínios e avisos para o usuário
 
+Restrições de segurança
+-----------------------
+
+Iremos estender os métodos write() e create() para controlar o acesso de alguns campos de registros.
+
+Modifique o arquivo security/ir.model.access.csv para permitir o acesso dos usuários aos livros.
+
+.. literalinclude:: code/27.csv
+   :language: csv
+   :linenos:
+
+.. nextslide::
+
+Adicione o campo manager_remarks no modelo library.book. Nós precisamos somente que os grupo
+Library Managers tenham privilégios para escrever nos campos.
+
+.. literalinclude:: code/28.py
+   :language: python
+   :linenos:
+
+.. nextslide::
+
+Para prevenir que usuários que não fazem parte do grupo "Library Managers" modifiquem o valor
+de *manager_remarks*, vamos modificar o seguinte:
+
+1. estender o método create()
+2. estender o método write()
+3. estender o método fields_get()
+
+.. nextslide::
+
+.. literalinclude:: code/29.py
+   :language: python
+   :linenos:
+
+.. nextslide::
+
+.. literalinclude:: code/30.py
+   :language: python
+   :linenos:
+
+
 Method and decorator
 ====================
 
@@ -361,7 +403,7 @@ Se uma chamada da antiga api buscar o método, o retorno será automaticamente c
 Todos os decoradores herdam deste decorador para atualizar ou realizar o downgrade do valor retornado.
 
 @api.one ( descontinuado!!!!!!!)
----------------------------
+--------------------------------
 
 Este decorador automaticamente faz o lool nos recordsets recebidos: ::
 
@@ -391,8 +433,7 @@ O Self será o recordset corrente sem interação: ::
 @api.model
 ----------
 
-Este  decorador irá converter uma chamada da antiga API para a nova API.
-It allows to be polite when migrating code. ::
+Este  decorador irá converter uma chamada da antiga API para a nova API. ::
 
     @api.model
     def afun(self):
@@ -428,7 +469,7 @@ Um dos grandes avanços da nova API é que os campos com depends e onchange são
 .. _@api.onchange:
 
 @api.onchange
---------------
+-------------
 
 Este decorator irá disparar uma chamada a função decora se qualquer campo especificado no decorator
 for alterado na visão: ::

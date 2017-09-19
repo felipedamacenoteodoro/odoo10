@@ -51,7 +51,7 @@ Após isso, vamos buscar nosso módulo pelo IPython:
     Out[3]: library.book[1, 2, 3, ...]  
 
 Revisão
-========
+=======
 
 Model
 -----
@@ -531,51 +531,3 @@ Em library_load_return_date, defina o método _compute_age como a seguir:
 
 
 Isso fará com que livros cuja 'idade' seja '0', passem a ter idade '-1'.
-
-
-Estendendo write() e create()
------------------------------
-
-Iremos estender os métodos write() e create() para controlar o acesso de alguns campos de registros.
-
-Modifique o arquivo security/ir.model.access.csv para permitir o acesso dos usuários aos livros.
-
-.. literalinclude:: code/27.csv
-   :language: csv
-   :linenos:
-
-.. nextslide::
-
-Adicione o campo manager_remarks no modelo library.book. Nós precisamos somente que os grupo
-Library Managers tenham privilégios para escrever nos campos.
-
-.. literalinclude:: code/28.py
-   :language: python
-   :linenos:
-
-.. nextslide::
-
-Para prevenir que usuários que não fazem parte do grupo "Library Managers" modifiquem o valor 
-de *manager_remarks*, vamos modificar o seguinte:
-
-1. estender o método create()
-2. estender o método write()
-3. estender o método fields_get()
-
-.. nextslide::
-
-.. literalinclude:: code/29.py
-   :language: python
-   :linenos:
-
-*continua*
-
-.. nextslide::
-
-.. literalinclude:: code/30.py
-   :language: python
-   :linenos:
-
-
-.. Customizando como os registros são procurados
-.. ---------------------------------------------
