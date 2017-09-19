@@ -52,4 +52,5 @@ Desenvolvimento Odoo
 
    8-automacao-workflows/automation-workflow
    9-web/web
+   10-report-py3o/report
    extras/community-patterns

@@ -272,6 +272,21 @@ algum item de menu fosse clicado pelo usuário.
 
 Dica: Este macete pode ser adaptado para criarmos uma sequência de wizards sendo executados.
 
+Ações em múltiplos registros
+----------------------------
+
+Em uma tree view é possível adicionar ações que se aplicam a mais de um registro. Usaremos isso para chamar o wizard da visão tree de library_book.
+
+
+
+.. code-block:: xml
+
+    <act_window id="action_borrow_books"
+        multi="True"
+        key2="client_action_multi" name="Borrow books"
+        res_model="library.load.wizard" src_model="library.book"
+        view_mode="form" target="new" view_type="form"
+        context="{'default_book_ids': active_ids}"/>
 
 Definir métodos de onchange
 ---------------------------
