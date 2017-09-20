@@ -225,14 +225,13 @@ Vamos exibir um conjunto de parceiros na sua ação.
 		</field>
 		<field name="res_model">res.partner</field>
 		<field name="domain">
-			[('customer', '=', True), ('user_id', '=', uid), ('lang',
-			'!=', 'fr_FR')]
+			[('customer', '=', True), ('user_id', '=', context.get('uid')), ('lang', '!=', 'fr_FR')]
 		</field>
 	</record>
 
 .. nextslide::
 
-2. Adicione uma action de clientes que são clientes ou fornecedores:
+2. Adicione uma action de parceiros que são clientes ou fornecedores:
 
 .. code-block:: xml
 
@@ -541,8 +540,7 @@ Views Kanban
                             is
                             <t t-if="record.customer.raw_value">
                                 a customer
-                                <t t-if="record.supplier.
-                                    raw_value"> and </t>
+                                <t t-if="record.supplier.raw_value"> and </t>
                             </t>
                             <t t-if="record.supplier.raw_value">
                                 a supplier
