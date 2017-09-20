@@ -225,14 +225,13 @@ Vamos exibir um conjunto de parceiros na sua ação.
 		</field>
 		<field name="res_model">res.partner</field>
 		<field name="domain">
-			[('customer', '=', True), ('user_id', '=', uid), ('lang',
-			'!=', 'fr_FR')]
+			[('customer', '=', True), ('user_id', '=', context.get('uid')), ('lang', '!=', 'fr_FR')]
 		</field>
 	</record>
 
 .. nextslide::
 
-2. Adicione uma action de clientes que são clientes ou fornecedores:
+2. Adicione uma action de parceiros que são clientes ou fornecedores:
 
 .. code-block:: xml
 
@@ -504,6 +503,32 @@ Neste tópico, vamos ver como definir private views para esses campos.
         </form>
     </field>
 
+Abas no formulário
+------------------
+
+Para organizar melhor os campos é útil separá-los em abas. Esse recurso também é utilizado para melhor visualização dos
+campos one2many e many2many.
+
+Vamos colocar o campo child_ids em uma aba e a descrição em outra:
+
+.. code-block:: xml
+
+    <notebook>
+        <page string="Contatos">
+            <field name="child_ids">
+                <tree>
+                    <field name="name" />
+                    <field name="email" />
+                    <field name="phone" />
+                </tree>
+            </field>
+        </page>
+        <page string="Description">
+            <field name="description"/>
+        </page>
+    <notebook>
+
+
 Views Kanban
 ------------
 
@@ -541,8 +566,7 @@ Views Kanban
                             is
                             <t t-if="record.customer.raw_value">
                                 a customer
-                                <t t-if="record.supplier.
-                                    raw_value"> and </t>
+                                <t t-if="record.supplier.raw_value"> and </t>
                             </t>
                             <t t-if="record.supplier.raw_value">
                                 a supplier
