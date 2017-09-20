@@ -503,6 +503,32 @@ Neste tópico, vamos ver como definir private views para esses campos.
         </form>
     </field>
 
+Abas no formulário
+------------------
+
+Para organizar melhor os campos é útil separá-los em abas. Esse recurso também é utilizado para melhor visualização dos
+campos one2many e many2many.
+
+Vamos colocar o campo child_ids em uma aba e a descrição em outra:
+
+.. code-block:: xml
+
+    <notebook>
+        <page string="Contatos">
+            <field name="child_ids">
+                <tree>
+                    <field name="name" />
+                    <field name="email" />
+                    <field name="phone" />
+                </tree>
+            </field>
+        </page>
+        <page string="Description">
+            <field name="description"/>
+        </page>
+    <notebook>
+
+
 Views Kanban
 ------------
 
