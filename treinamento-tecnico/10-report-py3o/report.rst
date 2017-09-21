@@ -184,4 +184,88 @@ Vamos agora adicionar alguns dos outros campos no nosso arquivo de template odt.
 
 .. nextslide::
 
+Como o nome da editora é um campo many2one, o valor de publisher_id é um recordset odoo.
+Para imprimir o nome da editora é necessário buscar o nome no recordset:
+
+.. image:: image/campo_editora.png
+
+.. nextslide::
+
+.. image:: image/tabela_editora_2.png
+
+.. nextslide::
+
+Vamos agora testar o que fizemos até agora. Salve o arquivo e na interface, vá até o form view de um dos livros e clique em Print->Resumo do Livro:
+
+.. image:: image/tabela_impressa.png
+
+Estrutura for
+-------------
+
+Como um livro pode ter mais de um autor, vamos precisar de uma iteração for.
+
+Insira uma nova linha abaixo da tabela, e nessa linha insira um hiperlink com Ctrl+K:
+
+.. image:: image/inicio_for.png
+
+.. nextslide::
+
+Insira mais duas linhas na tabela, e coloque mais um hiperlink na última linha da tabela:
+
+.. image:: image/fim_for.png
+
+.. nextslide::
+
+Na linha entre o início e o fim do for, coloque o campo nome do autor:
+
+.. image:: image/campo_autor.png
+
+Repare que não utilizamos objects, e sim item, por estar dentro da iteração.
+
+.. nextslide::
+
+Para maior clareza do relatório, insira uma linha acima do início do for e escreva autores:
+
+.. image:: image/tabela_autores.png
+
+.. nextslide::
+
+Vamos ver como fica o resumo gerado:
+
+.. image:: image/2_o_resumo.png
+
+.. nextslide::
+
+Alguns livros possuem um título abreviado, que é interessante constar no resumo. Como essa
+abreviação pode existir ou não, usaremos uma estrutura if.
+
+Acima de "Editora" insira 3 linhas na tabela. Faremos uma estrutura com hiperlinks bem parecida
+com a do for, somente mudando o seguinte no hiperlink de início:
+
+.. image:: image/if_inicio.png
+
+.. nextslide::
+
+E no hiperlink de fim:
+
+.. image:: image/if_fim.png
+
+Insira agora o campo short_name entre o início e o fim do if:
+
+.. image:: image/campo_abreviacao.png
+
+.. nextslide::
+
+.. image:: image/tabela_abreviacao.png
+
+.. nextslide::
+
+Se não houver um título abreviado, o resumo gerado não mudará. Porém, se o campo short_name
+for preenchido, o seguinte será impresso:
+
+.. image:: image/resumo_final.png
+
+Concertando campos date
+-----------------------
+
 
