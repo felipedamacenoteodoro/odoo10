@@ -234,7 +234,8 @@ Vamos ver como fica o resumo gerado:
 
 .. image:: image/2_o_resumo.png
 
-.. nextslide::
+Estrutura if
+------------
 
 Alguns livros possuem um título abreviado, que é interessante constar no resumo. Como essa
 abreviação pode existir ou não, usaremos uma estrutura if.
@@ -268,4 +269,33 @@ for preenchido, o seguinte será impresso:
 Concertando campos date
 -----------------------
 
+Você deve ter percebido que o campo da data de lançamento não está corretamente formatado.
+Para formatar corretamente, temos que criar um campo novo no modelo library.book:
+
+.. code-block:: python
+
+    class LibraryBook(models.Model):
+        _name='library.book'
+        ...
+        date_release_fmt = fields.Char(
+            string=u'Data de lançamento formatada',
+            compute='_compute_date_release_fmt',
+        )
+
+        @api.depends('date_release')
+        def _compute_date_release_fmt(self):
+            if self.date_release:
+                date_str = self.date_release
+                date_fmt = '%s/%s/%s' % (date_str[8:], date_str[5:7], date_str[:4])
+                self.date_release_fmt = date_fmt
+
+.. nextslide::
+
+Depois é só substituir o campo date_release por date_release_fmt no template do relatório:
+
+.. image:: image/campo_lancamento_fmt.png
+
+.. nextslide::
+
+.. image:: image/lancamento_fmt.png
 
