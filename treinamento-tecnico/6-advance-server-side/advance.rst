@@ -510,3 +510,94 @@ Quando a função retorna, as diferenças entre o cache e o RecordSet são retor
 ------------
 
 Este decorator irá prevenir a nova API alterar o output do método.
+
+
+Um exemplo prático de onchange e depends
+----------------------------------------
+
+Para fixar a diferença de onchange e depends, vamos incrementar o empréstimo de livros da biblioteca.
+
+.. code-block:: python
+
+    from datetime import timedelta
+    ...
+    class LibraryBookLoad(models.Model):
+        _name = 'library.book.load'
+        ...
+        date_load = fields.Date(
+            string=u'Data do empréstimo',
+            default=fields.Date.today(),
+            store=True,
+        )
+
+        date_return = fields.Date(
+            string=u'Data de devolução programada',
+        )
+
+        date_returned = fields.Date(
+            string=u'Data de devolução real',
+        )
+
+.. nextslide::
+
+Para calcular a multa, é necessário saber quantos dias de atraso:
+
+.. code-block:: python
+
+        days_late = fields.Integer(
+            string=u'Dias de atraso',
+            compute='_compute_days_late',
+        )
+
+        @api.multi
+        @api.depends('date_return', 'date_returned')
+        def _compute_days_late(self):
+            for load in self:
+                return_date = fields.Datetime.from_string(load.date_return)
+                returned_date = fields.Datetime.from_string(load.date_returned)
+                if return_date < returned_date:
+                    load.days_late = returned_date - return_date
+
+.. nextslide::
+
+A multa precisa ser calculada ainda que não esteja sendo mostrada na tela:
+
+.. code-block:: python
+
+    fine = fields.Float(
+        string=u'Multa',
+        digits=(16, 2),
+    )
+
+    @api.multi
+    @api.depends('days_late')
+    def _compute_fine(self):
+        for load in self:
+            if load.days_late > 0:
+                load.fine = 5.00 * load.days_late # multa de R$ 5,00 por dia de atraso
+
+.. nextslide::
+
+Podemos também colocar a opção de renovação do empréstimo, que será algo feito somente na tela de empréstimo de livro, se a entrega não estiver atrasada:
+
+.. code-block:: python
+
+    can_renew = fields.Boolean(
+        string=u'Pode renovar',
+    )
+
+    @api.onchange('days_late')
+    def _compute_can_renew(self):
+        if self.days_late == 0:
+            self.can_renew = True
+
+    @api.multi
+    def action_renew(self):
+        if self.can_renew:
+            return_date = fields.Date.from_string(self.date_return)
+            return_date += timedelta(days=7)
+            self.date_return = return_date
+
+.. nextslide::
+
+Agora, como exercício, adicione os novos campos na view de library.book.load, e também um botão para chamar a função de renovação de empréstimo.
