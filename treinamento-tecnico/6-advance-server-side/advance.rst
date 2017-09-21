@@ -22,10 +22,30 @@ Vamos utilizar um usuário comum e modificar o número do telefone de uma empres
 
 	@api.multi
 	def update_phone_number(self, new_number):
-          self.ensure_one()
-          company_as_superuser = self.sudo()
-          company_as_superuser.phone = new_number
+        if not self.user_has_groups('stock.group_tracking_lot'):
+            raise ("Nao tem Privilégios administrativos.")
+        else:
+            print ("Chamou Função")
 
+.. code-block:: python
+
+    def call_function_as_sudo(self):
+        company_as_superuser = self.sudo()
+        company_as_superuser.update_phone_number(new_number)
+        # chamando a funcao como usuario administrador
+
+Quando disparar o método sudo(), será criado um novo contexto de ambiente(environment)
+setando o administrador como usuário.
+
+.. code-block:: python
+
+
+	user3 = session.env['res.users'].browse(3)     # Obter usuario
+	user3
+	res.users(3,)
+
+	user3.sudo().env.user()                        # Com sudo o usuario sera o admin
+	res.users(1,)
 
 
 Se você precisar de um usuário específico, pode utilizar um recordset contendo o usuário ou o id do usuário no banco de dados. Ex. utilizando o usuário "public_user"
@@ -33,66 +53,10 @@ Se você precisar de um usuário específico, pode utilizar um recordset contend
 .. code-block:: python
 
 	public_user = self.env.ref('base.public_user')
-	public_book = self.env['library.book'].sudo(public_user)
 
+	# Criar uma library book com permissoes do public_user
+	public_book = self.env['library.book'].sudo(public_user).create({ ... })
 
-Chamar um metódo com um contexto modificado
--------------------------------------------
-
-O context é parte do ambiente de um recordset. É utilizado para passar informações como timezone
-ou idioma do usuário a partir da interface ou em parâmetros especificados em uma action. 
-
-.. nextslide::
-
-Para iniciarmos, vamos utilizar o addons stock e product. Abaixo, uma versão simplificada do modelo
-product.product.
-
-.. code-block:: python
-
-	class product.product(models.Model):
-		_name = 'product.product'
-		name = fields.Char('Name', required=True)
-		qty_available = fields.Float('Quantity on Hand',
-					compute='_product_available')
-		def _product_available(self):
-			"""if context contains a key 'location' linked to a
-			database id, then the stock available is computed within
-			that location only. Otherwise the stock of all internal
-			locations is computed"""
-			pass # read the real source in addons/stock/product.py :)
-
-
-.. nextslide ::
-
-Para calcular os níveis de estoque de todos os produtos de um determinado local,
-siga os passos abaixo.
-
-1. Crie um modelo que estenda product.product
-2. Crie um método chamado stock_in_location():
-3. Dentro do método, recupere um registro product.product:
-4. Busque todos os produtos:
-5. Crie um array com o nome do produto e o nível de estoque de todos os produtos presentes no local especificado
-6. Verifique o resultado da chamada do método através do ipython
-
-.. code-block:: python
-
-     class ProductProduct(models.Model):
-          _inherit = 'product.product'
-
-          @api.model
-          def stock_in_location(self, location):
-               product_in_loc = self.with_context(
-                    location=location.id,
-                    active_test=False
-               )
-               all_products = product_in_loc.search([])
-
-               stock_levels = []
-               for product in all_products:
-                    if product.qty_available:
-                         stock_levels.append((product.name,
-                         product.qty_available))
-               return stock_levels
 
 Executar um query SQL
 ---------------------
